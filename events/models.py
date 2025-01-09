@@ -18,7 +18,10 @@ class Event(CreatedDateModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.ForeignKey('Organizer', on_delete=models.CASCADE)
     pub_date = models.DateTimeField()
-    location = models.CharField(max_length=LOCATION_MAX_LENGTH, blank=True)
+    location = models.ManyToManyField(
+        'Location',
+        related_name='places'
+    )
     is_published = models.BooleanField()
     event_start_date = models.DateTimeField()
     event_end_date = models.DateTimeField()
@@ -42,11 +45,17 @@ class Event(CreatedDateModel):
     def __str__(self):
         return self.name
 
+
+class Location(CreatedDateModel):
+    name = models.CharField(max_length=MAX_LENGTH)
+
+
 class EventFormat(CreatedDateModel):
     format = models.CharField(max_length=MAX_LENGTH)
 
     def __str__(self):
         return self.format
+
 
 class EventTag(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
@@ -61,6 +70,7 @@ class Category(CreatedDateModel):
 
     def __str__(self):
         return self.name
+
 
 class Comment(CreatedDateModel):
     text = models.TextField(max_length=MAX_LENGTH)
