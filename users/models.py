@@ -1,7 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 from constants import MAX_LENGTH, MAX_LENGTH_TEXT
+
+
 
 
 class CreatedDateModel(models.Model):
@@ -10,20 +12,13 @@ class CreatedDateModel(models.Model):
     class Meta:
         abstract = True
 
-class User(AbstractUser):
-    username = models.CharField(max_length=MAX_LENGTH, unique=True)
-    first_name = models.CharField(max_length=MAX_LENGTH)
-    last_name = models.CharField(max_length=MAX_LENGTH)
-    email = models.EmailField(max_length=MAX_LENGTH, unique=True)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=30, blank=True)
-    interested_technologies = models.CharField(max_length=100, blank=True)
-
-
-    def __str__(self):
-        return self.username
-
-    def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'.strip()
+    interested_technologies = models.ManyToManyField('Technology', blank=True)
+    notifications_enabled = models.BooleanField(default=True)
+    preferred_event_types = models.ManyToManyField('EventType', blank=True)
 
 
 class Organizer(CreatedDateModel):

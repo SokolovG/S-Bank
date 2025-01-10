@@ -27,17 +27,11 @@ class Event(CreatedDateModel):
     event_end_date = models.DateTimeField()
     category = models.ManyToManyField('Category')
     is_online = models.BooleanField()
-    url = models.URLField()
+    meeting_link = models.URLField()
     is_verify = models.BooleanField()
     max_participants = models.PositiveIntegerField(blank=True)
     registration_deadline = models.DateTimeField(blank=True)
-    tags = models.ManyToManyField(
-        'EventTag',
-        blank=True,
-        related_name='events')
-    format = models.ManyToManyField(
-        'EventFormat',
-        related_name='formats')
+    format = models.CharField(max_length=MAX_LENGTH)
 
     class Meta:
         ordering = ['event_start_date']
@@ -48,25 +42,16 @@ class Event(CreatedDateModel):
 
 class Location(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
+    address = models.CharField(max_length=MAX_LENGTH, blank=True)
+    city = models.CharField(max_length=MAX_LENGTH)
+    country = models.CharField(max_length=MAX_LENGTH)
 
-
-class EventFormat(CreatedDateModel):
-    format = models.CharField(max_length=MAX_LENGTH)
-
-    def __str__(self):
-        return self.format
-
-
-class EventTag(CreatedDateModel):
-    name = models.CharField(max_length=MAX_LENGTH)
-    slug = models.SlugField(max_length=MAX_LENGTH, unique=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Category(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
+    slug = models.SlugField(max_length=MAX_LENGTH, unique=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
