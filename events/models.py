@@ -63,6 +63,15 @@ class Event(CreatedDateModel):
             raise ValidationError('For an offline event, the venue must be specified.')
 
 
+class EventRegistration(CreatedDateModel):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=MAX_LENGTH)
+    
+    class Meta:
+        unique_together = ['event', 'user']
+
+
 
 class Category(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
@@ -80,3 +89,4 @@ class Comment(CreatedDateModel):
 
     def __str__(self):
         return self.text
+
