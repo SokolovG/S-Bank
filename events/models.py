@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 from constants import DESCRIPTION_MAX_LENGTH, LOCATION_MAX_LENGTH, MAX_LENGTH
 
@@ -11,12 +12,18 @@ class CreatedDateModel(models.Model):
     class Meta:
         abstract = True
 
+class Location(CreatedDateModel):
+    name = models.CharField(max_length=MAX_LENGTH)
+    address = models.CharField(max_length=LOCATION_MAX_LENGTH, blank=True)
+    city = models.CharField(max_length=MAX_LENGTH)
+    country = models.CharField(max_length=MAX_LENGTH)
+
 
 class Event(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
     description = models.TextField(max_length=DESCRIPTION_MAX_LENGTH)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    organizer = models.ForeignKey('Organizer', on_delete=models.CASCADE)
+    organizer = models.ForeignKey('users.Organizer', on_delete=models.CASCADE)
     pub_date = models.DateTimeField()
     location = models.ManyToManyField(
         'Location',
@@ -32,6 +39,9 @@ class Event(CreatedDateModel):
     max_participants = models.PositiveIntegerField(blank=True)
     registration_deadline = models.DateTimeField(blank=True)
     format = models.CharField(max_length=MAX_LENGTH)
+    members = models.PositiveIntegerField(blank=True)
+    photos = models.ImageField()
+    you_are_member = models.BooleanField()
 
     class Meta:
         ordering = ['event_start_date']
@@ -39,12 +49,18 @@ class Event(CreatedDateModel):
     def __str__(self):
         return self.name
 
+    def clean(self):
+        if self.event_start_date < self.event_end_date:
+            raise ValidationError('The end date cannot be earlier than the start date.')
 
-class Location(CreatedDateModel):
-    name = models.CharField(max_length=MAX_LENGTH)
-    address = models.CharField(max_length=MAX_LENGTH, blank=True)
-    city = models.CharField(max_length=MAX_LENGTH)
-    country = models.CharField(max_length=MAX_LENGTH)
+        if self.registration_deadline and self.registration_deadline > self.event_start_date:
+            raise ValidationError('The deadline for registration should be before the event starts.')
+
+        if self.is_online and not self.meeting_link:
+            raise ValidationError('For the online event, a link is required.')
+
+        if not self.is_online and not self.location:
+            raise ValidationError('For an offline event, the venue must be specified.')
 
 
 
