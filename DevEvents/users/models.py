@@ -1,9 +1,12 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
-from constants import MAX_LENGTH, MAX_LENGTH_TEXT
+from .constants import MAX_LENGTH, MAX_LENGTH_TEXT
 
+
+class User(AbstractUser):
+    pass
 
 class CreatedDateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -15,9 +18,8 @@ class CreatedDateModel(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=30, blank=True)
-    interested_technologies = models.ManyToManyField('Technology', blank=True)
+    interested_technologies = models.CharField(blank=True)
     notifications_enabled = models.BooleanField(default=True)
-    preferred_event_types = models.ManyToManyField('EventType', blank=True)
     registered_events = models.ManyToManyField(
         'events.Event',
         related_name='registered_participants',

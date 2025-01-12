@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from constants import DESCRIPTION_MAX_LENGTH, LOCATION_MAX_LENGTH, MAX_LENGTH
+from .constants import DESCRIPTION_MAX_LENGTH, LOCATION_MAX_LENGTH, MAX_LENGTH
+from django.conf import settings
 
-User = get_user_model()
+User = settings.AUTH_USER_MODEL
+
 
 class CreatedDateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
