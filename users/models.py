@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 from constants import MAX_LENGTH, MAX_LENGTH_TEXT
 
 
-
-
 class CreatedDateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
