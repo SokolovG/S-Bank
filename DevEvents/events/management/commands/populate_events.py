@@ -2,8 +2,8 @@ import random
 
 from django.core.management.base import BaseCommand
 
-from events.management.constants import location_names, cities, addresses, countries
-from events.models import Location
+from events.management.constants import location_names, cities, addresses, countries, categories, category_slugs, category_descriptions
+from events.models import Location, Category
 
 class Command(BaseCommand):
 
@@ -20,26 +20,34 @@ class Command(BaseCommand):
             help='Clear existing events before creating new ones'
         )
 
-    def generate_sample_data(self):
+    def generate_location_data(self, index):
         return {
-            'location_names': random.choice(location_names),
-            'addresses': random.choice(addresses),
-            'cities': random.choice(cities),
-            'countries': random.choice(countries)
+            'location_names': location_names[index],
+            'addresses': addresses[index],
+            'cities': cities[index],
+            'countries': countries[index]
+        }
+
+    def generate_category_data(self, index):
+        return {
+            'categories': categories[index],
+            'slugs': category_slugs[index],
+            'descriptions': category_descriptions[index],
         }
 
     def handle(self, *args, **options):
         count = options['count']
 
         if options['clear']:
-            self.stdout.write('Clearing existing locations...')
+            self.stdout.write('Clearing existing data...')
             Location.objects.all().delete()
+            Category.objects.all().delete()
 
-        self.stdout.write(f"Let's start creating {count} test locations...")
 
-        for location in range(count):
+        for index in range(count):
             try:
-                data = self.generate_sample_data()
+                self.stdout.write(f"Let's start creating {index} test locations...")
+                data = self.generate_location_data(index)
                 location = Location.objects.create(
                     name=data.get('location_names'),
                     address=data.get('addresses'),
@@ -49,8 +57,27 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating location {location + 1}: {str(e)}')
+                    self.style.ERROR(f'Error creating location {index + 1}: {str(e)}')
                 )
         self.stdout.write(
-            self.style.SUCCESS(f'{count} events successfully created')
+            self.style.SUCCESS(f'{count} locations successfully created')
+        )
+
+        for index in range(count):
+            try:
+                self.stdout.write(f"Let's start creating {index} test categories...")
+                data = self.generate_category_data(index)
+                category = Category.objects.create(
+                    name=data.get('categories'),
+                    slug=data.get('slugs'),
+                    description=data.get('descriptions')
+                )
+
+            except Exception as e:
+                self.stdout.write(
+                    self.style.ERROR(f'Error creating category {index + 1}: {str(e)}')
+        )
+
+        self.stdout.write(
+            self.style.SUCCESS(f'{count} categories successfully created')
         )

@@ -77,7 +77,7 @@ class EventRegistration(CreatedDateModel):
 class Category(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, unique=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, max_length=DESCRIPTION_MAX_LENGTH)
 
     def __str__(self):
         return self.name
