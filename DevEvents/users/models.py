@@ -18,7 +18,7 @@ class CreatedDateModel(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=30, blank=True)
-    interested_technologies = models.CharField(blank=True)
+    interested_technologies = models.CharField(blank=True, max_length=50)
     notifications_enabled = models.BooleanField(default=True)
     registered_events = models.ManyToManyField(
         'events.Event',

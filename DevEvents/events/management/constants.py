@@ -11,17 +11,17 @@ location_names = [
     'Инновационный центр "Будущее"'
 ]
 
-categories = [
-    'Backend разработка',
-    'Frontend разработка',
-    'DevOps и инфраструктура',
-    'Мобильная разработка',
+categories_names = [
+    'Backend development',
+    'Frontend development',
+    'DevOps and infrastructure',
+    'Mobile development',
     'Data Science & AI',
-    'Кибербезопасность',
+    'Cybersecurity',
     'Game Development',
-    'QA и тестирование',
-    'UX/UI дизайн',
-    'Blockchain технологии'
+    'QA and testing',
+    'UX/UI design',
+    'Blockchain technologies'
 ]
 
 format_choices = ['Conference', 'Meetup', 'Workshop', 'Hackathon']

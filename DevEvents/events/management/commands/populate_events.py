@@ -1,14 +1,20 @@
 import random
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from faker import Faker
 
-from events.management.constants import location_names, categories, format_choices
+from events.management.constants import (location_names,
+                                         categories_names,
+                                         format_choices)
 from events.models import Location, Category, Event
 from users.models import Organizer
+
+
+User = get_user_model()
 
 
 class Command(BaseCommand):
@@ -31,6 +37,7 @@ class Command(BaseCommand):
         )
 
     def generate_location_data(self, count):
+        entity_type = 'Location'
         locations = []
         for index in range(count):
             try:
@@ -38,10 +45,10 @@ class Command(BaseCommand):
                 location_name = random.choice(location_names)
                 address = self.faker.address()
                 city = self.faker.city()
-                country = self.faker.county()
+                country = self.faker.country()
 
                 location_data = {
-                    'location_name': location_name,
+                    'name': location_name,
                     'address': address,
                     'city': city,
                     'country': country
@@ -51,7 +58,7 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}. Data: {location_data}')
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
                 )
 
         self.stdout.write(
@@ -60,7 +67,40 @@ class Command(BaseCommand):
 
         return locations
 
-    def generate_category_data(self, count):
+    def generate_user_data(self, count):
+        entity_type = 'Users'
+        users_list = []
+        for index in range(count):
+            try:
+                username = self.faker.user_name()
+                first_name = self.faker.first_name()
+                last_name = self.faker.last_name()
+                email = self.faker.email()
+                password = 'testpass123'
+
+                user_data = {
+                    'password': password,
+                    'username': username,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'email': email,
+                }
+
+                user = User.objects.create(**user_data)
+                users_list.append(user)
+
+            except Exception as e:
+                self.stdout.write(
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                )
+        self.stdout.write(
+            self.style.SUCCESS(f'{count} users successfully created')
+        )
+
+        return users_list
+
+    def generate_category_data(self, count, categories):
+        entity_type = 'Category'
         categories_list = []
         for index, cat in enumerate(categories[:count]):
             try:
@@ -76,7 +116,7 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}. Data: {category_data}')
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
                 )
 
         self.stdout.write(
@@ -84,18 +124,20 @@ class Command(BaseCommand):
         )
         return categories_list
 
-    def generate_organizer_data(self, count, user):
+    def generate_organizer_data(self, count, users):
+        entity_type = 'Organizer'
         organizers_list = []
         for index in range(count):
             try:
                 self.stdout.write(f"Let's start creating {index} organizers...")
-                name = self.faker.company()
+                name = self.faker.company()[:25]
                 description = self.faker.paragraph()
                 website = self.faker.url()
                 contact = self.faker.url()
                 verified = self.faker.boolean()
                 number_of_events = self.faker.random_int(min=0, max=50)
                 rating = self.faker.random_int(min=0, max=5)
+                user = users[index]
 
                 organizer_data = {
                 'name': name,
@@ -113,7 +155,7 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}. Data: {organizer_data}')
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
                 )
 
         self.stdout.write(
@@ -121,7 +163,8 @@ class Command(BaseCommand):
         )
         return organizers_list
 
-    def generate_event_data(self, count, user, location, category, organizer):
+    def generate_event_data(self, count, users, location, category, organizer):
+        entity_type = 'Event'
         events_list = []
         for index in range(count):
             try:
@@ -129,36 +172,43 @@ class Command(BaseCommand):
                 name = f'{self.faker.word().capitalize()} Meetup'
                 description = self.faker.paragraph()
                 format = random.choice(format_choices)
-
+                max_participants = self.faker.random_int(min=100, max=200)
+                user = users[index]
                 event_data = {
                     'name': name,
                     'description': description,
                     'author': user,
+                    'category': category,
                     'organizer': organizer,
                     'location': location,
-                    'category': category,
                     'is_online': self.faker.boolean(),
                     'is_verify': self.faker.boolean(),
                     'is_published': self.faker.boolean(),
+                    'you_are_member': self.faker.boolean(),
                     'max_participants': self.faker.random_int(min=100, max=200),
-                    'members': self.faker.random_int(min=10, max=200),
-                    'format': format
+                    'members': self.faker.random_int(min=10, max=max_participants),
+                    'format': format,
                 }
 
-                current_date = datetime.now()
+                current_date = timezone.now()
                 event_data['pub_date'] = current_date
                 event_data['event_start_date'] = current_date + timedelta(days=self.faker.random_int(min=1, max=30))
-                event_data['event_end_date'] = event_data['event_start_date'] + timedelta(days=self.faker.random_int(min=1, max=3))
-                event_data['registration_deadline'] = event_data['event_start_date'] - timedelta(days=self.faker.random_int(min=1, max=5))
+                event_data['event_end_date'] = event_data.get('event_start_date') + timedelta(days=self.faker.random_int(min=1, max=3))
+                registration_deadline = event_data['event_start_date'] - timedelta(days=self.faker.random_int(min=1, max=5))
+
+                if registration_deadline < current_date:
+                    registration_deadline = current_date + timedelta(days=1)
+                event_data['registration_deadline'] = registration_deadline
 
                 if event_data['is_online']:
                     event_data['meeting_link'] = self.faker.url()
+
                 event = Event.objects.create(**event_data)
                 events_list.append(event)
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}. Data: {event_data}')
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
                 )
 
         self.stdout.write(
@@ -168,23 +218,25 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         count = options['count']
-        User = get_user_model()
-        users = User.objects.all()
-        user = users.first()
 
         if options['clear']:
             self.stdout.write('Clearing existing data...')
-            Location.objects.all().delete()
-            Category.objects.all().delete()
             Event.objects.all().delete()
             Organizer.objects.all().delete()
+            Category.objects.all().delete()
+            Location.objects.all().delete()
+            User.objects.all().delete()
+
+        users = self.generate_user_data(count)
+
+
 
         locations = self.generate_location_data(count)
-        categories = self.generate_category_data(count)
-        organizers = self.generate_organizer_data(count, user)
+        categories = self.generate_category_data(count, categories_names)
+        organizers = self.generate_organizer_data(count, users)
 
         events = self.generate_event_data(count,
-                                          user,
+                                          users,
                                           random.choice(locations),
                                           random.choice(categories),
                                           random.choice(organizers))

@@ -19,6 +19,14 @@ class Location(CreatedDateModel):
     city = models.CharField(max_length=MAX_LENGTH)
     country = models.CharField(max_length=MAX_LENGTH)
 
+class Category(CreatedDateModel):
+    name = models.CharField(max_length=MAX_LENGTH)
+    slug = models.SlugField(max_length=MAX_LENGTH, unique=True)
+    description = models.TextField(blank=True, max_length=DESCRIPTION_MAX_LENGTH)
+
+    def __str__(self):
+        return self.name
+
 
 class Event(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
@@ -26,14 +34,15 @@ class Event(CreatedDateModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.ForeignKey('users.Organizer', on_delete=models.CASCADE)
     pub_date = models.DateTimeField()
-    location = models.ManyToManyField(
-        'Location',
-        related_name='places'
+    location = models.ForeignKey(
+        Location,
+        related_name='places',
+        on_delete=models.CASCADE
     )
     is_published = models.BooleanField()
     event_start_date = models.DateTimeField()
     event_end_date = models.DateTimeField()
-    category = models.ManyToManyField('Category')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='categories')
     is_online = models.BooleanField()
     meeting_link = models.URLField()
     is_verify = models.BooleanField()
@@ -71,16 +80,6 @@ class EventRegistration(CreatedDateModel):
     
     class Meta:
         unique_together = ['event', 'user']
-
-
-
-class Category(CreatedDateModel):
-    name = models.CharField(max_length=MAX_LENGTH)
-    slug = models.SlugField(max_length=MAX_LENGTH, unique=True)
-    description = models.TextField(blank=True, max_length=DESCRIPTION_MAX_LENGTH)
-
-    def __str__(self):
-        return self.name
 
 
 class Comment(CreatedDateModel):
