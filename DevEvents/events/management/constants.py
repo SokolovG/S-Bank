@@ -24,3 +24,4 @@ categories = [
     'Blockchain технологии'
 ]
 
+format_choices = ['Conference', 'Meetup', 'Workshop', 'Hackathon']
