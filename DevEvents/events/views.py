@@ -1,7 +1,6 @@
 from rest_framework  import viewsets
 
 from .models import Event
-
 from .serializers import EventSerializer
 
 
