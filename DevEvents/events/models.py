@@ -19,6 +19,9 @@ class Location(CreatedDateModel):
     city = models.CharField(max_length=MAX_LENGTH)
     country = models.CharField(max_length=MAX_LENGTH)
 
+    def __str__(self):
+        return self.name
+
 class Category(CreatedDateModel):
     name = models.CharField(max_length=MAX_LENGTH)
     slug = models.SlugField(max_length=MAX_LENGTH, unique=True)

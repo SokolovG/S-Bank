@@ -9,9 +9,10 @@ from faker import Faker
 
 from events.management.constants import (location_names,
                                          categories_names,
-                                         format_choices)
-from events.models import Location, Category, Event
-from users.models import Organizer
+                                         format_choices,
+                                         technologies)
+from events.models import Location, Category, Event, Comment
+from users.models import Organizer, Profile
 
 
 User = get_user_model()
@@ -21,7 +22,6 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.faker = Faker('ru_RU')
-
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -178,9 +178,9 @@ class Command(BaseCommand):
                     'name': name,
                     'description': description,
                     'author': user,
-                    'category': category,
-                    'organizer': organizer,
-                    'location': location,
+                    'category': category[index],
+                    'organizer': organizer[index],
+                    'location': location[index],
                     'is_online': self.faker.boolean(),
                     'is_verify': self.faker.boolean(),
                     'is_published': self.faker.boolean(),
@@ -216,28 +216,88 @@ class Command(BaseCommand):
         )
         return events_list
 
+    def generate_comment_data(self, count, events, users):
+        entity_type = 'Comments'
+        comments_list = []
+        for index in range(count):
+            self.stdout.write(f"Let's start creating {index} comments...")
+            try:
+                comments_data = {
+                    'text': self.faker.paragraph(),
+                    'event': events[index],
+                    'author': users[index],
+                }
+
+                comment = Comment.objects.create(**comments_data)
+                comments_list.append(comment)
+
+            except Exception as e:
+                self.stdout.write(
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                )
+        self.stdout.write(
+            self.style.SUCCESS(f'{count} comments successfully created')
+        )
+
+        return comments_list
+
+    def generate_profile_data(self, count, users, locations, technologies, events=None):
+        entity_type = 'Profile'
+        profile_list = []
+        for index in range(count):
+            self.stdout.write(f"Let's start creating {index} profiles...")
+            try:
+                profile_data = {
+                    'user': users[index],
+                    'location': locations[index],
+                    'interested_technologies': technologies[index],
+                    'notifications_enabled': self.faker.boolean(),
+                }
+
+                profile = Profile.objects.create(**profile_data)
+                if events:
+                    num_events = self.faker.random_int(0, 3)
+                    random_events = self.faker.random_choices(
+                        elements=events,
+                        length=num_events
+                    )
+                    profile.registered_events.add(*random_events)
+                profile_list.append(profile)
+
+            except Exception as e:
+                self.stdout.write(
+                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                )
+        self.stdout.write(
+            self.style.SUCCESS(f'{count} profiles successfully created')
+        )
+
+        return profile_list
+
     def handle(self, *args, **options):
         count = options['count']
 
         if options['clear']:
             self.stdout.write('Clearing existing data...')
             Event.objects.all().delete()
+            Comment.objects.all().delete()
             Organizer.objects.all().delete()
             Category.objects.all().delete()
             Location.objects.all().delete()
             User.objects.all().delete()
+            Profile.objects.all().delete()
+            Comment.objects.all().delete()
+
 
         users = self.generate_user_data(count)
-
-
-
         locations = self.generate_location_data(count)
         categories = self.generate_category_data(count, categories_names)
         organizers = self.generate_organizer_data(count, users)
 
         events = self.generate_event_data(count,
                                           users,
-                                          random.choice(locations),
-                                          random.choice(categories),
-                                          random.choice(organizers))
-
+                                          locations,
+                                          categories,
+                                          organizers)
+        comments = self.generate_comment_data(count, events, users)
+        profiles = self.generate_profile_data(count,users,locations, technologies, events)
