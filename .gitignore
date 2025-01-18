@@ -2,3 +2,13 @@ venv/
 .idea
 .idea/
 .env
+
+# Docker specific
+.docker/
+*.env
+docker.env
+.docker-compose.override.yml
+
+# Python specific
+__pycache__/
+*.pyc
