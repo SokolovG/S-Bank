@@ -4,6 +4,7 @@ from .utils import to_camel_case, to_snake_case
 from events.models import Event, Location, Category
 from users.models import Organizer
 
+
 class CamelCaseSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super().to_representation(instance)
@@ -20,24 +21,20 @@ class CamelCaseSerializer(serializers.ModelSerializer):
 
         return super().to_internal_value(snake_case_data)
 
-
 class LocationSerializer(CamelCaseSerializer):
     class Meta:
         model = Location
         fields = ['name', 'address', 'city', 'country']
-
 
 class CategorySerializer(CamelCaseSerializer):
     class Meta:
         model = Category
         fields = ('__all__')
 
-
 class OrganizerSerializer(CategorySerializer):
     class Meta:
         model = Organizer
         exclude = ('user',)
-
 
 class EventSerializer(CamelCaseSerializer):
     location = LocationSerializer()
@@ -54,3 +51,7 @@ class EventSerializer(CamelCaseSerializer):
     class Meta:
         model = Event
         exclude = ('author', 'is_published', 'created_at')
+
+class CommentSerializer(CamelCaseSerializer):
+    class Meta:
+        fields = ('__all__')
