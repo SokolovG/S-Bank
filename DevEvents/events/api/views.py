@@ -11,7 +11,7 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
 
 
-class CommentViewSet(viewsets.ModelViewSet):
+class EventCommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_queryset(self):

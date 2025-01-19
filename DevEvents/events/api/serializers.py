@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from events.models import Event, Location, Category
+from events.models import Event, Location, Category, Comment
 from events.utils import to_camel_case, to_snake_case
 from users.models import Organizer
 
@@ -54,4 +54,5 @@ class EventSerializer(CamelCaseSerializer):
 
 class CommentSerializer(CamelCaseSerializer):
     class Meta:
+        model = Comment
         fields = ('__all__')
