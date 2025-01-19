@@ -1,8 +1,9 @@
 from rest_framework  import viewsets
 from django.shortcuts import get_object_or_404, get_list_or_404
 
-from events.models import Event, Comment
-from .serializers import EventSerializer, CommentSerializer
+from events.models import Event
+
+from events.api.serializers import EventSerializer, CommentSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):

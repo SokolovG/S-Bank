@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .utils import to_camel_case, to_snake_case
 from events.models import Event, Location, Category
+from events.utils import to_camel_case, to_snake_case
 from users.models import Organizer
 
 
