@@ -1,12 +1,11 @@
+from decimal import Decimal
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 from .constants import MAX_LENGTH, MAX_LENGTH_TEXT
 
-
-class User(AbstractUser):
-    pass
 
 class CreatedDateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -38,7 +37,7 @@ class Organizer(CreatedDateModel):
         max_digits=3,
         decimal_places=2,
         default=0,
-        validators=[MinValueValidator(0), MaxValueValidator(5)]
+        validators=[MinValueValidator(Decimal(0)), MaxValueValidator(Decimal(5))]
     )
     user = models.OneToOneField(
         User,

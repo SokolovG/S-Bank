@@ -1,10 +1,9 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 from .constants import DESCRIPTION_MAX_LENGTH, LOCATION_MAX_LENGTH, MAX_LENGTH
-from django.conf import settings
 
-User = settings.AUTH_USER_MODEL
 
 
 class CreatedDateModel(models.Model):

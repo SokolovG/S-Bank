@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.utils import timezone
 from faker import Faker
 
@@ -15,7 +15,6 @@ from events.models import Location, Category, Event, Comment
 from users.models import Organizer, Profile
 
 
-User = get_user_model()
 
 
 class Command(BaseCommand):
