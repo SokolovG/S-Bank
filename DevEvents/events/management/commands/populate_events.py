@@ -11,7 +11,7 @@ from events.management.constants import (location_names,
                                          categories_names,
                                          format_choices,
                                          technologies)
-from events.models import Location, Category, Event, Comment
+from events.models import Location, Category, Event, Comment, EventParticipant
 from users.models import Organizer, Profile
 
 
@@ -278,14 +278,17 @@ class Command(BaseCommand):
 
         if options['clear']:
             self.stdout.write('Clearing existing data...')
-            Event.objects.all().delete()
+
             Comment.objects.all().delete()
+            EventParticipant.objects.all().delete()
+
+            Event.objects.all().delete()
+            Profile.objects.all().delete()
             Organizer.objects.all().delete()
+
             Category.objects.all().delete()
             Location.objects.all().delete()
             User.objects.all().delete()
-            Profile.objects.all().delete()
-            Comment.objects.all().delete()
 
 
         users = self.generate_user_data(count)

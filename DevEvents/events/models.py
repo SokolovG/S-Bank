@@ -53,7 +53,11 @@ class Event(CreatedDateModel):
     format = models.CharField(max_length=MAX_LENGTH)
     members = models.PositiveIntegerField(blank=True)
     photos = models.ImageField()
-    you_are_member = models.BooleanField()
+    participants = models.ManyToManyField(
+        User,
+        through='EventParticipant',
+        related_name='participated_events'
+    )
 
     class Meta:
         ordering = ['event_start_date']
@@ -74,14 +78,8 @@ class Event(CreatedDateModel):
         if not self.is_online and not self.location:
             raise ValidationError('For an offline event, the venue must be specified.')
 
-
-class EventRegistration(CreatedDateModel):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=MAX_LENGTH)
-    
-    class Meta:
-        unique_together = ['event', 'user']
+    def is_user_participant(self, user):
+        return EventParticipant.objects.filter(event=self, user=user).exists()
 
 
 class Comment(CreatedDateModel):
@@ -92,3 +90,15 @@ class Comment(CreatedDateModel):
     def __str__(self):
         return self.text
 
+
+class EventParticipant(CreatedDateModel):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='participant_records')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='event_participations')
+    status = models.CharField()
+    registration_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['event', 'user']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.event.name} ({self.get_status_display()})"
