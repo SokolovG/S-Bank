@@ -1,3 +1,9 @@
+"""Management command for populating the database with test data.
+
+Generates test data for all models including Users, Locations, Categories,
+Organizers, Events, Comments and Profiles using Faker library.
+"""
+
 import random
 from datetime import timedelta
 
@@ -7,22 +13,24 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from faker import Faker
 
-from events.management.constants import (location_names,
-                                         categories_names,
-                                         format_choices,
-                                         technologies)
+from events.management.constants import (
+   location_names,
+   categories_names,
+   format_choices,
+   technologies
+)
 from events.models import Location, Category, Event, Comment, EventParticipant
 from users.models import Organizer, Profile
 
 
-
-
 class Command(BaseCommand):
+    """Command to generate test data for the application."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.faker = Faker('ru_RU')
 
     def add_arguments(self, parser):
+        """Add command line arguments."""
         parser.add_argument(
             '--count',
             type=int,
@@ -36,6 +44,14 @@ class Command(BaseCommand):
         )
 
     def generate_location_data(self, count):
+        """Generate test location data.
+
+    Args:
+        count (int): Number of locations to create.
+
+    Returns:
+        list: Created Location objects.
+    """
         entity_type = 'Location'
         locations = []
         for index in range(count):
@@ -67,6 +83,14 @@ class Command(BaseCommand):
         return locations
 
     def generate_user_data(self, count):
+        """Generate test location data.
+
+            Args:
+                count (int): Number of locations to create.
+
+            Returns:
+                list: Created Location objects.
+            """
         entity_type = 'Users'
         users_list = []
         for index in range(count):
@@ -99,6 +123,15 @@ class Command(BaseCommand):
         return users_list
 
     def generate_category_data(self, count, categories):
+        """Generate test category data.
+
+           Args:
+               count (int): Number of categories to create.
+               categories (list): List of category names to use.
+
+           Returns:
+               list: Created Category objects.
+           """
         entity_type = 'Category'
         categories_list = []
         for index, cat in enumerate(categories[:count]):
@@ -124,6 +157,15 @@ class Command(BaseCommand):
         return categories_list
 
     def generate_organizer_data(self, count, users):
+        """Generate test category data.
+
+           Args:
+               count (int): Number of categories to create.
+               categories (list): List of category names to use.
+
+           Returns:
+               list: Created Category objects.
+           """
         entity_type = 'Organizer'
         organizers_list = []
         for index in range(count):
@@ -163,6 +205,18 @@ class Command(BaseCommand):
         return organizers_list
 
     def generate_event_data(self, count, users, location, category, organizer):
+        """Generate test event data.
+
+           Args:
+               count (int): Number of events to create.
+               users (list): User objects for authors.
+               location (list): Location objects for events.
+               category (list): Category objects for events.
+               organizer (list): Organizer objects for events.
+
+           Returns:
+               list: Created Event objects.
+           """
         entity_type = 'Event'
         events_list = []
         for index in range(count):
@@ -216,6 +270,16 @@ class Command(BaseCommand):
         return events_list
 
     def generate_comment_data(self, count, events, users):
+        """Generate test comment data.
+
+           Args:
+               count (int): Number of comments to create.
+               events (list): Event objects to associate with comments.
+               users (list): User objects for comment authors.
+
+           Returns:
+               list: Created Comment objects.
+           """
         entity_type = 'Comments'
         comments_list = []
         for index in range(count):
@@ -241,6 +305,18 @@ class Command(BaseCommand):
         return comments_list
 
     def generate_profile_data(self, count, users, locations, technologies, events=None):
+        """Generate test profile data.
+
+           Args:
+               count (int): Number of profiles to create.
+               users (list): User objects to associate with profiles.
+               locations (list): Location objects for profiles.
+               technologies (list): Technology choices for profiles.
+               events (list, optional): Event objects for registered events.
+
+           Returns:
+               list: Created Profile objects.
+           """
         entity_type = 'Profile'
         profile_list = []
         for index in range(count):
@@ -274,22 +350,11 @@ class Command(BaseCommand):
         return profile_list
 
     def handle(self, *args, **options):
+        """Execute the command."""
         count = options['count']
 
         if options['clear']:
-            self.stdout.write('Clearing existing data...')
-
-            Comment.objects.all().delete()
-            EventParticipant.objects.all().delete()
-
-            Event.objects.all().delete()
-            Profile.objects.all().delete()
-            Organizer.objects.all().delete()
-
-            Category.objects.all().delete()
-            Location.objects.all().delete()
-            User.objects.all().delete()
-
+            self._clear_data()
 
         users = self.generate_user_data(count)
         locations = self.generate_location_data(count)
@@ -303,3 +368,19 @@ class Command(BaseCommand):
                                           organizers)
         comments = self.generate_comment_data(count, events, users)
         profiles = self.generate_profile_data(count,users,locations, technologies, events)
+
+    def _clear_data(self):
+        """Clear all existing data from the database."""
+        self.stdout.write('Clearing existing data...')
+        models = [
+            Comment,
+            EventParticipant,
+            Event,
+            Profile,
+            Organizer,
+            Category,
+            Location,
+            User
+        ]
+        for model in models:
+            model.objects.all().delete()

@@ -1,3 +1,9 @@
+"""Serializers for Event-related models in the DevEvents API.
+
+Contains serializers for Location, Category, Organizer, Event, and Comment models,
+defining how model instances are converted to/from JSON.
+"""
+
 from rest_framework import serializers
 
 from events.models import Event, Location, Category, Comment
@@ -5,37 +11,40 @@ from users.models import Organizer
 
 
 class LocationSerializer(serializers.ModelSerializer):
+    """Serializer for Location model."""
     class Meta:
         model = Location
         fields = ['name', 'address', 'city', 'country']
 
 class CategorySerializer(serializers.ModelSerializer):
+    """Serializer for Category model."""
     class Meta:
         model = Category
-        fields = ('__all__')
+        fields = '__all__'
 
 class OrganizerSerializer(CategorySerializer):
+    """Serializer for Organizer model, inheriting from CategorySerializer."""
     class Meta:
         model = Organizer
         exclude = ('user',)
 
 class EventSerializer(serializers.ModelSerializer):
+    """Serializer for Event model with nested serializers for related fields."""
     location = LocationSerializer()
     meeting_link = serializers.SerializerMethodField()
     organizer = OrganizerSerializer()
     category = CategorySerializer()
 
     def get_meeting_link(self, obj):
-        if obj.is_online:
-            return obj.meeting_link
-        else:
-            return None
+        """Return meeting link only for online events."""
+        return obj.meeting_link if obj.is_online else None
 
     class Meta:
         model = Event
         exclude = ('author', 'is_published', 'created_at')
 
 class CommentSerializer(serializers.ModelSerializer):
+    """Serializer for Comment model."""
     class Meta:
         model = Comment
-        fields = ('__all__')
+        fields = '__all__'

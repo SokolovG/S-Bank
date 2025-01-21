@@ -1,9 +1,21 @@
-import os
-from dotenv import load_dotenv
+"""Django settings for DevEvents project.
 
+Configuration module containing all Django settings for the DevEvents application.
+Includes database configuration, installed apps, middleware settings,
+and REST framework configuration.
+
+Environment variables required:
+    - SECRET_KEY: Django secret key
+    - DATABASE_PUBLIC_URL: Database connection URL
+"""
+
+import os
 from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
 
+
+# Load environment variables
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
