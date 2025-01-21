@@ -14,10 +14,10 @@ from django.utils import timezone
 from faker import Faker
 
 from events.management.constants import (
-   location_names,
-   categories_names,
-   format_choices,
-   technologies
+    location_names,
+    categories_names,
+    format_choices,
+    technologies
 )
 from events.models import Location, Category, Event, Comment, EventParticipant
 from users.models import Organizer, Profile
@@ -25,7 +25,9 @@ from users.models import Organizer, Profile
 
 class Command(BaseCommand):
     """Command to generate test data for the application."""
+
     def __init__(self, *args, **kwargs):
+        """Initialize the command with Faker instance."""
         super().__init__(*args, **kwargs)
         self.faker = Faker('ru_RU')
 
@@ -46,17 +48,19 @@ class Command(BaseCommand):
     def generate_location_data(self, count):
         """Generate test location data.
 
-    Args:
-        count (int): Number of locations to create.
+        Args:
+            count (int): Number of locations to create.
 
-    Returns:
-        list: Created Location objects.
-    """
+        Returns:
+            list: Created Location objects.
+        """
         entity_type = 'Location'
         locations = []
         for index in range(count):
             try:
-                self.stdout.write(f"Let's start creating {index} test locations...")
+                self.stdout.write(
+                    f"Let's start creating {index} test locations..."
+                )
                 location_name = random.choice(location_names)
                 address = self.faker.address()
                 city = self.faker.city()
@@ -73,7 +77,9 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
 
         self.stdout.write(
@@ -83,14 +89,14 @@ class Command(BaseCommand):
         return locations
 
     def generate_user_data(self, count):
-        """Generate test location data.
+        """Generate test user data.
 
-            Args:
-                count (int): Number of locations to create.
+        Args:
+            count (int): Number of users to create.
 
-            Returns:
-                list: Created Location objects.
-            """
+        Returns:
+            list: Created User objects.
+        """
         entity_type = 'Users'
         users_list = []
         for index in range(count):
@@ -114,7 +120,9 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
         self.stdout.write(
             self.style.SUCCESS(f'{count} users successfully created')
@@ -125,13 +133,13 @@ class Command(BaseCommand):
     def generate_category_data(self, count, categories):
         """Generate test category data.
 
-           Args:
-               count (int): Number of categories to create.
-               categories (list): List of category names to use.
+        Args:
+            count (int): Number of categories to create.
+            categories (list): List of category names to use.
 
-           Returns:
-               list: Created Category objects.
-           """
+        Returns:
+            list: Created Category objects.
+        """
         entity_type = 'Category'
         categories_list = []
         for index, cat in enumerate(categories[:count]):
@@ -148,7 +156,9 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
 
         self.stdout.write(
@@ -157,20 +167,21 @@ class Command(BaseCommand):
         return categories_list
 
     def generate_organizer_data(self, count, users):
-        """Generate test category data.
+        """Generate test organizer data.
 
-           Args:
-               count (int): Number of categories to create.
-               categories (list): List of category names to use.
+        Args:
+            count (int): Number of organizers to create.
+            users (list): List of user objects to associate with organizers.
 
-           Returns:
-               list: Created Category objects.
-           """
+        Returns:
+            list: Created Organizer objects.
+        """
         entity_type = 'Organizer'
         organizers_list = []
         for index in range(count):
             try:
-                self.stdout.write(f"Let's start creating {index} organizers...")
+                self.stdout.write("Let's start creating"
+                                  f" {index} organizers...")
                 name = self.faker.company()[:25]
                 description = self.faker.paragraph()
                 website = self.faker.url()
@@ -181,22 +192,24 @@ class Command(BaseCommand):
                 user = users[index]
 
                 organizer_data = {
-                'name': name,
-                'description': description,
-                'website': website,
-                'contact': contact,
-                'verified': verified,
-                'number_of_events': number_of_events,
-                'rating': rating,
-                'user': user
-            }
+                    'name': name,
+                    'description': description,
+                    'website': website,
+                    'contact': contact,
+                    'verified': verified,
+                    'number_of_events': number_of_events,
+                    'rating': rating,
+                    'user': user
+                }
 
                 organizer = Organizer.objects.create(**organizer_data)
                 organizers_list.append(organizer)
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
 
         self.stdout.write(
@@ -207,24 +220,25 @@ class Command(BaseCommand):
     def generate_event_data(self, count, users, location, category, organizer):
         """Generate test event data.
 
-           Args:
-               count (int): Number of events to create.
-               users (list): User objects for authors.
-               location (list): Location objects for events.
-               category (list): Category objects for events.
-               organizer (list): Organizer objects for events.
+        Args:
+            count (int): Number of events to create.
+            users (list): User objects for authors.
+            location (list): Location objects for events.
+            category (list): Category objects for events.
+            organizer (list): Organizer objects for events.
 
-           Returns:
-               list: Created Event objects.
-           """
+        Returns:
+            list: Created Event objects.
+        """
         entity_type = 'Event'
         events_list = []
         for index in range(count):
             try:
-                self.stdout.write(f"Let's start creating {index} test events...")
+                self.stdout.write("Let's start creating"
+                                  f" {index} test events...")
                 name = f'{self.faker.word().capitalize()} Meetup'
                 description = self.faker.paragraph()
-                format = random.choice(format_choices)
+                format_type = random.choice(format_choices)
                 max_participants = self.faker.random_int(min=100, max=200)
                 user = users[index]
                 event_data = {
@@ -238,16 +252,27 @@ class Command(BaseCommand):
                     'is_verify': self.faker.boolean(),
                     'is_published': self.faker.boolean(),
                     'you_are_member': self.faker.boolean(),
-                    'max_participants': self.faker.random_int(min=100, max=200),
-                    'members': self.faker.random_int(min=10, max=max_participants),
-                    'format': format,
+                    'max_participants': max_participants,
+                    'members': self.faker.random_int(
+                        min=10, max=max_participants
+                    ),
+                    'format': format_type,
                 }
 
                 current_date = timezone.now()
                 event_data['pub_date'] = current_date
-                event_data['event_start_date'] = current_date + timedelta(days=self.faker.random_int(min=1, max=30))
-                event_data['event_end_date'] = event_data.get('event_start_date') + timedelta(days=self.faker.random_int(min=1, max=3))
-                registration_deadline = event_data['event_start_date'] - timedelta(days=self.faker.random_int(min=1, max=5))
+                event_data['event_start_date'] = (
+                    current_date +
+                    timedelta(days=self.faker.random_int(min=1, max=30))
+                )
+                event_data['event_end_date'] = (
+                    event_data.get('event_start_date') +
+                    timedelta(days=self.faker.random_int(min=1, max=3))
+                )
+                registration_deadline = (
+                    event_data['event_start_date'] -
+                    timedelta(days=self.faker.random_int(min=1, max=5))
+                )
 
                 if registration_deadline < current_date:
                     registration_deadline = current_date + timedelta(days=1)
@@ -261,7 +286,9 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
 
         self.stdout.write(
@@ -272,14 +299,14 @@ class Command(BaseCommand):
     def generate_comment_data(self, count, events, users):
         """Generate test comment data.
 
-           Args:
-               count (int): Number of comments to create.
-               events (list): Event objects to associate with comments.
-               users (list): User objects for comment authors.
+        Args:
+            count (int): Number of comments to create.
+            events (list): Event objects to associate with comments.
+            users (list): User objects for comment authors.
 
-           Returns:
-               list: Created Comment objects.
-           """
+        Returns:
+            list: Created Comment objects.
+        """
         entity_type = 'Comments'
         comments_list = []
         for index in range(count):
@@ -296,7 +323,9 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
         self.stdout.write(
             self.style.SUCCESS(f'{count} comments successfully created')
@@ -304,19 +333,21 @@ class Command(BaseCommand):
 
         return comments_list
 
-    def generate_profile_data(self, count, users, locations, technologies, events=None):
+    def generate_profile_data(
+        self, count, users, locations, technologies, events=None
+    ):
         """Generate test profile data.
 
-           Args:
-               count (int): Number of profiles to create.
-               users (list): User objects to associate with profiles.
-               locations (list): Location objects for profiles.
-               technologies (list): Technology choices for profiles.
-               events (list, optional): Event objects for registered events.
+        Args:
+            count (int): Number of profiles to create.
+            users (list): User objects to associate with profiles.
+            locations (list): Location objects for profiles.
+            technologies (list): Technology choices for profiles.
+            events (list, optional): Event objects for registered events.
 
-           Returns:
-               list: Created Profile objects.
-           """
+        Returns:
+            list: Created Profile objects.
+        """
         entity_type = 'Profile'
         profile_list = []
         for index in range(count):
@@ -341,7 +372,9 @@ class Command(BaseCommand):
 
             except Exception as e:
                 self.stdout.write(
-                    self.style.ERROR(f'Error creating {entity_type} {index + 1}: {str(e)}.')
+                    self.style.ERROR(
+                        f'Error creating {entity_type} {index + 1}: {str(e)}.'
+                    )
                 )
         self.stdout.write(
             self.style.SUCCESS(f'{count} profiles successfully created')
@@ -361,13 +394,13 @@ class Command(BaseCommand):
         categories = self.generate_category_data(count, categories_names)
         organizers = self.generate_organizer_data(count, users)
 
-        events = self.generate_event_data(count,
-                                          users,
-                                          locations,
-                                          categories,
-                                          organizers)
-        comments = self.generate_comment_data(count, events, users)
-        profiles = self.generate_profile_data(count,users,locations, technologies, events)
+        events = self.generate_event_data(
+            count, users, locations, categories, organizers
+        )
+        self.generate_comment_data(count, events, users)
+        self.generate_profile_data(
+            count, users, locations, technologies, events
+        )
 
     def _clear_data(self):
         """Clear all existing data from the database."""

@@ -4,7 +4,7 @@ from rest_framework import generics
 from .models import User
 
 
-class Profile_view(LoginRequiredMixin, generics.ListAPIView):
+class ProfileView(LoginRequiredMixin, generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = ''
 
