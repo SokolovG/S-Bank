@@ -251,7 +251,6 @@ class Command(BaseCommand):
                     'is_online': self.faker.boolean(),
                     'is_verify': self.faker.boolean(),
                     'is_published': self.faker.boolean(),
-                    'you_are_member': self.faker.boolean(),
                     'max_participants': max_participants,
                     'members': self.faker.random_int(
                         min=10, max=max_participants
@@ -333,9 +332,7 @@ class Command(BaseCommand):
 
         return comments_list
 
-    def generate_profile_data(
-        self, count, users, locations, technologies, events=None
-    ):
+    def generate_profile_data(self, count, users, locations, technologies, events=None):
         """Generate test profile data.
 
         Args:
