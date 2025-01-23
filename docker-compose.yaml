@@ -1,10 +1,24 @@
 services:
-  web:
-    build: .
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - .:/DevEvents:/app
+      - ./DevEvents:/app
+    env_file:
+      - .env
+    command:
+      - python
+      - manage.py
+      - runserver
+      - "0.0.0.0:8000"
+  populate_data:
+
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
     env_file:
       - .env
     command:
@@ -14,3 +28,18 @@ services:
       - --clear
       - --count
       - '10'
+
+    depends_on:
+      - backend
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
