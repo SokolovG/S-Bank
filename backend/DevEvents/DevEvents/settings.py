@@ -56,9 +56,7 @@ MIDDLEWARE = [
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5000",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'DevEvents.urls'
 
