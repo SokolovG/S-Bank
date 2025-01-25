@@ -7,12 +7,12 @@ URL patterns:
     - admin/: Django admin interface
     - api/: REST API endpoints
 """
-
-from django.contrib import admin
+from drf_spectacular.views import SpectacularAPIView
 from django.urls import path, include
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('events.api.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 ]
