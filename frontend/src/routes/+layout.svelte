@@ -1,5 +1,13 @@
 <script>
-    import "../app.css";
-  </script>
+    import "../app.css"
+    import {Header, Footer } from "$lib"
+</script>
   
-  <slot />
+
+<div class="app">
+  <Header />
+  <main>
+    <slot/>
+  </main>
+  <Footer />
+</div>
