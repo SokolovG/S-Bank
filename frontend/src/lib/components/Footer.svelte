@@ -1,8 +1,7 @@
-<header class="w-full bg-slate-300 shadow-sm">
-    <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Логотип -->
-      <div class="flex items-center">
-        <span class="text-xl font-bold text-gray-800">DevEvents</span>
-      </div>
-    </nav>
-  </header>
+<footer class="flex justify-center bg-sky-100">
+  <div class="flex space-x-6 px-6 font-bold py-10 text-sky-900 text-xl">
+    <div>Resources</div>
+    <div>Contacts</div>
+    <div>Developers</div>
+  </div>
+</footer>

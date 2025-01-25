@@ -2,7 +2,6 @@
     import { onMount } from "svelte";
     import type {Event} from '$lib/types/events';
 
-    let greeting = 'Hello to DevEvents';
     let events: Event[] = [];
 
     async function fetchEvents() {
@@ -22,7 +21,6 @@
 </script>
 
 <main>
-    <h1>{greeting}</h1>
     <div>
         <ul>
             {#each events as event (event)}
@@ -33,7 +31,4 @@
 </main>
 
 <style>
-    h1 {
-        color: red;
-    }
 </style>
