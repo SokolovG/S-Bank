@@ -1,14 +1,12 @@
-version: '3.8'
-
 services:
   backend:
     build:
-      context: ./backend/DevEvents    
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - ./backend/DevEvents:/app
     env_file:
       - .env
 
@@ -18,25 +16,6 @@ services:
       - manage.py
       - runserver
       - "0.0.0.0:8000"
-
-  populate_data:
-    build:
-      context: ./backend/DevEvents
-      dockerfile: Dockerfile
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    working_dir: /app
-    command:
-      - python
-      - manage.py
-      - populate_events
-      - --clear
-      - --count
-      - '10'
-    depends_on:
-      - backend
 
   frontend:
     build:
