@@ -4,7 +4,7 @@
 </script>
   
 
-<div class="app min-h-screen bg-amber-100 flex flex-col">
+<div class="app min-h-screen bg-[#b44b28] flex flex-col">
   <Header />
   <main class="flex-grow">
     <slot/>

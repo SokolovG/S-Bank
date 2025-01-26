@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type {Event} from '$lib/types/events';
-
+    import type { Event } from '$lib/types/events.ts';
+    import EventCard from '$lib/components/EventCard.svelte';
+    
     let events: Event[] = [];
 
     async function fetchEvents() {
@@ -21,12 +22,12 @@
 </script>
 
 <main>
-    <div>
-        <ul>
-            {#each events as event (event)}
-                <li>{event.name}</li>
+    <div class="container mx-auto px-4 mt-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {#each events as event}
+                <EventCard {event}/>
             {/each}
-        </ul>
+        </div>
     </div>
 </main>
 
