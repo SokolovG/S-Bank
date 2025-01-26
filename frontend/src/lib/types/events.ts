@@ -53,3 +53,10 @@ export interface Comment {
     event: number;
     author: number;
 }
+
+export interface PaginatedResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Event[];
+}

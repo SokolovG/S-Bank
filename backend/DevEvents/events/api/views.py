@@ -13,9 +13,13 @@ from events.api.serializers import EventSerializer, CommentSerializer
 
 class EventViewSet(viewsets.ModelViewSet):
     """ViewSet for viewing and editing Event instances."""
-    queryset = Event.objects.all()
+    queryset = Event.objects.select_related(
+        'location',
+        'organizer',
+        'category'
+    ).all()
     serializer_class = EventSerializer
-
+    
 
 class EventCommentViewSet(viewsets.ModelViewSet):
     """ViewSet for viewing and editing Event Comments."""

@@ -1,15 +1,14 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Event } from '$lib/types/events.ts';
+    import type { Event, PaginatedResponse } from '$lib/types/events.ts';
     import EventCard from '$lib/components/EventCard.svelte';
-    
     let events: Event[] = [];
 
     async function fetchEvents() {
         try {
             const response = await fetch('http://localhost:8000/api/events/');
-            const data: Event[] = await response.json();
-            events = data;
+            const data: PaginatedResponse = await response.json();
+            events = data.results;
             console.log(events);
         } catch (error) {
             console.log(error)
