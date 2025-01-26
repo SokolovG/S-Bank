@@ -12,3 +12,4 @@ docker.env
 # Python specific
 __pycache__/
 *.pyc
+.DS_Store
