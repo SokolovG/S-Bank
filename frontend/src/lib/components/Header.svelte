@@ -1,4 +1,4 @@
-<header class="flex justify-between bg-[#ffd7b9] px-6 py-4 shadow">
+<header class="flex justify-between bg-[#ffd7b9] px-6 py-6 shadow">
   <div class="text-2xl font-bold text-[#4f67b1]">
     DevEvents
   </div>

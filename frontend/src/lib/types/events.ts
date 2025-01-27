@@ -60,3 +60,5 @@ export interface PaginatedResponse {
     previous: string | null;
     results: Event[];
 }
+
+export type ISODateString = string;
