@@ -4,7 +4,7 @@
     export let event: Event;
 </script>
 
-<div class="border-solid bg-[#ffd7b9] p-4 w-75 rounded-xl">
+<div class="border-solid bg-[#ffd7b9] p-2 w-75 rounded-xl">
     <h3 class="text-xl font-bold mb-3">
     {event.name}
     </h3>

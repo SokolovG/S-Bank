@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import type { Event, PaginatedResponse } from '$lib/types/events.ts';
     import EventCard from '$lib/components/EventCard.svelte';
+    import { goto } from "$app/navigation"
     let events: Event[] = [];
 
     async function fetchEvents() {
@@ -23,7 +24,9 @@
     <div class="container mx-auto px-4 mt-8">
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-8 py-14">
             {#each events as event}
-                <EventCard {event}/>
+                <a href="/events/{event.id}" class="block">
+                    <EventCard {event}/>
+                </a>
             {/each}
         </div>
     </div>
