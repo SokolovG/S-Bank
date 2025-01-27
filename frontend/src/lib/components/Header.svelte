@@ -1,19 +1,21 @@
 <script>
-  import { goto } from "$app/navigation"
 </script>
 
 <header class="flex justify-between bg-gray-700 px-6 py-6 shadow">
-  <div class="text-2xl font-bold text-[#FFFFFF] hover:text-red-900">
-    <button on:click={() => goto('/')}>DevEvents</button>
-
-  </div>
+  <a href="/" class="block">
+    <div class="text-2xl font-bold text-[#FFFFFF] hover:text-red-900">
+      DevEvents
+    </div>
+  </a>
+  
   
   <div class="flex space-x-6 text-[#FFFFFF] text-xl font-bold">
-    <div class="hover:text-red-900 cursor-pointer">
-      <button on:click={() => goto('/events')}>
+    <a href="/events" class="block">
+      <div class="hover:text-red-900 cursor-pointer">
         Events
-      </button>
-    </div>
+      </div>
+    </a>
+    
     <div class="hover:text-red-900 cursor-pointer">Organizers</div>
     <div class="hover:text-red-900 cursor-pointer">About</div>
   </div>

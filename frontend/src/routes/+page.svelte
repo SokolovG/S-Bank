@@ -11,26 +11,30 @@
     
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
-        <button on:click={() => goto('/events')}>
+        <a href="/events" class="block">
             <div class="border-2 border-gray-900 rounded-xl p-8 hover:bg-gray-400 transition-colors duration-300 cursor-pointer">
-            <div class="flex flex-col items-center justify-center min-h-[200px]">
+                <div class="flex flex-col items-center justify-center min-h-[200px]">
                 <h2 class="text-3xl font-semibold mb-4">For Members</h2>
                 <p class="text-gray-600 text-center text-lg">
                     Discover tech events, join communities, and grow your network
                 </p>
+                </div>
             </div>
-            </div>
-        </button>
+        </a>
+
         
+    
 
-
-        <div class="border-2 border-gray-900 rounded-xl p-8 hover:bg-gray-400 transition-colors duration-300 cursor-pointer">
-            <div class="flex flex-col items-center justify-center min-h-[200px]">
-                <h2 class="text-3xl font-semibold mb-4">For Organizers</h2>
-                <p class="text-gray-600 text-center text-lg">
-                    Create and manage your tech events, reach your target audience
-                </p>
+        <a href="/organizers" class="block">
+            <div class="border-2 border-gray-900 rounded-xl p-8 hover:bg-gray-400 transition-colors duration-300 cursor-pointer">
+                <div class="flex flex-col items-center justify-center min-h-[200px]">
+                    <h2 class="text-3xl font-semibold mb-4">For Organizers</h2>
+                    <p class="text-gray-600 text-center text-lg">
+                        Create and manage your tech events, reach your target audience
+                    </p>
+                </div>
             </div>
-        </div>
+        </a>
+        
     </div>
 </div>
