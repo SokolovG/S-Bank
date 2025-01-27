@@ -28,7 +28,7 @@ class OrganizerSerializer(CategorySerializer):
         model = Organizer
         exclude = ('user',)
 
-class EventSerializer(serializers.ModelSerializer):
+class EventListSerializer(serializers.ModelSerializer):
     """Serializer for Event model with nested serializers for related fields."""
     location = LocationSerializer()
     meeting_link = serializers.SerializerMethodField()
@@ -42,6 +42,19 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         exclude = ('author', 'is_published', 'created_at')
+
+
+class EventDetailSerializer(serializers.ModelSerializer):
+    Location = LocationSerializer()
+    class Meta:
+        model = Event
+        fields = (
+            'name',
+            'event_start_date',
+            'location__name',
+            'max_participants',
+            'description'
+        )
 
 class CommentSerializer(serializers.ModelSerializer):
     """Serializer for Comment model."""
