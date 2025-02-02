@@ -5,5 +5,3 @@
 <main>
     <h1>Detail</h1>
 </main>
-
-<style></style>
