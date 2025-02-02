@@ -1,4 +1,20 @@
 services:
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=dev_events_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       context: .
@@ -9,8 +25,10 @@ services:
       - ./backend/DevEvents:/app
     env_file:
       - .env
-
     working_dir: /app
+    depends_on:
+      db:
+         condition: service_healthy
     command:
       - python
       - manage.py
@@ -28,3 +46,6 @@ services:
       - /app/node_modules
     depends_on:
       - backend
+
+volumes:
+  postgres_data:
