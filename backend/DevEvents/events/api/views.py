@@ -13,35 +13,37 @@ from events.api.serializers import EventListSerializer, EventDetailSerializer, C
 
 class EventViewSet(viewsets.ModelViewSet):
     """ViewSet for viewing and editing Event instances."""
+
+    queryset = Event.objects.all()
+
     def get_queryset(self):
-        event_id = self.kwargs.get('pk')
         if self.action == 'list':
-            return Event.objects.select_related('location').only('id',
-                                                                'name',
-                                                                'location__name',
-                                                                'event_start_date',
-                                                                'max_participants',
-                                                                'description'
-                                                                )
+            return Event.objects.select_related('location').only(
+                'id',
+                'name',
+                'location__name',
+                'event_start_date',
+                'max_participants',
+                'description'
+            )
 
         elif self.action == 'retrieve':
-            return Event.objects.filter(id=event_id).prefetch_related('participants').select_related('category', 'location')
-        
-        elif self.action in ['update', 'partial_update', 'destroy']:
-            return Event.objects.filter(id=event_id)
+            return Event.objects.prefetch_related(
+                'participants'
+            ).select_related('category', 'location')
 
-        return queryset.none()
+        return self.queryset
 
     def get_serializer_class(self):
         if self.action == 'list':
             return EventListSerializer
 
         return EventDetailSerializer
-        
-    
+
 
 class EventCommentViewSet(viewsets.ModelViewSet):
     """ViewSet for viewing and editing Event Comments."""
+
     serializer_class = CommentSerializer
 
     def get_queryset(self):

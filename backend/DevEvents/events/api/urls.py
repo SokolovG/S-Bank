@@ -15,14 +15,14 @@ router = routers.DefaultRouter()
 router.register('events', EventViewSet, basename='event')
 
 event_comments_router = routers.NestedDefaultRouter(
-   router,
-   'events',
-   lookup='event'
+    router,
+    'events',
+    lookup='event'
 )
 event_comments_router.register(
-   'comments',
-   EventCommentViewSet,
-   basename='event-comment'
+    'comments',
+    EventCommentViewSet,
+    basename='event-comment'
 )
 
 urlpatterns = [

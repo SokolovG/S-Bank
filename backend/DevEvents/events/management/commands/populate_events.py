@@ -261,16 +261,16 @@ class Command(BaseCommand):
                 current_date = timezone.now()
                 event_data['pub_date'] = current_date
                 event_data['event_start_date'] = (
-                    current_date +
-                    timedelta(days=self.faker.random_int(min=1, max=30))
+                    current_date
+                    + timedelta(days=self.faker.random_int(min=1, max=30))
                 )
                 event_data['event_end_date'] = (
-                    event_data.get('event_start_date') +
-                    timedelta(days=self.faker.random_int(min=1, max=3))
+                    event_data.get('event_start_date')
+                    + timedelta(days=self.faker.random_int(min=1, max=3))
                 )
                 registration_deadline = (
-                    event_data['event_start_date'] -
-                    timedelta(days=self.faker.random_int(min=1, max=5))
+                    event_data['event_start_date']
+                    - timedelta(days=self.faker.random_int(min=1, max=5))
                 )
 
                 if registration_deadline < current_date:

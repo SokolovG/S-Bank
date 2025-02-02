@@ -7,4 +7,3 @@ from .models import User
 class ProfileView(LoginRequiredMixin, generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = ''
-

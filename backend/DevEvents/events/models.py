@@ -19,6 +19,7 @@ class CreatedDateModel(models.Model):
 
     class Meta:
         """Define model as abstract."""
+
         abstract = True
 
 
@@ -115,6 +116,7 @@ class Event(CreatedDateModel):
 
     class Meta:
         """Specify default ordering."""
+
         ordering = ['event_start_date']
 
     def __str__(self):
@@ -132,9 +134,8 @@ class Event(CreatedDateModel):
             raise ValidationError(
                 'The end date cannot be earlier than the start date.'
             )
-
-        if (self.registration_deadline and
-                self.registration_deadline > self.event_start_date):
+        if (self.registration_deadline
+                and self.registration_deadline > self.event_start_date):
             raise ValidationError(
                 'The deadline for registration should be before the event starts.'
             )
@@ -197,6 +198,7 @@ class EventParticipant(CreatedDateModel):
 
     class Meta:
         """Define uniqueness constraint."""
+
         unique_together = ['event', 'user']
 
     def __str__(self):
