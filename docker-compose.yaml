@@ -4,7 +4,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=dev_events_db
+      - POSTGRES_DB=dev_events
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
@@ -18,11 +18,11 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/DevEvents/Dockerfile
+      dockerfile: backend/app/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./backend/DevEvents:/app
+      - ./backend:/app
     env_file:
       - .env
     working_dir: /app
