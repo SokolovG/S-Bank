@@ -1,5 +1,3 @@
-doc# DevEvents
-
 **[English](#english) | [Русский](#russian)**
 
 ## English
@@ -15,7 +13,7 @@ DevEvents is a platform that aggregates and manages tech conferences and develop
 - Comments and discussions for each event
 
 ### Tech Stack
-- Backend: Django + Django REST Framework
+- Backend: Litestar
 - Frontend: Svelte
 - Database: PostgreSQL
 - Containerization: Docker
@@ -39,7 +37,7 @@ docker-compose up --build
 ### Project Structure
 ```
 DevEvents/
-├── backend/         # Django application
+├── backend/         # Litestar application
 ├── frontend/        # Svelte application
 └── docker-compose.yaml
 ```
@@ -59,7 +57,7 @@ DevEvents - это платформа-агрегатор технологиче�
 - Комментарии и обсуждения для каждого события
 
 ### Технологический стек
-- Бэкенд: Django + Django REST Framework
+- Бэкенд: Litestar
 - Фронтенд: Svelte
 - База данных: PostgreSQL
 - Контейнеризация: Docker
@@ -83,7 +81,7 @@ docker-compose up --build
 ### Структура проекта
 ```
 DevEvents/
-├── backend/         # Django приложение
+├── backend/         # Litestar приложение
 ├── frontend/        # Svelte приложение
 └── docker-compose.yaml
 ```
