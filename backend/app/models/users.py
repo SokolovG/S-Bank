@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, Numeric, ForeignKey
 from sqlalchemy.schema import CheckConstraint
 
-from backend.app.database.connection import Base
+from .database.connection import Base
 from .constants import MAX_BASIC_LENGTH, MAX_TEXT_LENGTH
 
 

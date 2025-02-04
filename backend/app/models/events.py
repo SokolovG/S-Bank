@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Enum as SQLAlchemyEnum
 from datetime import datetime
 
-from backend.app.database.connection import Base
+from .database.connection import Base
 from .constants import MAX_BASIC_LENGTH, MAX_TEXT_LENGTH
 from .enums import Currency, EventFormat, EventStatus
 
