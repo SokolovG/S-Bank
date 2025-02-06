@@ -64,8 +64,8 @@ class Event(Base):
         back_populates="registered_events"
     )
     # Enum fields
-    format = Column(SQLAlchemyEnum(EventStatus), default=EventFormat.OFFLINE, nullable=False)
-    status = Column(SQLAlchemyEnum(EventFormat), default=EventStatus.PLANNED, nullable=False)
+    format = Column(SQLAlchemyEnum(EventFormat), default=EventFormat.OFFLINE, nullable=False)
+    status = Column(SQLAlchemyEnum(EventStatus), default=EventStatus.PLANNED, nullable=False)
     currency = Column(SQLAlchemyEnum(Currency), default=Currency.USD)
     # Boolean fields.
     is_published = Column(Boolean, default=False)

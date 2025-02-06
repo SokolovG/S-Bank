@@ -1,10 +1,19 @@
-from pydantic import BaseModel, Field
+from datetime import datetime
+from pydantic import BaseModel
 
-from ..types import BasicString, DescriptionField
+from ..types import BasicString
 
-class LocationRead(BaseModel):
-    id: int
+
+class LocationBase(BaseModel):
     name: BasicString
     address: BasicString
     city: BasicString
     country: BasicString
+
+
+class LocationRead(LocationBase):
+    id: int
+    created_at: datetime
+
+class LocationUpdate(LocationBase):
+    pass

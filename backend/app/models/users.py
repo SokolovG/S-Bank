@@ -46,7 +46,6 @@ class Organizer(Base):
         default=0)
 
 
-
 class Profile(Base):
     __tablename__ = 'profiles'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -62,5 +61,3 @@ class Profile(Base):
     # String fields.
     interested_technologies = Column(String(MAX_BASIC_LENGTH), nullable=True)
     location = Column(String(30), nullable=True)
-
-
