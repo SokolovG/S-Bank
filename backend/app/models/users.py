@@ -4,8 +4,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, Numeric, ForeignKey
 from sqlalchemy.schema import CheckConstraint
 
-from .database.connection import Base
-from .constants import MAX_BASIC_LENGTH, MAX_TEXT_LENGTH
+from ..database.connection import Base
+from ..constants import MAX_DESCRIPTION_LENGTH, MAX_BASIC_LENGTH
 
 
 class User(Base):
@@ -37,7 +37,7 @@ class Organizer(Base):
     website = Column(String(MAX_BASIC_LENGTH), nullable=True)
     contact = Column(String(MAX_BASIC_LENGTH), nullable=True)
     name = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    description = Column(Text(MAX_TEXT_LENGTH), nullable=False)
+    description = Column(Text(MAX_DESCRIPTION_LENGTH), nullable=False)
     # Numeric fields
     number_of_events = Column(Integer, default=0)
     rating = Column(
