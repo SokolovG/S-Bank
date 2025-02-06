@@ -1,7 +1,16 @@
 from datetime import datetime
 
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, Text, Boolean, DateTime, Numeric, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Text,
+    Boolean,
+    DateTime,
+    Numeric,
+    ForeignKey
+)
 from sqlalchemy.schema import CheckConstraint
 
 from ..database.connection import Base
@@ -21,9 +30,13 @@ class User(Base):
     is_verified = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
     # Relationships.
-    profile = relationship('Profile', back_populates='user', uselist=False, cascade='all, delete-orphan')
+    profile = relationship('Profile', back_populates='user',
+                           uselist=False,
+                           cascade='all, delete-orphan')
     authored_events = relationship('Event', back_populates='author')
-    organizer_profile = relationship('Organizer', back_populates='user', cascade='all, delete-orphan')
+    organizer_profile = relationship('Organizer',
+                                     back_populates='user',
+                                     cascade='all, delete-orphan')
 
 
 class Organizer(Base):
@@ -56,17 +69,17 @@ class Profile(Base):
     __tablename__ = 'profiles'
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Foreign Keys.
-    user_id = Column(Integer, ForeignKey('users.id'), unique=True, nullable=False)
+    user_id = Column(
+        Integer, ForeignKey('users.id'),
+        unique=True, nullable=False
+    )
     # Relationships.
     registered_events = relationship(
         'Event',
      back_populates='registered_participants',
      secondary='event_registrations'
     )
-    user = relationship(
-        "User",
-    back_populates="profile"
-    )
+    user = relationship("User", back_populates="profile")
     # Boolean fields.
     notifications_enabled = Column(Boolean, default=True)
     # Date fields.

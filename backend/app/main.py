@@ -1,7 +1,10 @@
 import uvicorn
 
 from litestar import Litestar
-from litestar.contrib.sqlalchemy.plugins import SQLAlchemyPlugin, SQLAlchemyAsyncConfig
+from litestar.contrib.sqlalchemy.plugins import (
+    SQLAlchemyPlugin,
+    SQLAlchemyAsyncConfig
+)
 
 from backend.app.database.connection import Base
 
@@ -10,7 +13,9 @@ from .config.settings import settings
 
 
 config = SQLAlchemyAsyncConfig(
-    connection_string=settings.database_url, create_all=True, metadata=Base.metadata
+    connection_string=settings.database_url,
+    create_all=True,
+    metadata=Base.metadata
 )
 
 plugin = SQLAlchemyPlugin(config=config)

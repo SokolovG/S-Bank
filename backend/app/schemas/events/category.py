@@ -1,9 +1,8 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
-from ..types import BasicString,  DescriptionField
+from ..types import BasicString, DescriptionField
 
 
 class CategoryBase(BaseModel):

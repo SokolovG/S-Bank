@@ -5,6 +5,7 @@ from pydantic_settings import BaseSettings
 
 load_dotenv()
 
+
 class Settings(BaseSettings):
     ENVIRONMENT: str = 'local'
     SECRET_KEY: str  # оставляем, так как важно
@@ -16,11 +17,13 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> str:
+        """Return database url."""
         host = 'localhost' if self.ENVIRONMENT == 'local' else 'db'
         return f'postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{host}:{self.DB_PORT}/{self.DB_NAME}'
 
     class Config:
         env_file = '.env'
         env_file_encoding = 'utf-8'
+
 
 settings = Settings()

@@ -18,8 +18,10 @@ class UserRead(UserBase):
     is_verified: bool
     is_active: bool
 
+
 class UserCreate(UserBase):
     pass
+
 
 class UserUpdate(BaseModel):
     username: Optional[BasicString]

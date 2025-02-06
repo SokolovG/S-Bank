@@ -1,4 +1,14 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text, Boolean, Numeric, Table
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    DateTime,
+    Text,
+    Boolean,
+    Numeric,
+    Table
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy import Enum as SQLAlchemyEnum
 from datetime import datetime
@@ -35,7 +45,10 @@ class Category(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     # String fields.
     name = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    slug = Column(String(MAX_BASIC_LENGTH), unique=True, nullable=False, index=True)
+    slug = Column(
+        String(MAX_BASIC_LENGTH),
+        unique=True, nullable=False, index=True
+    )
     description = Column(Text(MAX_DESCRIPTION_LENGTH), nullable=True)
     # Date fields.
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -47,12 +60,27 @@ class Event(Base):
     __tablename__ = 'events'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(MAX_BASIC_LENGTH), nullable=False, index=True)
-    description = Column(String(MAX_BASIC_LENGTH), nullable=False)
+    description = Column(
+        String(MAX_BASIC_LENGTH),
+        nullable=False
+    )
     # Foreign Keys.
     author_id = Column(Integer, ForeignKey('users.id'), ondelete='CASCADE')
-    location_id = Column(Integer, ForeignKey('locations.id'), ondelete='SET NULL', nullable=True)
-    organizer_id = Column(Integer, ForeignKey('organizers.id'), ondelete='CASCADE')
-    category_id = Column(Integer, ForeignKey('categories.id'), ondelete='CASCADE')
+    location_id = Column(
+        Integer,
+        ForeignKey('locations.id'),
+        ondelete='SET NULL',
+        nullable=True
+    )
+    organizer_id = Column(
+        Integer,
+        ForeignKey('organizers.id'),
+        ondelete='CASCADE'
+    )
+    category_id = Column(
+        Integer, ForeignKey('categories.id'),
+        ondelete='CASCADE'
+    )
     # Relationships.
     author = relationship('User', back_populates='events')
     organizer = relationship('Organizer', back_populates='events')
@@ -64,8 +92,15 @@ class Event(Base):
         back_populates="registered_events"
     )
     # Enum fields
-    format = Column(SQLAlchemyEnum(EventFormat), default=EventFormat.OFFLINE, nullable=False)
-    status = Column(SQLAlchemyEnum(EventStatus), default=EventStatus.PLANNED, nullable=False)
+    format = Column(
+        SQLAlchemyEnum(EventFormat),
+        default=EventFormat.OFFLINE,
+        nullable=False
+    )
+    status = Column(
+        SQLAlchemyEnum(EventStatus),
+        default=EventStatus.PLANNED, nullable=False
+    )
     currency = Column(SQLAlchemyEnum(Currency), default=Currency.USD)
     # Boolean fields.
     is_published = Column(Boolean, default=False)

@@ -15,6 +15,7 @@ class LocationRead(LocationBase):
     id: int
     created_at: datetime
 
+
 class LocationUpdate(LocationBase):
     pass
 
