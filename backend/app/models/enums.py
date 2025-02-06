@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class EventFormat(str, Enum):
     ONLINE = 'online'
     OFFLINE = 'offline'

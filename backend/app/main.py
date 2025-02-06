@@ -1,16 +1,27 @@
 import uvicorn
 
 from litestar import Litestar
-from database.connection import Base, engine, get_session
+from litestar.contrib.sqlalchemy.plugins import (
+    SQLAlchemyPlugin,
+    SQLAlchemyAsyncConfig
+)
+
+from backend.app.database.connection import Base
+
+# Bas
+from .config.settings import settings
 
 
-async def create_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+config = SQLAlchemyAsyncConfig(
+    connection_string=settings.database_url,
+    create_all=True,
+    metadata=Base.metadata
+)
 
+plugin = SQLAlchemyPlugin(config=config)
 app = Litestar(
-    on_startup=[create_tables],
-    dependencies={'sessions': get_session},
+    route_handlers=[],
+    plugins=[plugin],
     debug=True
 )
 
