@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Enum as SQLAlchemyEnum
 from datetime import datetime
 
-from .database.connection import Base
-from .constants import MAX_BASIC_LENGTH, MAX_TEXT_LENGTH
+from ..database.connection import Base
+from ..constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
 from .enums import Currency, EventFormat, EventStatus
 
 
@@ -36,7 +36,7 @@ class Category(Base):
     # String fields.
     name = Column(String(MAX_BASIC_LENGTH), nullable=False)
     slug = Column(String(MAX_BASIC_LENGTH), unique=True, nullable=False, index=True)
-    description = Column(Text(MAX_TEXT_LENGTH), nullable=True)
+    description = Column(Text(MAX_DESCRIPTION_LENGTH), nullable=True)
     # Date fields.
     created_at = Column(DateTime, default=datetime.utcnow)
     # Relationships.
@@ -49,10 +49,10 @@ class Event(Base):
     name = Column(String(MAX_BASIC_LENGTH), nullable=False, index=True)
     description = Column(String(MAX_BASIC_LENGTH), nullable=False)
     # Foreign Keys.
-    author_id = Column(Integer, ForeignKey('users.id'), ondelete='SET NULL', nullable=True)
+    author_id = Column(Integer, ForeignKey('users.id'), ondelete='CASCADE')
     location_id = Column(Integer, ForeignKey('locations.id'), ondelete='SET NULL', nullable=True)
     organizer_id = Column(Integer, ForeignKey('organizers.id'), ondelete='CASCADE')
-    category_id = Column(Integer, ForeignKey('categories.id'), ondelete='SET NULL', nullable=True)
+    category_id = Column(Integer, ForeignKey('categories.id'), ondelete='CASCADE')
     # Relationships.
     author = relationship('User', back_populates='events')
     organizer = relationship('Organizer', back_populates='events')
@@ -64,8 +64,9 @@ class Event(Base):
         back_populates="registered_events"
     )
     # Enum fields
-    format = Column(SQLAlchemyEnum(EventStatus), default=EventFormat.OFFLINE, nullable=False)
-    status = Column(SQLAlchemyEnum(EventFormat), default=EventStatus.PLANNED, nullable=False)
+    format = Column(SQLAlchemyEnum(EventFormat), default=EventFormat.OFFLINE, nullable=False)
+    status = Column(SQLAlchemyEnum(EventStatus), default=EventStatus.PLANNED, nullable=False)
+    currency = Column(SQLAlchemyEnum(Currency), default=Currency.USD)
     # Boolean fields.
     is_published = Column(Boolean, default=False)
     is_online = Column(Boolean, default=False)
@@ -76,10 +77,9 @@ class Event(Base):
     event_end_date = Column(DateTime)
     registration_deadline = Column(DateTime, nullable=True)
     # String fields.
-    meeting_link = Column(String(MAX_BASIC_LENGTH))
+    meeting_link = Column(String(MAX_BASIC_LENGTH), nullable=True)
     timezone = Column(String(MAX_BASIC_LENGTH), default='UTC')
     # Numeric fields
     max_participants = Column(Integer, nullable=True)
     price = Column(Numeric(10, 2), nullable=True)
-    currency = Column(SQLAlchemyEnum(Currency), default=Currency.USD)
     current_participants = Column(Integer, nullable=True)
