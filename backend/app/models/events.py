@@ -4,7 +4,6 @@ from sqlalchemy import (
     String,
     ForeignKey,
     DateTime,
-    Text,
     Boolean,
     Numeric,
     Table
@@ -49,7 +48,7 @@ class Category(Base):
         String(MAX_BASIC_LENGTH),
         unique=True, nullable=False, index=True
     )
-    description = Column(Text(MAX_DESCRIPTION_LENGTH), nullable=True)
+    description = Column(String(MAX_DESCRIPTION_LENGTH), nullable=True)
     # Date fields.
     created_at = Column(DateTime, default=datetime.utcnow)
     # Relationships.
@@ -65,24 +64,21 @@ class Event(Base):
         nullable=False
     )
     # Foreign Keys.
-    author_id = Column(Integer, ForeignKey('users.id'), ondelete='CASCADE')
+    author_id = Column(Integer, ForeignKey('users.id'))
     location_id = Column(
         Integer,
         ForeignKey('locations.id'),
-        ondelete='SET NULL',
         nullable=True
     )
     organizer_id = Column(
         Integer,
         ForeignKey('organizers.id'),
-        ondelete='CASCADE'
     )
     category_id = Column(
         Integer, ForeignKey('categories.id'),
-        ondelete='CASCADE'
     )
     # Relationships.
-    author = relationship('User', back_populates='events')
+    author = relationship('User', back_populates='authored_events')
     organizer = relationship('Organizer', back_populates='events')
     location = relationship('Location', back_populates='events')
     category = relationship('Category', back_populates='events')

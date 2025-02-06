@@ -5,7 +5,6 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
-    Text,
     Boolean,
     DateTime,
     Numeric,
@@ -55,7 +54,7 @@ class Organizer(Base):
     website = Column(String(MAX_BASIC_LENGTH), nullable=True)
     contact = Column(String(MAX_BASIC_LENGTH), nullable=True)
     name = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    description = Column(Text(MAX_DESCRIPTION_LENGTH), nullable=False)
+    description = Column(String(MAX_DESCRIPTION_LENGTH), nullable=False)
     logo_url = Column(String(MAX_BASIC_LENGTH), unique=True)
     # Numeric fields
     number_of_events = Column(Integer, default=0)
