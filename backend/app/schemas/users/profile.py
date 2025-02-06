@@ -11,6 +11,9 @@ class ProfileBase(BaseModel):
     notifications_enabled: bool
     interested_technologies: Optional[BasicString]
     location: Optional[BasicString]
+    first_name: BasicString
+    last_name: BasicString
+    avatar_url: BasicString
 
 
 class ProfileRead(ProfileBase):
@@ -26,4 +29,6 @@ class ProfileUpdate(BaseModel):
     notifications_enabled: Optional[bool] = True
     interested_technologies: Optional[BasicString] = None
     location: Optional[BasicString] = None
-
+    first_name: Optional[BasicString] = None
+    last_name: Optional[BasicString] = None
+    avatar_url: Optional[BasicString] = None

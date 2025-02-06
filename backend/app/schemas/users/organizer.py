@@ -7,11 +7,12 @@ from ..types import BasicString, DescriptionField
 
 
 class OrganizerBase(BaseModel):
-    user_id: str
-    website: BasicString
-    contact: BasicString
+    user_id: int
+    website: Optional[BasicString]
+    contact: Optional[BasicString]
     name: BasicString
     description: DescriptionField
+    logo_url: BasicString
 
 
 class OrganizerRead(OrganizerBase):
@@ -32,3 +33,4 @@ class OrganizerUpdate(BaseModel):
     contact: Optional[BasicString] = None
     name: Optional[BasicString] = None
     description: Optional[DescriptionField] = None
+    logo_url: Optional[BasicString]
