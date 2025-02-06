@@ -69,6 +69,7 @@ class EventCreate(EventBase):
     currency: Optional[Currency] = None
     current_participants: Optional[int] = Field(default=0, ge=0)
 
+
 class EventUpdate(EventBase):
     name: BasicString
     description: DescriptionField

@@ -1,24 +1,34 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, condecimal
+from pydantic import BaseModel, condecimal, Field
 
 from ..types import BasicString, DescriptionField
 
 
-class OrganizerRead(BaseModel):
-    id: int
-    # Foreign Keys.
-    # user_id: UserRead
-    # Bool fields.
-    verified: bool
-    # Date fields.
-    created_at: datetime
-    # String fields.
+class OrganizerBase(BaseModel):
+    user_id: str
     website: BasicString
     contact: BasicString
     name: BasicString
     description: DescriptionField
-    # Numeric fields
+
+
+class OrganizerRead(OrganizerBase):
+    id: int
+    verified: bool
+    created_at: datetime
     number_of_events: int
-    rating: Optional[condecimal(max_digits=10, decimal_places=2)] = None
+    rating: Optional[condecimal(max_digits=3, decimal_places=2)] = Field(None, ge=0, le=5)
+
+
+class OrganizerCreate(OrganizerBase):
+    pass
+
+
+class OrganizerUpdate(BaseModel):
+    user_id: Optional[str] = None
+    website: Optional[BasicString] = None
+    contact: Optional[BasicString] = None
+    name: Optional[BasicString] = None
+    description: Optional[DescriptionField] = None

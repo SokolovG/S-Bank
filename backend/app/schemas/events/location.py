@@ -17,3 +17,7 @@ class LocationRead(LocationBase):
 
 class LocationUpdate(LocationBase):
     pass
+
+
+class LocationCreate(BaseModel):
+    pass

@@ -50,7 +50,7 @@ class Profile(Base):
     __tablename__ = 'profiles'
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Foreign Keys.
-    user_id = Column(Integer, ForeignKey('users.id'), unique=True)
+    user_id = Column(Integer, ForeignKey('users.id'), unique=True, nullable=False)
     # Relationships.
     registered_events = relationship('Event', back_populates='registered_participants', secondary='event_registrations')
     user = relationship("User", back_populates="profile")
@@ -60,4 +60,4 @@ class Profile(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     # String fields.
     interested_technologies = Column(String(MAX_BASIC_LENGTH), nullable=True)
-    location = Column(String(30), nullable=True)
+    location = Column(String(MAX_BASIC_LENGTH), nullable=True)

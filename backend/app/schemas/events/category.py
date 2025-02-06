@@ -9,7 +9,7 @@ from ..types import BasicString,  DescriptionField
 class CategoryBase(BaseModel):
     name: BasicString
     slug: str
-    description: Optional[DescriptionField]
+    description: DescriptionField
 
 
 class CategoryRead(CategoryBase):
@@ -18,4 +18,8 @@ class CategoryRead(CategoryBase):
 
 
 class CategoryUpdate(CategoryBase):
+    pass
+
+
+class CategoryCreate(CategoryBase):
     pass
