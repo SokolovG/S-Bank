@@ -7,7 +7,7 @@ from litestar.contrib.sqlalchemy.plugins import (
 )
 
 from backend.app.database.connection import Base
-from .controllers.events import EventController
+from backend.app.api.v1.events import EventController
 
 # Bas
 from .config.settings import settings

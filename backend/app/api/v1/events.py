@@ -2,7 +2,7 @@ from litestar import get, Controller
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..models.events import Event
+from backend.app.models.events import Event
 
 
 class EventController(Controller):
