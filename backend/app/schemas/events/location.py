@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from ..types import BasicString
-from ..base import BaseModel
+from backend.app.schemas.types import BasicString
+from backend.app.schemas.base import BaseModel
 
 
 class LocationBase(BaseModel):

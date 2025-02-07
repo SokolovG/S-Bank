@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import Optional
 
-from ..base import BaseModel
-from ..types import BasicString
+from backend.app.schemas.base import BaseModel
+from backend.app.schemas.types import BasicString
 
 
 class UserBase(BaseModel):

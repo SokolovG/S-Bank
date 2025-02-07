@@ -1,11 +1,21 @@
+"""Module for event controller.
+
+Contains the following routes:
+    - GET /events
+"""
+
 from litestar import get, Controller
 from litestar.di import Provide
 
 from backend.app.models.events import Event
-from ...repositories.event import EventRepository, provide_event_repo
+from backend.app.repositories.event import EventRepository, provide_event_repo
 
 
 class EventController(Controller):
+    """Basic event controller
+
+    Contains dependencies with EventRepository
+    """
     dependencies = {'event_repo': Provide(provide_event_repo)}
     path = "/events"
 

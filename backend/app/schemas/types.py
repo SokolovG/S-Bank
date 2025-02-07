@@ -1,10 +1,10 @@
 from typing import Annotated
 from pydantic import Field
 
-from ..constants import (
+from backend.app.constants import (
     MAX_BASIC_LENGTH,
+    MAX_DESCRIPTION_LENGTH,
     MIN_BASIC_LENGTH,
-    MAX_DESCRIPTION_LENGTH
 )
 
 BasicString = Annotated[
