@@ -1,21 +1,16 @@
 from litestar import get, Controller
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from litestar.di import Provide
 
 from backend.app.models.events import Event
+from ...repositories.event import EventRepository, provide_event_repo
 
 
 class EventController(Controller):
+    dependencies = {'event_repo': Provide(provide_event_repo)}
     path = "/events"
 
     @get()
-    async def get_events(self, db_session: AsyncSession) -> list[Event]:
-        query = select(Event)
-        result = await db_session.execute(query)
-        events = result.scalars().all()
+    async def get_events(self, event_repo: EventRepository) -> list[Event]:
+        events = await event_repo.list()
         return events
-
-    @get('/{event_id:int}')
-    async def get_event(self, event_id: int) -> Event:
-        pass
 
