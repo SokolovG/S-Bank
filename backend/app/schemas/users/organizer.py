@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, condecimal, Field
+from pydantic import condecimal, Field
 
 from ..types import BasicString, DescriptionField
+from ..base import BaseModel
 
 
 class OrganizerBase(BaseModel):

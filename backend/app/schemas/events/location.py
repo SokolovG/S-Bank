@@ -1,7 +1,7 @@
 from datetime import datetime
-from pydantic import BaseModel
 
 from ..types import BasicString
+from ..base import BaseModel
 
 
 class LocationBase(BaseModel):

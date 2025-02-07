@@ -1,9 +1,8 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
-
 from ..types import BasicString
+from ..base import BaseModel
 
 
 class ProfileBase(BaseModel):

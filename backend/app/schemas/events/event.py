@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, condecimal, Field
+from pydantic import condecimal, Field
 
 from ..types import BasicString, DescriptionField
 from .category import CategoryRead, CategoryUpdate
 from ...models.enums import EventFormat, EventStatus, Currency
 from .location import LocationRead, LocationUpdate
 from ..users.organizer import OrganizerRead
+from ..base import BaseModel
 
 
 class EventBase(BaseModel):
