@@ -6,10 +6,10 @@ from litestar.contrib.sqlalchemy.plugins import (
     SQLAlchemyAsyncConfig
 )
 
-from backend.app.database.connection import Base
+from backend.app.infrastructure.database import Base
 from backend.app.api.v1.events import EventController
 
-from .config.settings import settings
+from backend.app.core.config import settings
 
 
 config = SQLAlchemyAsyncConfig(

@@ -7,12 +7,12 @@ Contains the following routes:
 from litestar import get, Controller
 from litestar.di import Provide
 
-from backend.app.models.events import Event
-from backend.app.repositories.event import EventRepository, provide_event_repo
+from backend.app.domain.models.events import Event
+from backend.app.domain.repositories.event import EventRepository, provide_event_repo
 
 
 class EventController(Controller):
-    """Basic event controller
+    """Basic event controller.
 
     Contains dependencies with EventRepository
     """

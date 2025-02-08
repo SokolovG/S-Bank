@@ -13,7 +13,7 @@ from sqlalchemy.schema import CheckConstraint
 from sqlalchemy.orm import relationship
 
 from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
-from backend.app.database.connection import Base
+from backend.app.infrastructure.database.base import Base
 
 
 class User(Base):

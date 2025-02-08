@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from litestar.plugins.sqlalchemy import repository
 
-from backend.app.models.events import Event
+from backend.app.domain.models import Event
 
 
 if TYPE_CHECKING:

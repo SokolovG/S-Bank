@@ -4,7 +4,7 @@ from pydantic import condecimal, Field
 
 from backend.app.schemas.types import BasicString, DescriptionField
 from backend.app.schemas.events.category import CategoryRead, CategoryUpdate
-from backend.app.models.enums import EventFormat, EventStatus, Currency
+from backend.app.domain.models import EventFormat, EventStatus, Currency
 from backend.app.schemas.events.location import LocationRead, LocationUpdate
 from backend.app.schemas.users.organizer import OrganizerRead
 from backend.app.schemas.base import BaseModel
