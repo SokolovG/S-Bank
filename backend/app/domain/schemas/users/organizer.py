@@ -3,8 +3,8 @@ from typing import Optional
 
 from pydantic import condecimal, Field
 
-from backend.app.schemas.types import BasicString, DescriptionField
-from backend.app.schemas.base import BaseModel
+from backend.app.domain.schemas.types import BasicString, DescriptionField
+from backend.app.domain.schemas.base import BaseModel
 
 
 class OrganizerBase(BaseModel):
