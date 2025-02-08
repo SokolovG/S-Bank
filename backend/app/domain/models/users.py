@@ -1,19 +1,19 @@
 from datetime import datetime
 
-from sqlalchemy.orm import relationship
 from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Boolean,
-    DateTime,
-    Numeric,
-    ForeignKey
+   Boolean,
+   Column,
+   DateTime,
+   ForeignKey,
+   Integer,
+   Numeric,
+   String,
 )
 from sqlalchemy.schema import CheckConstraint
+from sqlalchemy.orm import relationship
 
-from ..database.connection import Base
-from ..constants import MAX_DESCRIPTION_LENGTH, MAX_BASIC_LENGTH
+from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
+from backend.app.infrastructure.database.base import Base
 
 
 class User(Base):

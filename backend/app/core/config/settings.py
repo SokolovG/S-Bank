@@ -1,6 +1,6 @@
 import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
 load_dotenv()
@@ -8,7 +8,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     ENVIRONMENT: str = 'local'
-    SECRET_KEY: str  # оставляем, так как важно
+    SECRET_KEY: str
     DB_HOST: str = os.getenv('DB_HOST', 'localhost')
     DB_PORT: int = int(os.getenv('DB_PORT', 5432))
     DB_USER: str = os.getenv('DB_USER', 'postgres')

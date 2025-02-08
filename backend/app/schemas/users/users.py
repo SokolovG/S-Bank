@@ -1,9 +1,8 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
-
-from ..types import BasicString
+from backend.app.schemas.base import BaseModel
+from backend.app.schemas.types import BasicString
 
 
 class UserBase(BaseModel):

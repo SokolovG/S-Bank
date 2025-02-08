@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from pydantic import BaseModel
 
-from ..types import BasicString, DescriptionField
+from backend.app.schemas.types import BasicString, DescriptionField
+from backend.app.schemas.base import BaseModel
 
 
 class CategoryBase(BaseModel):

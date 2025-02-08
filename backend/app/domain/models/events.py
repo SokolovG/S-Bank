@@ -1,21 +1,21 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    ForeignKey,
-    DateTime,
-    Boolean,
-    Numeric,
-    Table
-)
-from sqlalchemy.orm import relationship
-from sqlalchemy import Enum as SQLAlchemyEnum
 from datetime import datetime
 
-from ..database.connection import Base
-from ..constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
-from .enums import Currency, EventFormat, EventStatus
+from sqlalchemy import (
+   Boolean,
+   Column,
+   DateTime,
+   Enum as SQLAlchemyEnum,
+   ForeignKey,
+   Integer,
+   Numeric,
+   String,
+   Table,
+)
+from sqlalchemy.orm import relationship
 
+from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
+from backend.app.infrastructure.database.base import Base
+from backend.app.domain.models.enums import Currency, EventFormat, EventStatus
 
 event_registrations = Table(
     'event_registrations',
