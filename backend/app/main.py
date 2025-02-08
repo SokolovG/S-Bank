@@ -8,8 +8,8 @@ from litestar.contrib.sqlalchemy.plugins import (
 
 from backend.app.infrastructure.database.base import Base
 from backend.app.api.v1.events.controllers import EventController
-
 from backend.app.core.config.settings import settings
+from backend.app.api.v1.events.dependencies import dependencies
 
 
 config = SQLAlchemyAsyncConfig(
@@ -22,7 +22,8 @@ plugin = SQLAlchemyPlugin(config=config)
 app = Litestar(
     route_handlers=[EventController],
     plugins=[plugin],
-    debug=True
+    debug=True,
+    dependencies=dependencies
 )
 
 if __name__ == '__main__':
