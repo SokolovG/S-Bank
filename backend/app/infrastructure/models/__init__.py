@@ -1,7 +1,11 @@
+from .events import Event, Category, Location
 from .users import User, Profile, Organizer
-from .events import Location, Category, Event
 
 __all__ = [
-    'User', 'Profile', 'Organizer',
-    'Location', 'Category', 'Event'
+    'Event',
+    'Category',
+    'Location',
+    'User',
+    'Profile',
+    'Organizer',
 ]
