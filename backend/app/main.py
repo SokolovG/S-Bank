@@ -1,6 +1,7 @@
 import uvicorn
 
 from litestar import Litestar
+from litestar.config.cors import CORSConfig
 from litestar.contrib.sqlalchemy.plugins import (
     SQLAlchemyPlugin,
     SQLAlchemyAsyncConfig
@@ -12,6 +13,11 @@ from backend.app.api.v1.events.dependencies import dependencies
 from backend.app.api.v1.events.routes import event_router
 
 
+cors_config = CORSConfig(
+    allow_origins=["http://localhost:5173"],
+    allow_methods=['*'],
+    allow_headers=['*']
+)
 config = SQLAlchemyAsyncConfig(
     connection_string=settings.database_url,
     create_all=True,

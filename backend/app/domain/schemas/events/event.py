@@ -44,7 +44,7 @@ class EventRead(EventBase):
     max_participants: Optional[int] = None
     price: Optional[condecimal(max_digits=10, decimal_places=2)]
     currency: Optional[Currency] = None
-    current_participants: Optional[int]
+    current_participants: Optional[int] = 0
 
 
 class EventCreate(EventBase):
