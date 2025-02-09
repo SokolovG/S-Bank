@@ -1,7 +1,7 @@
 from litestar.di import Provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.domain.repositories.event import EventRepository
+from backend.app.infrastructure.repositories.event import EventRepository
 
 
 async def provide_repositories(db_session: AsyncSession) -> dict:

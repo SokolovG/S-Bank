@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from litestar import get, Controller
 
-from backend.app.domain.schemas.events.event import EventRead
+from backend.app.infrastructure.schemas import EventRead
 
 
 class EventController(Controller):

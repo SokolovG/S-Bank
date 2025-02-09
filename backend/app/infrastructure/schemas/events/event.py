@@ -2,18 +2,18 @@ from datetime import datetime
 from typing import Optional
 from pydantic import condecimal, Field
 
-from backend.app.domain.schemas.types import BasicString, DescriptionField
-from backend.app.domain.schemas.events.category import (
+from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
+from backend.app.infrastructure.schemas.events.category import (
     CategoryRead,
     CategoryUpdate
 )
-from backend.app.domain.models.enums import EventFormat, EventStatus, Currency
-from backend.app.domain.schemas.events.location import (
+from backend.app.infrastructure.models.enums import EventFormat, EventStatus, Currency
+from backend.app.infrastructure.schemas.events.location import (
     LocationRead,
     LocationUpdate
 )
-from backend.app.domain.schemas.users.organizer import OrganizerRead
-from backend.app.domain.schemas.base import BaseModel
+from backend.app.infrastructure.schemas.users.organizer import OrganizerRead
+from backend.app.infrastructure.schemas.base import BaseModel
 
 
 class EventBase(BaseModel):

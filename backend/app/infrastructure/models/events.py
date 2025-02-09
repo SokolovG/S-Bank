@@ -15,7 +15,7 @@ from sqlalchemy.orm import relationship
 
 from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
 from backend.app.infrastructure.database.base import Base
-from backend.app.domain.models.enums import Currency, EventFormat, EventStatus
+from backend.app.infrastructure.models.enums import Currency, EventFormat, EventStatus
 
 event_registrations = Table(
     'event_registrations',
