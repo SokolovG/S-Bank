@@ -3,12 +3,11 @@
 Contains the following routes:
     - GET /events
 """
+from __future__ import annotations
 
 from litestar import get, Controller
-from litestar.di import Provide
 
-from backend.app.domain.models.events import Event
-from backend.app.domain.repositories.event import EventRepository, provide_event_repo
+from backend.app.infrastructure.schemas import EventRead
 
 
 class EventController(Controller):
@@ -16,11 +15,17 @@ class EventController(Controller):
 
     Contains dependencies with EventRepository
     """
-    dependencies = {'event_repo': Provide(provide_event_repo)}
-    path = "/events"
+
+    path = '/events'
 
     @get()
-    async def get_events(self, event_repo: EventRepository) -> list[Event]:
+    async def get_events(self, repositories: dict) -> list[EventRead]:
+        event_repo = repositories.get('event_repo')
         events = await event_repo.list()
         return events
 
+    @get('/{event_id:int}')
+    async def get_event(self, repositories: dict, event_id: int) -> EventRead:
+        event_repo = repositories.get('event_repo')
+        event = await event_repo.get_one_or_none(id=event_id)
+        return event

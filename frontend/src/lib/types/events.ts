@@ -1,16 +1,17 @@
 export interface Location {
     name: string;
-    adress?: string;
+    address?: string;
     city: string;
     country: string;
+    createdAt: string
 }
 
 export interface Category {
     id: number;
-    createdAt: string;
     name: string;
     slug: string;
     description?: string;
+    createdAt: string;
 }
 
 export interface Organizer {
@@ -27,38 +28,29 @@ export interface Organizer {
 
 export interface Event {
     id: number;
+    name: string
+    description: string
     location: Location;
-    meetingLink: string;
-    organizer: Organizer;
     category: Category;
-    name: string;
-    description: string;
+    organizer: Organizer;
+    isPublished: boolean;
+    isOnline: boolean;
+    isVerify: boolean;
     pubDate: string;
     eventStartDate: string;
     eventEndDate: string;
-    isOnline: boolean;
-    isVerify: boolean;
-    maxParticipants: number;
     registrationDeadline: string;
-    format: string;
+    format: string
+    status: string
+    meetingLink: string;
+    timezone: string
+    maxParticipants: number;
+    price: number
     members: number;
-    photos: string[] | null;
-    participants: any[];
+    currency: string
+    max_participants: number
+    current_participants: number
 
-}
-
-export interface Comment {
-    id: number;
-    text: string;
-    event: number;
-    author: number;
-}
-
-export interface PaginatedResponse {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: Event[];
 }
 
 export type ISODateString = string;

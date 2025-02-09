@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from sqlalchemy import (
-   Boolean,
-   Column,
-   DateTime,
-   ForeignKey,
-   Integer,
-   Numeric,
-   String,
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
 )
 from sqlalchemy.schema import CheckConstraint
 from sqlalchemy.orm import relationship
@@ -20,14 +20,14 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     # String fields.
-    username = Column(String(MAX_BASIC_LENGTH), unique=True, index=True)
-    email = Column(String(MAX_BASIC_LENGTH), unique=True, index=True)
-    hashed_password = Column(String(MAX_BASIC_LENGTH))
+    username = Column(String(MAX_BASIC_LENGTH), unique=True, index=True, nullable=False)
+    email = Column(String(MAX_BASIC_LENGTH), unique=True, index=True, nullable=False)
+    hashed_password = Column(String(MAX_BASIC_LENGTH), nullable=False)
     # Datetime fields
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     # Boolean fields
-    is_verified = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=True)
+    is_verified = Column(Boolean, default=False, nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
     # Relationships.
     profile = relationship('Profile', back_populates='user',
                            uselist=False,
@@ -42,7 +42,7 @@ class Organizer(Base):
     __tablename__ = 'organizers'
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Foreign Keys.
-    user_id = Column(Integer, ForeignKey('users.id'), unique=True)
+    user_id = Column(Integer, ForeignKey('users.id', use_alter=True), unique=True)
     # Relationships.
     events = relationship('Event', back_populates='organizer')
     user = relationship('User', back_populates='organizer_profile')
@@ -69,14 +69,14 @@ class Profile(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Foreign Keys.
     user_id = Column(
-        Integer, ForeignKey('users.id'),
+        Integer, ForeignKey('users.id', use_alter=True),
         unique=True, nullable=False
     )
     # Relationships.
     registered_events = relationship(
         'Event',
-     back_populates='registered_participants',
-     secondary='event_registrations'
+        back_populates='registered_participants',
+        secondary='event_registrations'
     )
     user = relationship("User", back_populates="profile")
     # Boolean fields.

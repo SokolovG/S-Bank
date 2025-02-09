@@ -3,8 +3,8 @@ from typing import Optional
 
 from pydantic import condecimal, Field
 
-from backend.app.schemas.types import BasicString, DescriptionField
-from backend.app.schemas.base import BaseModel
+from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
+from backend.app.infrastructure.schemas.base import BaseModel
 
 
 class OrganizerBase(BaseModel):
@@ -21,7 +21,11 @@ class OrganizerRead(OrganizerBase):
     verified: bool
     created_at: datetime
     number_of_events: int
-    rating: Optional[condecimal(max_digits=3, decimal_places=2)] = Field(None, ge=0, le=5)
+    rating: Optional[condecimal(max_digits=3, decimal_places=2)] = Field(
+        None,
+        ge=0,
+        le=5
+    )
 
 
 class OrganizerCreate(OrganizerBase):

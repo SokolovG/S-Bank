@@ -1,28 +1,22 @@
 from datetime import datetime
 
 from sqlalchemy import (
-   Boolean,
-   Column,
-   DateTime,
-   Enum as SQLAlchemyEnum,
-   ForeignKey,
-   Integer,
-   Numeric,
-   String,
-   Table,
+    Boolean,
+    Column,
+    DateTime,
+    Enum as SQLAlchemyEnum,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Table,
 )
 from sqlalchemy.orm import relationship
 
 from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
 from backend.app.infrastructure.database.base import Base
-from backend.app.domain.models.enums import Currency, EventFormat, EventStatus
+from backend.app.infrastructure.models.enums import Currency, EventFormat, EventStatus
 
-event_registrations = Table(
-    'event_registrations',
-    Base.metadata,
-    Column('profile_id', Integer, ForeignKey('profiles.id')),
-    Column('event_id', Integer, ForeignKey('events.id')),
-)
 
 
 class Location(Base):
@@ -55,6 +49,14 @@ class Category(Base):
     events = relationship('Event', back_populates='category')
 
 
+event_registrations = Table(
+    'event_registrations',
+    Base.metadata,
+    Column('profile_id', Integer, ForeignKey('profiles.id', use_alter=True)),
+    Column('event_id', Integer, ForeignKey('events.id', use_alter=True)),
+)
+
+
 class Event(Base):
     __tablename__ = 'events'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -64,18 +66,18 @@ class Event(Base):
         nullable=False
     )
     # Foreign Keys.
-    author_id = Column(Integer, ForeignKey('users.id'))
+    author_id = Column(Integer, ForeignKey('users.id', use_alter=True))
     location_id = Column(
         Integer,
-        ForeignKey('locations.id'),
+        ForeignKey('locations.id', use_alter=True),
         nullable=True
     )
     organizer_id = Column(
         Integer,
-        ForeignKey('organizers.id'),
+        ForeignKey('organizers.id', use_alter=True),
     )
     category_id = Column(
-        Integer, ForeignKey('categories.id'),
+        Integer, ForeignKey('categories.id', use_alter=True),
     )
     # Relationships.
     author = relationship('User', back_populates='authored_events')
@@ -114,3 +116,5 @@ class Event(Base):
     max_participants = Column(Integer, nullable=True)
     price = Column(Numeric(10, 2), nullable=True)
     current_participants = Column(Integer, nullable=True)
+
+

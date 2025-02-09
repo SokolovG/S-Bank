@@ -2,12 +2,18 @@ from datetime import datetime
 from typing import Optional
 from pydantic import condecimal, Field
 
-from backend.app.schemas.types import BasicString, DescriptionField
-from backend.app.schemas.events.category import CategoryRead, CategoryUpdate
-from backend.app.domain.models import EventFormat, EventStatus, Currency
-from backend.app.schemas.events.location import LocationRead, LocationUpdate
-from backend.app.schemas.users.organizer import OrganizerRead
-from backend.app.schemas.base import BaseModel
+from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
+from backend.app.infrastructure.schemas.events.category import (
+    CategoryRead,
+    CategoryUpdate
+)
+from backend.app.infrastructure.models.enums import EventFormat, EventStatus, Currency
+from backend.app.infrastructure.schemas.events.location import (
+    LocationRead,
+    LocationUpdate
+)
+from backend.app.infrastructure.schemas.users.organizer import OrganizerRead
+from backend.app.infrastructure.schemas.base import BaseModel
 
 
 class EventBase(BaseModel):
@@ -38,7 +44,7 @@ class EventRead(EventBase):
     max_participants: Optional[int] = None
     price: Optional[condecimal(max_digits=10, decimal_places=2)]
     currency: Optional[Currency] = None
-    current_participants: Optional[int]
+    current_participants: Optional[int] = 0
 
 
 class EventCreate(EventBase):
@@ -66,7 +72,10 @@ class EventCreate(EventBase):
 
     # Number fields
     max_participants: Optional[int] = Field(default=None, ge=0)
-    price: Optional[condecimal(max_digits=10, decimal_places=2)] = Field(default=None, ge=0)
+    price: Optional[condecimal(max_digits=10, decimal_places=2)] = Field(
+        default=None,
+        ge=0
+    )
     currency: Optional[Currency] = None
     current_participants: Optional[int] = Field(default=0, ge=0)
 
