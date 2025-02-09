@@ -50,7 +50,8 @@ dependencies = [
     "sqlalchemy (==2.0.37)",
     "sqlparse (==0.5.3)",
     "typing-extensions (==4.12.2)",
-    "uvicorn (==0.34.0)"
+    "uvicorn (==0.34.0)",
+    "black (>=25.1.0,<26.0.0)"
 ]
 
 

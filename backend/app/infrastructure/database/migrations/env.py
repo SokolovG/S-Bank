@@ -5,17 +5,8 @@ from sqlalchemy import pool
 from alembic import context
 
 from backend.app.infrastructure.database.base import Base
-from backend.app.infrastructure.models.events import Event, Category, Location
-from backend.app.infrastructure.models.users import User, Profile, Organizer
-from backend.app.infrastructure.models import *
-print("Starting migration process...")
-print("Imported models:")
-print("Event:", Event.__table__.name if hasattr(Event, '__table__') else "Not initialized")
-print("Category:", Category.__table__.name if hasattr(Category, '__table__') else "Not initialized")
-print("Location:", Location.__table__.name if hasattr(Location, '__table__') else "Not initialized")
-print("User:", User.__table__.name if hasattr(User, '__table__') else "Not initialized")
-print("Profile:", Profile.__table__.name if hasattr(Profile, '__table__') else "Not initialized")
-print("Organizer:", Organizer.__table__.name if hasattr(Organizer, '__table__') else "Not initialized")
+from backend.app.infrastructure.models.events import Event, Category, Location # noqa
+from backend.app.infrastructure.models.users import User, Profile, Organizer # noqa
 
 config = context.config
 
@@ -30,8 +21,8 @@ config.set_main_option(
 )
 
 target_metadata = Base.metadata
-print("\nAll registered tables:", Base.metadata.tables.keys())
-print("Number of tables:", len(Base.metadata.tables))
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -72,7 +63,8 @@ def run_migrations_online() -> None:
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
-            target_metadata=target_metadata
+            target_metadata=target_metadata,
+            compare_server_default=True
         )
 
         with context.begin_transaction():
