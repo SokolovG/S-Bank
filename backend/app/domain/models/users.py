@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from sqlalchemy import (
-   Boolean,
-   Column,
-   DateTime,
-   ForeignKey,
-   Integer,
-   Numeric,
-   String,
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
 )
 from sqlalchemy.schema import CheckConstraint
 from sqlalchemy.orm import relationship
@@ -75,8 +75,8 @@ class Profile(Base):
     # Relationships.
     registered_events = relationship(
         'Event',
-     back_populates='registered_participants',
-     secondary='event_registrations'
+        back_populates='registered_participants',
+        secondary='event_registrations'
     )
     user = relationship("User", back_populates="profile")
     # Boolean fields.

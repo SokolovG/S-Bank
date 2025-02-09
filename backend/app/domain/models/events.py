@@ -1,15 +1,15 @@
 from datetime import datetime
 
 from sqlalchemy import (
-   Boolean,
-   Column,
-   DateTime,
-   Enum as SQLAlchemyEnum,
-   ForeignKey,
-   Integer,
-   Numeric,
-   String,
-   Table,
+    Boolean,
+    Column,
+    DateTime,
+    Enum as SQLAlchemyEnum,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Table,
 )
 from sqlalchemy.orm import relationship
 
