@@ -1,23 +1,27 @@
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
+from dotenv import load_dotenv
 
 from backend.app.infrastructure.database.base import Base
 from backend.app.infrastructure.models.events import Event, Category, Location # noqa
 from backend.app.infrastructure.models.users import User, Profile, Organizer # noqa
 
+
 config = context.config
+load_dotenv()
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 
-database_url = "postgresql+asyncpg://postgres:postgres@localhost:5432/dev_events"
+DATABASE_URL = os.getenv('DATABASE_URL')
 config.set_main_option(
     'sqlalchemy.url',
-    database_url + "?async_fallback=True"
+    DATABASE_URL + "?async_fallback=True"
 )
 
 target_metadata = Base.metadata

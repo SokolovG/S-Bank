@@ -62,7 +62,7 @@ class Event(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(MAX_BASIC_LENGTH), nullable=False, index=True)
     description = Column(
-        String(MAX_BASIC_LENGTH),
+        String(MAX_DESCRIPTION_LENGTH),
         nullable=False
     )
     # Foreign Keys.
