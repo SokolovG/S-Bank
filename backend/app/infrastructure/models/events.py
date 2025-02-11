@@ -1,14 +1,12 @@
 from sqlalchemy import (
     Column,
     DateTime,
-    Enum as SQLAlchemyEnum,
     ForeignKey,
     Integer,
     Numeric,
     Table,
 )
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.app.infrastructure.database.base import (
     Base,
@@ -20,7 +18,11 @@ from backend.app.infrastructure.database.base import (
     BoolFalse,
     IndexedUniqueString
 )
-from backend.app.infrastructure.models.enums import Currency, EventFormat, EventStatus
+from backend.app.infrastructure.models.enums import (
+    Currency,
+    EventFormat,
+    EventStatus
+)
 
 
 class Location(Base):
@@ -57,40 +59,33 @@ class Event(Base):
     name: Mapped[IndexedString]
     description: Mapped[DescriptionString]
     # Foreign Keys.
-    author_id = Column(Integer, ForeignKey('users.id', use_alter=True))
-    location_id = Column(
-        Integer,
+    author_id: Mapped[int] = mapped_column(
+        ForeignKey('users.id', use_alter=True))
+    location_id: Mapped[int] = mapped_column(
         ForeignKey('locations.id', use_alter=True),
         nullable=True
     )
-    organizer_id = Column(
-        Integer,
+    organizer_id: Mapped[int] = mapped_column(
         ForeignKey('organizers.id', use_alter=True),
     )
-    category_id = Column(
-        Integer, ForeignKey('categories.id', use_alter=True),
+    category_id: Mapped[int] = Column(
+        ForeignKey('categories.id', use_alter=True),
     )
     # Relationships.
     author = relationship('User', back_populates='authored_events')
     organizer = relationship('Organizer', back_populates='events')
     location = relationship('Location', back_populates='events')
     category = relationship('Category', back_populates='events')
-    registered_participants = relationship(
-        "Profile",
-        secondary=event_registrations,
-        back_populates="registered_events"
-    )
     # Enum fields
-    format = Column(
-        SQLAlchemyEnum(EventFormat),
+    format: Mapped[EventFormat] = mapped_column(
         default=EventFormat.OFFLINE,
-        nullable=False
     )
-    status = Column(
-        SQLAlchemyEnum(EventStatus),
-        default=EventStatus.PLANNED, nullable=False
+    status: Mapped[EventStatus] = mapped_column(
+        default=EventStatus.PLANNED
     )
-    currency = Column(SQLAlchemyEnum(Currency), default=Currency.USD)
+    currency: Mapped[Currency] = mapped_column(
+        default=Currency.USD
+    )
     # Boolean fields.
     is_published: Mapped[BoolFalse]
     is_online: Mapped[BoolFalse]

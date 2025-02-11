@@ -8,6 +8,7 @@ from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
 
 class Base(DeclarativeBase):
     """Base class for models."""
+    __abstract__ = True
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 

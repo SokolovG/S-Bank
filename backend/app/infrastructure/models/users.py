@@ -1,14 +1,24 @@
 from sqlalchemy import (
-    Boolean,
-    Column,
     ForeignKey,
     Integer,
     Numeric,
 )
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    relationship,
+)
 from sqlalchemy.schema import CheckConstraint
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.app.infrastructure.database.base import Base, BasicString, DescriptionString, BoolFalse, BoolTrue, BasicNullString, IndexedUniqueString
+from backend.app.infrastructure.database.base import (
+    Base,
+    BasicString,
+    DescriptionString,
+    BoolFalse,
+    BoolTrue,
+    BasicNullString,
+    IndexedUniqueString,
+)
 
 
 class User(Base):
@@ -21,22 +31,49 @@ class User(Base):
     is_verified: Mapped[BoolFalse]
     is_active: Mapped[BoolTrue]
     # Relationships.
-    profile = relationship('Profile', back_populates='user',
-                           uselist=False,
-                           cascade='all, delete-orphan')
-    authored_events = relationship('Event', back_populates='author')
-    organizer_profile = relationship('Organizer',
-                                     back_populates='user',
-                                     cascade='all, delete-orphan')
+    profile: Mapped["Profile"] = relationship(
+        'Profile',
+        back_populates='user',
+        uselist=False,
+        lazy='joined',
+        cascade='all, delete-orphan'
+    )
+    authored_events: Mapped[list["Event"]] = relationship(
+        'Event',
+        lazy='joined',
+        back_populates='author',
+        cascade='all, delete-orphan'
+    )
+    organizer_profile: Mapped["Organizer"] = relationship(
+        'Organizer',
+        back_populates='user',
+        uselist=False,
+        lazy='joined',
+        cascade='all, delete-orphan'
+    )
 
 
 class Organizer(Base):
     __tablename__ = 'organizers'
     # Foreign Keys.
-    user_id = Column(Integer, ForeignKey('users.id', use_alter=True), unique=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('users.id', use_alter=True, ondelete='CASCADE'),
+        unique=True
+    )
     # Relationships.
-    events = relationship('Event', back_populates='organizer')
-    user = relationship('User', back_populates='organizer_profile')
+    events: Mapped["Event"] = relationship(
+        'Event',
+        lazy='joined',
+        back_populates='organizer',
+        cascade='all, delete-orphan'
+    )
+    user: Mapped["User"] = relationship(
+        'User',
+        lazy='joined',
+        back_populates='organizer_profile',
+        uselist=False,
+        cascade='all, delete-orphan'
+    )
     # Boolean fields.
     verified: Mapped[BoolFalse]
     # String fields.
@@ -58,19 +95,20 @@ class Organizer(Base):
 class Profile(Base):
     __tablename__ = 'profiles'
     # Foreign Keys.
-    user_id = Column(
-        Integer, ForeignKey('users.id', use_alter=True),
-        unique=True, nullable=False
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey('users.id', use_alter=True, ondelete='CASCADE'),
+        unique=True
     )
     # Relationships.
-    registered_events = relationship(
-        'Event',
-        back_populates='registered_participants',
-        secondary='event_registrations'
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="profile",
+        lazy='joined',
+        uselist=False,
+        cascade='all, delete-orphan'
     )
-    user = relationship("User", back_populates="profile")
     # Boolean fields.
-    notifications_enabled = Column(Boolean, default=True)
+    notifications_enabled: Mapped[BoolTrue]
     # String fields.
     first_name: Mapped[BasicString]
     last_name: Mapped[BasicString]
