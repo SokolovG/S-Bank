@@ -1,50 +1,45 @@
-from datetime import datetime
-
 from sqlalchemy import (
-    Boolean,
     Column,
     DateTime,
     Enum as SQLAlchemyEnum,
     ForeignKey,
     Integer,
     Numeric,
-    String,
     Table,
 )
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
-from backend.app.infrastructure.database.base import Base
+from backend.app.infrastructure.database.base import (
+    Base,
+    BasicString,
+    IndexedString,
+    DescriptionString,
+    BasicNullString,
+    BasicNullInteger,
+    BoolFalse,
+    IndexedUniqueString
+)
 from backend.app.infrastructure.models.enums import Currency, EventFormat, EventStatus
-
 
 
 class Location(Base):
     __tablename__ = 'locations'
-    id = Column(Integer, primary_key=True, autoincrement=True)
     # String fields.
-    name = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    address = Column(String(MAX_BASIC_LENGTH))
-    city = Column(String(MAX_BASIC_LENGTH), index=True)
-    country = Column(String(MAX_BASIC_LENGTH), index=True)
-    # Date fields.
-    created_at = Column(DateTime, default=datetime.utcnow)
+    name: Mapped[BasicString]
+    address: Mapped[BasicString]
+    city: Mapped[IndexedString]
+    country: Mapped[IndexedString]
     # Relationships.
     events = relationship('Event', back_populates='location')
 
 
 class Category(Base):
     __tablename__ = 'categories'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    # String fields.
-    name = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    slug = Column(
-        String(MAX_BASIC_LENGTH),
-        unique=True, nullable=False, index=True
-    )
-    description = Column(String(MAX_DESCRIPTION_LENGTH), nullable=True)
-    # Date fields.
-    created_at = Column(DateTime, default=datetime.utcnow)
+    # String BasicString.
+    name: Mapped[BasicString]
+    slug: Mapped[IndexedUniqueString]
+    description: Mapped[DescriptionString] = mapped_column(nullable=True)
     # Relationships.
     events = relationship('Event', back_populates='category')
 
@@ -59,12 +54,8 @@ event_registrations = Table(
 
 class Event(Base):
     __tablename__ = 'events'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(MAX_BASIC_LENGTH), nullable=False, index=True)
-    description = Column(
-        String(MAX_DESCRIPTION_LENGTH),
-        nullable=False
-    )
+    name: Mapped[IndexedString]
+    description: Mapped[DescriptionString]
     # Foreign Keys.
     author_id = Column(Integer, ForeignKey('users.id', use_alter=True))
     location_id = Column(
@@ -101,20 +92,20 @@ class Event(Base):
     )
     currency = Column(SQLAlchemyEnum(Currency), default=Currency.USD)
     # Boolean fields.
-    is_published = Column(Boolean, default=False)
-    is_online = Column(Boolean, default=False)
-    is_verify = Column(Boolean, default=False)
+    is_published: Mapped[BoolFalse]
+    is_online: Mapped[BoolFalse]
+    is_verify: Mapped[BoolFalse]
     # Date fields.
-    pub_date = Column(DateTime)
-    event_start_date = Column(DateTime)
-    event_end_date = Column(DateTime)
-    registration_deadline = Column(DateTime, nullable=True)
+    pub_date: Mapped[DateTime]
+    event_start_date: Mapped[DateTime]
+    event_end_date: Mapped[DateTime]
+    registration_deadline: Mapped[DateTime] = mapped_column(nullable=True)
     # String fields.
-    meeting_link = Column(String(MAX_BASIC_LENGTH), nullable=True)
-    timezone = Column(String(MAX_BASIC_LENGTH), default='UTC')
+    meeting_link: Mapped[BasicNullString]
+    timezone: Mapped[BasicString] = mapped_column(default='UTC')
     # Numeric fields
-    max_participants = Column(Integer, nullable=True)
-    price = Column(Numeric(10, 2), nullable=True)
-    current_participants = Column(Integer, nullable=True)
+    max_participants: Mapped[BasicNullInteger]
+    price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=True)
+    current_participants: Mapped[BasicNullInteger]
 
 

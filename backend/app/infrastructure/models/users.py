@@ -1,33 +1,25 @@
-from datetime import datetime
-
 from sqlalchemy import (
     Boolean,
     Column,
-    DateTime,
     ForeignKey,
     Integer,
     Numeric,
-    String,
 )
 from sqlalchemy.schema import CheckConstraint
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
-from backend.app.infrastructure.database.base import Base
+from backend.app.infrastructure.database.base import Base, BasicString, DescriptionString, BoolFalse, BoolTrue, BasicNullString, IndexedUniqueString
 
 
 class User(Base):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True, autoincrement=True)
     # String fields.
-    username = Column(String(MAX_BASIC_LENGTH), unique=True, index=True, nullable=False)
-    email = Column(String(MAX_BASIC_LENGTH), unique=True, index=True, nullable=False)
-    hashed_password = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    # Datetime fields
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    username: Mapped[IndexedUniqueString]
+    email: Mapped[IndexedUniqueString]
+    hashed_password: Mapped[BasicString]
     # Boolean fields
-    is_verified = Column(Boolean, default=False, nullable=False)
-    is_active = Column(Boolean, default=True, nullable=False)
+    is_verified: Mapped[BoolFalse]
+    is_active: Mapped[BoolTrue]
     # Relationships.
     profile = relationship('Profile', back_populates='user',
                            uselist=False,
@@ -40,33 +32,31 @@ class User(Base):
 
 class Organizer(Base):
     __tablename__ = 'organizers'
-    id = Column(Integer, primary_key=True, autoincrement=True)
     # Foreign Keys.
     user_id = Column(Integer, ForeignKey('users.id', use_alter=True), unique=True)
     # Relationships.
     events = relationship('Event', back_populates='organizer')
     user = relationship('User', back_populates='organizer_profile')
     # Boolean fields.
-    verified = Column(Boolean, default=False)
-    # Date fields.
-    created_at = Column(DateTime, default=datetime.utcnow)
+    verified: Mapped[BoolFalse]
     # String fields.
-    website = Column(String(MAX_BASIC_LENGTH), nullable=True)
-    contact = Column(String(MAX_BASIC_LENGTH), nullable=True)
-    name = Column(String(MAX_BASIC_LENGTH), nullable=False)
-    description = Column(String(MAX_DESCRIPTION_LENGTH), nullable=False)
-    logo_url = Column(String(MAX_BASIC_LENGTH), unique=True)
+    website: Mapped[BasicNullString]
+    contact: Mapped[BasicNullString]
+    name: Mapped[BasicString]
+    description: Mapped[DescriptionString]
+    logo_url: Mapped[BasicString] = mapped_column(unique=True)
     # Numeric fields
-    number_of_events = Column(Integer, default=0)
-    rating = Column(
+    number_of_events: Mapped[int] = mapped_column(Integer, default=0)
+    rating: Mapped[float] = mapped_column(
         Numeric(3, 2),
         CheckConstraint('rating >= 0 AND rating <= 5'),
-        default=0)
+        default=0
+    )
+
 
 
 class Profile(Base):
     __tablename__ = 'profiles'
-    id = Column(Integer, primary_key=True, autoincrement=True)
     # Foreign Keys.
     user_id = Column(
         Integer, ForeignKey('users.id', use_alter=True),
@@ -81,11 +71,9 @@ class Profile(Base):
     user = relationship("User", back_populates="profile")
     # Boolean fields.
     notifications_enabled = Column(Boolean, default=True)
-    # Date fields.
-    created_at = Column(DateTime, default=datetime.utcnow)
     # String fields.
-    first_name = Column(String(MAX_BASIC_LENGTH))
-    last_name = Column(String(MAX_BASIC_LENGTH))
-    avatar_url = Column(String(MAX_BASIC_LENGTH), nullable=True)
-    interested_technologies = Column(String(MAX_BASIC_LENGTH), nullable=True)
-    location = Column(String(MAX_BASIC_LENGTH), nullable=True)
+    first_name: Mapped[BasicString]
+    last_name: Mapped[BasicString]
+    avatar_url: Mapped[BasicNullString]
+    interested_technologies: Mapped[BasicNullString]
+    location:  Mapped[BasicNullString]
