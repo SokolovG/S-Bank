@@ -1,7 +1,6 @@
 from decimal import Decimal
 
 from sqlalchemy import (
-    Column,
     DateTime,
     ForeignKey,
     Numeric,
@@ -60,12 +59,12 @@ class Event(Base):
     description: Mapped[DescriptionString]
     # Foreign Keys.
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizer.id', use_alter=True))
+        ForeignKey('organizers.id', use_alter=True))
     location_id: Mapped[int] = mapped_column(
         ForeignKey('locations.id', use_alter=True),
         nullable=True
     )
-    category_id: Mapped[int] = Column(
+    category_id: Mapped[int] = mapped_column(
         ForeignKey('categories.id', use_alter=True),
     )
     # Relationships.

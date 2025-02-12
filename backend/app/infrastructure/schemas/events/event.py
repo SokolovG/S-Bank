@@ -1,99 +1,70 @@
 from datetime import datetime
+from decimal import Decimal
 from typing import Optional
-from pydantic import condecimal, Field
+
+from pydantic import HttpUrl
 
 from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
-from backend.app.infrastructure.schemas.events.category import (
-    CategoryRead,
-    CategoryUpdate
-)
-from backend.app.infrastructure.models.enums import EventFormat, EventStatus, Currency
-from backend.app.infrastructure.schemas.events.location import (
-    LocationRead,
-    LocationUpdate
-)
-from backend.app.infrastructure.schemas.users.organizer import OrganizerRead
 from backend.app.infrastructure.schemas.base import BaseModel
 
 
 class EventBase(BaseModel):
     name: BasicString
     description: DescriptionField
+    event_start_date: datetime
+    event_end_date: datetime
+    registration_deadline: datetime
+    format: BasicString
+    status: BasicString
+    meeting_link: Optional[HttpUrl] = None
+    timezone: BasicString
+    max_participants: Optional[int] = None
+    price: Optional[Decimal] = None
+    currency: Optional[BasicString] = None
+    current_participants: Optional[int] = 0
 
 
 class EventRead(EventBase):
     id: int
-    location: Optional[LocationRead] = None
-    category: CategoryRead
-    organizer: OrganizerRead
+    location_id: Optional[int]
+    category_id: Optional[int]
+    organizer_id: Optional[int]
     # Boolean fields.
     is_published: bool
     is_online: bool
     is_verify: bool
     # Date fields.
     pub_date: datetime
-    event_start_date: datetime
-    event_end_date: datetime
-    registration_deadline: datetime
-    # String fields
-    format: EventFormat
-    status: EventStatus
-    meeting_link: Optional[BasicString] = None
-    timezone: str
-    # Integer fields
-    max_participants: Optional[int] = None
-    price: Optional[condecimal(max_digits=10, decimal_places=2)]
-    currency: Optional[Currency] = None
-    current_participants: Optional[int] = 0
-
 
 class EventCreate(EventBase):
-    location: Optional[LocationRead] = None
-    category_id: int
-    organizer_id: int
-
-    # Boolean fields
-    is_online: bool = False
-    is_published: bool = False
-    is_verify: bool = False
-
-    # Enum fields
-    format: EventFormat = EventFormat.OFFLINE
-    status: EventStatus = EventStatus.PLANNED
-
-    # Date fields
-    event_start_date: datetime
-    event_end_date: datetime
-    registration_deadline: datetime
-
-    # String fields
-    meeting_link: Optional[BasicString] = None
-    timezone: str = 'UTC'
-
-    # Number fields
-    max_participants: Optional[int] = Field(default=None, ge=0)
-    price: Optional[condecimal(max_digits=10, decimal_places=2)] = Field(
-        default=None,
-        ge=0
-    )
-    currency: Optional[Currency] = None
-    current_participants: Optional[int] = Field(default=0, ge=0)
+    pass
 
 
 class EventUpdate(EventBase):
-    name: BasicString
-    description: DescriptionField
-    location: Optional[LocationUpdate] = None
-    category: CategoryUpdate
-    is_online: bool
-    event_start_date: Optional[datetime]
-    event_end_date: Optional[datetime]
-    registration_deadline: Optional[datetime]
-    format: Optional[EventFormat] = None
-    status: Optional[EventStatus] = None
-    meeting_link: Optional[BasicString] = None
-    timezone: Optional[str]
+    name: Optional[BasicString]
+    description: Optional[DescriptionField]
+    # Foreign Keys.
+    organizer_id: Optional[int]
+    location_id: Optional[int]
+    category_id: Optional[int]
+    # Enum fields
+    format: Optional[BasicString] = None
+    status: Optional[BasicString] = None
+    currency: Optional[BasicString] = None
+    # Boolean fields.
+    is_published: Optional[bool] = None
+    is_online: Optional[bool] = None
+    is_verify: Optional[bool] = None
+    # Date fields.
+    pub_date: Optional[datetime] = None
+    event_start_date: Optional[datetime] = None
+    event_end_date: Optional[datetime] = None
+    registration_deadline: Optional[datetime] = None
+    # String fields.
+    meeting_link: Optional[HttpUrl] = None
+    timezone: Optional[BasicString] = None
+    # Numeric fields
     max_participants: Optional[int] = None
-    price: Optional[condecimal(max_digits=10, decimal_places=2)]
-    currency: Optional[Currency] = None
-    current_participants: Optional[int]
+    price: Optional[Decimal] = None
+    current_participants: Optional[int] = None
+

@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from backend.app.infrastructure.schemas.types import BasicString
 from backend.app.infrastructure.schemas.base import BaseModel
@@ -16,9 +17,12 @@ class LocationRead(LocationBase):
     created_at: datetime
 
 
-class LocationUpdate(LocationBase):
-    pass
-
-
 class LocationCreate(BaseModel):
     pass
+
+
+class LocationUpdate(LocationBase):
+    name: Optional[BasicString]
+    address: Optional[BasicString]
+    city: Optional[BasicString]
+    country: Optional[BasicString]
