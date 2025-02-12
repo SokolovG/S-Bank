@@ -27,3 +27,8 @@ class ParticipantStatus(str, Enum):
     CANCELLED = 'cancelled'
     ATTENDED = 'attended'
     NO_SHOW = 'no_show'
+
+
+class Gender(str, Enum):
+    MALE = 'male'
+    FEMALE = 'female'

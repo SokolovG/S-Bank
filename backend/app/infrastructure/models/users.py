@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import (
     ForeignKey,
     Numeric,
@@ -18,6 +20,7 @@ from backend.app.infrastructure.database.base import (
     BasicNullString,
     IndexedUniqueString,
 )
+from backend.app.infrastructure.models.enums import Gender
 
 
 class User(Base):
@@ -54,18 +57,17 @@ class Organizer(Base):
         unique=True
     )
     # Relationships.
-    authored_events: Mapped[list["Event"]] = relationship(
+    events: Mapped[list["Event"]] = relationship(
         'Event',
-        lazy='select',
-        back_populates='organizer',
-        cascade='all, delete-orphan'
+        secondary='event_organizers',
+        lazy='selectin',
+        back_populates='organizers',
     )
     user: Mapped["User"] = relationship(
         'User',
         lazy='joined',
         back_populates='organizer_profile',
         uselist=False,
-        cascade='all, delete-orphan'
     )
     # Boolean fields.
     verified: Mapped[BoolFalse]
@@ -74,7 +76,7 @@ class Organizer(Base):
     contact: Mapped[BasicNullString]
     name: Mapped[BasicString]
     description: Mapped[DescriptionString]
-    logo_url: Mapped[BasicString] = mapped_column(unique=True)
+    logo_url: Mapped[BasicNullString] = mapped_column(unique=True)
     # Numeric fields
     rating: Mapped[float] = mapped_column(
         Numeric(3, 2),
@@ -101,7 +103,8 @@ class Profile(Base):
     registered_events: Mapped[list["Event"]] = relationship(
         "Event",
         secondary='event_registrations',
-        back_populates='registered_profiles'
+        back_populates='registered_profiles',
+        lazy='selectin'
     )
     # Boolean fields.
     notifications_enabled: Mapped[BoolTrue]
@@ -111,3 +114,5 @@ class Profile(Base):
     avatar_url: Mapped[BasicNullString]
     interested_technologies: Mapped[BasicNullString]
     location:  Mapped[BasicNullString]
+    birth_date: Mapped[date]
+    gender: Mapped[Gender] = mapped_column(nullable=True)

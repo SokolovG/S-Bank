@@ -4,9 +4,7 @@ from sqlalchemy import (
     Column,
     DateTime,
     ForeignKey,
-    Integer,
     Numeric,
-    Table,
 )
 from sqlalchemy.orm import (
     Mapped,
@@ -71,7 +69,12 @@ class Event(Base):
         ForeignKey('categories.id', use_alter=True),
     )
     # Relationships.
-    organizer: Mapped["Organizer"] = relationship('Organizer', back_populates='authored_events')
+    organizers: Mapped[list["Organizer"]] = relationship(
+        'Organizer',
+        secondary='EventOrganizers',
+        back_populates='events',
+        lazy='select'
+    )
     location: Mapped["Location"] = relationship('Location', back_populates='events')
     category: Mapped["Category"] = relationship('Category', back_populates='events')
     registered_profiles: Mapped[list["Profile"]] = relationship(

@@ -1,14 +1,15 @@
 from datetime import datetime
 from typing import Optional
 
+from pydantic import EmailStr
+
 from backend.app.infrastructure.schemas.base import BaseModel
-from backend.app.infrastructure.schemas.types import BasicString
+from backend.app.infrastructure.schemas.types import BasicString, PasswordString
 
 
 class UserBase(BaseModel):
     username: BasicString
-    email: BasicString
-    hashed_password: BasicString
+    email: EmailStr
 
 
 class UserRead(UserBase):
@@ -19,9 +20,12 @@ class UserRead(UserBase):
 
 
 class UserCreate(UserBase):
-    pass
+    password: PasswordString
+    password_confirm: PasswordString
 
 
-class UserUpdate(BaseModel):
-    username: Optional[BasicString]
-    email: Optional[BasicString]
+class UserUpdate(UserBase):
+    username: Optional[BasicString] = None
+    email: Optional[BasicString] = None
+    password: Optional[PasswordString] = None
+    password_confirm: Optional[PasswordString] = None
