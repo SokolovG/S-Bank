@@ -7,9 +7,14 @@ from alembic import context
 from dotenv import load_dotenv
 
 from backend.app.infrastructure.database.base import Base
-from backend.app.infrastructure.models.events import Event, Category, Location # noqa
-from backend.app.infrastructure.models.users import User, Profile, Organizer # noqa
-
+from backend.app.infrastructure.models import ( # noqa: 401
+    Event,
+    Category,
+    Location,
+    User,
+    Profile,
+    Organizer
+)
 
 config = context.config
 load_dotenv()

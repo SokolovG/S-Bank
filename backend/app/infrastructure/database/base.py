@@ -1,10 +1,18 @@
-from typing import Annotated
 from datetime import datetime
+from typing import Annotated
 
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, func, String, Boolean
+from sqlalchemy import Boolean, Integer, String, func
+from sqlalchemy.orm import (
+   DeclarativeBase,
+   Mapped,
+   mapped_column,
+)
 
-from backend.app.constants import MAX_BASIC_LENGTH, MAX_DESCRIPTION_LENGTH
+from backend.app.constants import (
+   MAX_BASIC_LENGTH,
+   MAX_DESCRIPTION_LENGTH,
+)
+
 
 class Base(DeclarativeBase):
     """Base class for models."""

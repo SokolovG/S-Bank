@@ -4,7 +4,7 @@ from enum import Enum
 class EventFormat(str, Enum):
     ONLINE = 'online'
     OFFLINE = 'offline'
-    Hybrid = 'hybrid'
+    HYBRID = 'hybrid'
 
 
 class EventStatus(str, Enum):
@@ -18,3 +18,12 @@ class Currency(str, Enum):
     USD = 'USD'
     EUR = 'EUR'
     RUB = ' RUB'
+
+
+class ParticipantStatus(str, Enum):
+    REGISTERED = 'registered'
+    CONFIRMED = 'confirmed'
+    WAITLISTED = 'waitlisted'
+    CANCELLED = 'cancelled'
+    ATTENDED = 'attended'
+    NO_SHOW = 'no_show'

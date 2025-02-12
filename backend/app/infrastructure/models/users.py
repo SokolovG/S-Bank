@@ -1,6 +1,5 @@
 from sqlalchemy import (
     ForeignKey,
-    Integer,
     Numeric,
 )
 from sqlalchemy.orm import (
@@ -38,12 +37,6 @@ class User(Base):
         lazy='joined',
         cascade='all, delete-orphan'
     )
-    authored_events: Mapped[list["Event"]] = relationship(
-        'Event',
-        lazy='joined',
-        back_populates='author',
-        cascade='all, delete-orphan'
-    )
     organizer_profile: Mapped["Organizer"] = relationship(
         'Organizer',
         back_populates='user',
@@ -61,9 +54,9 @@ class Organizer(Base):
         unique=True
     )
     # Relationships.
-    events: Mapped["Event"] = relationship(
+    authored_events: Mapped[list["Event"]] = relationship(
         'Event',
-        lazy='joined',
+        lazy='select',
         back_populates='organizer',
         cascade='all, delete-orphan'
     )
@@ -83,7 +76,6 @@ class Organizer(Base):
     description: Mapped[DescriptionString]
     logo_url: Mapped[BasicString] = mapped_column(unique=True)
     # Numeric fields
-    number_of_events: Mapped[int] = mapped_column(Integer, default=0)
     rating: Mapped[float] = mapped_column(
         Numeric(3, 2),
         CheckConstraint('rating >= 0 AND rating <= 5'),
@@ -105,7 +97,11 @@ class Profile(Base):
         back_populates="profile",
         lazy='joined',
         uselist=False,
-        cascade='all, delete-orphan'
+    )
+    registered_events: Mapped[list["Event"]] = relationship(
+        "Event",
+        secondary='event_registrations',
+        back_populates='registered_profiles'
     )
     # Boolean fields.
     notifications_enabled: Mapped[BoolTrue]
