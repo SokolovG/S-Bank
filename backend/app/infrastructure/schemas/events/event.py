@@ -20,7 +20,7 @@ class EventBase(BaseModel):
     timezone: BasicString
     max_participants: Optional[int] = None
     price: Optional[Decimal] = None
-    currency: Optional[BasicString] = None
+    currency: BasicString
     current_participants: Optional[int] = 0
 
 
@@ -37,7 +37,9 @@ class EventRead(EventBase):
     pub_date: datetime
 
 class EventCreate(EventBase):
-    pass
+    location_id: Optional[int]
+    category_id: Optional[int]
+    organizer_id: Optional[int]
 
 
 class EventUpdate(EventBase):

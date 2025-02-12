@@ -48,7 +48,7 @@ class Category(Base):
     # String BasicString.
     name: Mapped[BasicString]
     slug: Mapped[IndexedUniqueString]
-    description: Mapped[DescriptionString] = mapped_column(nullable=True)
+    description: Mapped[DescriptionString]
     # Relationships.
     events = relationship('Event', back_populates='category')
 
@@ -70,7 +70,7 @@ class Event(Base):
     # Relationships.
     organizers: Mapped[list["Organizer"]] = relationship(
         'Organizer',
-        secondary='EventOrganizers',
+        secondary='event_organizers',
         back_populates='events',
         lazy='select'
     )
@@ -90,7 +90,6 @@ class Event(Base):
     )
     currency: Mapped[Currency] = mapped_column(
         default=Currency.USD,
-        nullable=True
     )
     # Boolean fields.
     is_published: Mapped[BoolFalse]

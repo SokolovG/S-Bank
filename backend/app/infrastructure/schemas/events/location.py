@@ -17,7 +17,7 @@ class LocationRead(LocationBase):
     created_at: datetime
 
 
-class LocationCreate(BaseModel):
+class LocationCreate(LocationBase):
     pass
 
 
