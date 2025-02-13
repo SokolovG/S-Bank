@@ -18,12 +18,14 @@ class UserBase(BaseModel):
     - UserCreate: For creating new users
     - UserUpdate: For updating existing users
     """
+
     username: BasicString
     email: EmailStr
 
 
 class UserRead(UserBase):
     """Schema for reading user data."""
+
     id: int
     created_at: datetime
     is_verified: bool
@@ -39,6 +41,7 @@ class UserCreate(UserBase):
     Validation rules:
     1. The password must coincide
     """
+
     password: PasswordString
     password_confirm: PasswordString
 
@@ -57,7 +60,6 @@ class UserCreate(UserBase):
         return value
 
 
-
 class UserUpdate(UserBase):
     """Schema for updating existing user.
 
@@ -66,6 +68,7 @@ class UserUpdate(UserBase):
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
     """
+
     username: Optional[BasicString] = None
     email: Optional[BasicString] = None
     password: Optional[PasswordString] = None

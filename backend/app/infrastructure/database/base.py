@@ -21,8 +21,13 @@ class Base(DeclarativeBase):
     - id
     - created_at
     """
+
     __abstract__ = True
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        autoincrement=True
+    )
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
 
@@ -33,7 +38,10 @@ BasicNullString = Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH), 
 # Indexed string with max_length limit.
 IndexedString = Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH), index=True)]
 # Indexed string with max_length limit und unique=True.
-IndexedUniqueString = Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH), index=True, unique=True)]
+IndexedUniqueString = Annotated[
+    str,
+    mapped_column(String(length=MAX_BASIC_LENGTH), index=True, unique=True)
+]
 # Basic string for description with max_length limit.
 DescriptionString = Annotated[str, mapped_column(String(length=MAX_DESCRIPTION_LENGTH))]
 # Basic bool var, default=False.

@@ -20,6 +20,7 @@ class LocationBase(BaseModel):
     - LocationCreate: For creating new locations
     - LocationUpdate: For updating existing locations
     """
+
     name: BasicString
     address: BasicString
     city: BasicString
@@ -28,6 +29,7 @@ class LocationBase(BaseModel):
 
 class LocationRead(LocationBase):
     """Schema for reading location data."""
+
     id: int
     created_at: datetime
 

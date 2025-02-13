@@ -19,6 +19,7 @@ class EventBase(BaseModel):
     - EventCreate: For creating new event
     - EventUpdate: For updating existing events
     """
+
     # Basic event information
     name: BasicString
     description: DescriptionField
@@ -129,6 +130,7 @@ class EventRead(EventBase):
 
     Extends EventBase with additional fields needed for data retrieval.
     """
+
     # Identification fields
     id: int
     location_id: Optional[int]
@@ -149,6 +151,7 @@ class EventCreate(EventBase):
 
     Extends EventBase with fields required for event creation.
     """
+
     # Relationship fields
     location_id: Optional[int] = None
     category_id: Optional[int] = None
@@ -163,6 +166,7 @@ class EventUpdate(EventBase):
         - Only changed fields need to be included in request
         - Validation from base class still applies to provided fields
     """
+
     # Basic information
     name: Optional[BasicString] = None
     description: Optional[DescriptionField] = None

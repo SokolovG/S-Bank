@@ -4,7 +4,10 @@ from typing import Optional
 from pydantic import field_validator, model_validator
 
 from backend.app.infrastructure.schemas.base import BaseModel
-from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
+from backend.app.infrastructure.schemas.types import (
+    BasicString,
+    DescriptionField
+)
 
 
 class CategoryBase(BaseModel):
@@ -16,7 +19,8 @@ class CategoryBase(BaseModel):
     - CategoryRead: For retrieving category data
     - CategoryCreate: For creating new categories
     - CategoryUpdate: For updating existing categories
-   """
+    """
+
     name: BasicString
     slug: BasicString
     description: DescriptionField
@@ -24,6 +28,7 @@ class CategoryBase(BaseModel):
 
 class CategoryRead(CategoryBase):
     """Schema for reading category data."""
+
     id: int
     created_at: datetime
 
@@ -38,8 +43,8 @@ class CategoryCreate(CategoryBase):
     Validation rules:
     1. Slug is automatically converted to lowercase
     2. Slug cannot be identical to name (case-insensitive)
-
     """
+
     @field_validator('slug')
     def validate_slug(cls, value: str) -> str:
         """Validate and transform slug to lowercase.
@@ -79,6 +84,7 @@ class CategoryUpdate(CategoryBase):
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
     """
+
     name: Optional[BasicString] = None
     slug: Optional[BasicString] = None
     description: Optional[DescriptionField] = None

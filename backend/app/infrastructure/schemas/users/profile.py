@@ -49,6 +49,7 @@ class ProfileBase(BaseModel):
 
 class ProfileRead(ProfileBase):
     """Schema for reading Profile data."""
+
     user_id: int
     id: int
     created_at: datetime
@@ -66,6 +67,7 @@ class ProfileUpdate(ProfileBase):
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
     """
+
     notifications_enabled: Optional[bool] = None
     interested_technologies: Optional[BasicString] = None
     location: Optional[BasicString] = None

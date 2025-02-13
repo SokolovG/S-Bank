@@ -18,6 +18,7 @@ class OrganizerBase(BaseModel):
     - OrganizerCreate: For creating new organizer
     - OrganizerUpdate: For updating existing organizers
     """
+
     website: Optional[HttpUrl] = None
     contact: Optional[BasicString] = None
     name: BasicString
@@ -27,6 +28,7 @@ class OrganizerBase(BaseModel):
 
 class OrganizerRead(OrganizerBase):
     """Schema for reading organizer data."""
+
     id: int
     user_id: int
     verified: bool
@@ -52,6 +54,7 @@ class OrganizerUpdate(OrganizerBase):
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
     """
+
     website: Optional[HttpUrl] = None
     contact: Optional[BasicString] = None
     name: Optional[BasicString] = None

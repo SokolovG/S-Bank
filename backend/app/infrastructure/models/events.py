@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     DateTime,
@@ -26,6 +27,9 @@ from backend.app.infrastructure.models.enums import (
     EventFormat,
     EventStatus,
 )
+
+if TYPE_CHECKING:
+    from .users import Organizer, Profile
 
 
 class Location(Base):
@@ -107,5 +111,3 @@ class Event(Base):
     max_participants: Mapped[BasicNullInteger]
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=True)
     current_participants: Mapped[BasicNullInteger]
-
-

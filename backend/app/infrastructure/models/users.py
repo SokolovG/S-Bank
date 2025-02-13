@@ -1,4 +1,5 @@
 from datetime import date
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     ForeignKey,
@@ -21,6 +22,10 @@ from backend.app.infrastructure.database.base import (
     IndexedUniqueString,
 )
 from backend.app.infrastructure.models.enums import Gender
+
+
+if TYPE_CHECKING:
+    from .events import Event
 
 
 class User(Base):
@@ -85,7 +90,6 @@ class Organizer(Base):
     )
 
 
-
 class Profile(Base):
     __tablename__ = 'profiles'
     # Foreign Keys.
@@ -113,6 +117,6 @@ class Profile(Base):
     last_name: Mapped[BasicString]
     avatar_url: Mapped[BasicNullString]
     interested_technologies: Mapped[BasicNullString]
-    location:  Mapped[BasicNullString]
+    location: Mapped[BasicNullString]
     birth_date: Mapped[date]
     gender: Mapped[Gender] = mapped_column(nullable=True)
