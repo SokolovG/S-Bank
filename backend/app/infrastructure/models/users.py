@@ -1,15 +1,9 @@
+"""Models for user management including basic users, organizers and profiles."""
 from datetime import date
 from typing import TYPE_CHECKING
 
-from sqlalchemy import (
-    ForeignKey,
-    Numeric,
-)
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_column,
-    relationship,
-)
+from sqlalchemy import ForeignKey, Numeric
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import CheckConstraint
 
 from backend.app.infrastructure.database.base import (
@@ -23,21 +17,29 @@ from backend.app.infrastructure.database.base import (
 )
 from backend.app.infrastructure.models.enums import Gender
 
-
 if TYPE_CHECKING:
     from .events import Event
 
 
 class User(Base):
+    """Base user model containing authentication and core user data.
+
+    This model represents the basic user entity with authentication details
+    and links to specialized profiles.
+    """
+
     __tablename__ = 'users'
-    # String fields.
+
+    # String fields
     username: Mapped[IndexedUniqueString]
     email: Mapped[IndexedUniqueString]
     hashed_password: Mapped[BasicString]
+
     # Boolean fields
     is_verified: Mapped[BoolFalse]
     is_active: Mapped[BoolTrue]
-    # Relationships.
+
+    # Relationships
     profile: Mapped["Profile"] = relationship(
         'Profile',
         back_populates='user',
@@ -55,13 +57,20 @@ class User(Base):
 
 
 class Organizer(Base):
+    """Model for event organizers.
+
+    Represents organizations or individuals who can create and manage events.
+    """
+
     __tablename__ = 'organizers'
-    # Foreign Keys.
+
+    # Foreign Keys
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id', use_alter=True, ondelete='CASCADE'),
         unique=True
     )
-    # Relationships.
+
+    # Relationships
     events: Mapped[list["Event"]] = relationship(
         'Event',
         secondary='event_organizers',
@@ -74,14 +83,17 @@ class Organizer(Base):
         back_populates='organizer_profile',
         uselist=False,
     )
-    # Boolean fields.
+
+    # Boolean fields
     verified: Mapped[BoolFalse]
-    # String fields.
+
+    # String fields
     website: Mapped[BasicNullString]
     contact: Mapped[BasicNullString]
     name: Mapped[BasicString]
     description: Mapped[DescriptionString]
     logo_url: Mapped[BasicNullString] = mapped_column(unique=True)
+
     # Numeric fields
     rating: Mapped[float] = mapped_column(
         Numeric(3, 2),
@@ -91,13 +103,20 @@ class Organizer(Base):
 
 
 class Profile(Base):
+    """Regular user profile model.
+
+    Contains additional information about regular users.
+    """
+
     __tablename__ = 'profiles'
-    # Foreign Keys.
+
+    # Foreign Keys
     user_id: Mapped[int] = mapped_column(
         ForeignKey('users.id', use_alter=True, ondelete='CASCADE'),
         unique=True
     )
-    # Relationships.
+
+    # Relationships
     user: Mapped["User"] = relationship(
         "User",
         back_populates="profile",
@@ -110,9 +129,11 @@ class Profile(Base):
         back_populates='registered_profiles',
         lazy='selectin'
     )
-    # Boolean fields.
+
+    # Boolean fields
     notifications_enabled: Mapped[BoolTrue]
-    # String fields.
+
+    # String fields
     first_name: Mapped[BasicString]
     last_name: Mapped[BasicString]
     avatar_url: Mapped[BasicNullString]

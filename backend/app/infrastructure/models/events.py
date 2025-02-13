@@ -1,16 +1,9 @@
+"""Models for events, locations, and categories management."""
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import (
-    DateTime,
-    ForeignKey,
-    Numeric,
-)
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_column,
-    relationship,
-)
+from sqlalchemy import DateTime, ForeignKey, Numeric
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.app.infrastructure.database.base import (
     Base,
@@ -33,13 +26,20 @@ if TYPE_CHECKING:
 
 
 class Location(Base):
+    """Model for event locations.
+
+    Represents physical locations where events can take place.
+    """
+
     __tablename__ = 'locations'
-    # String fields.
+
+    # String fields
     name: Mapped[BasicString]
     address: Mapped[BasicString]
     city: Mapped[IndexedString]
     country: Mapped[IndexedString]
-    # Relationships.
+
+    # Relationships
     events: Mapped["Event"] = relationship(
         'Event',
         back_populates='location',
@@ -48,20 +48,35 @@ class Location(Base):
 
 
 class Category(Base):
+    """Model for event categories.
+
+    Represents different types/categories of events.
+    """
+
     __tablename__ = 'categories'
-    # String BasicString.
+
+    # String fields
     name: Mapped[BasicString]
     slug: Mapped[IndexedUniqueString]
     description: Mapped[DescriptionString]
-    # Relationships.
+
+    # Relationships
     events = relationship('Event', back_populates='category')
 
 
 class Event(Base):
+    """Model for events.
+
+    Main event model containing all event-related information.
+    """
+
     __tablename__ = 'events'
+
+    # Basic fields
     name: Mapped[IndexedString]
     description: Mapped[DescriptionString]
-    # Foreign Keys.
+
+    # Foreign Keys
     organizer_id: Mapped[int] = mapped_column(
         ForeignKey('organizers.id', use_alter=True))
     location_id: Mapped[int] = mapped_column(
@@ -71,20 +86,28 @@ class Event(Base):
     category_id: Mapped[int] = mapped_column(
         ForeignKey('categories.id', use_alter=True),
     )
-    # Relationships.
+
+    # Relationships
     organizers: Mapped[list["Organizer"]] = relationship(
         'Organizer',
         secondary='event_organizers',
         back_populates='events',
         lazy='select'
     )
-    location: Mapped["Location"] = relationship('Location', back_populates='events')
-    category: Mapped["Category"] = relationship('Category', back_populates='events')
+    location: Mapped["Location"] = relationship(
+        'Location',
+        back_populates='events'
+    )
+    category: Mapped["Category"] = relationship(
+        'Category',
+        back_populates='events'
+    )
     registered_profiles: Mapped[list["Profile"]] = relationship(
         "Profile",
         secondary='event_registrations',
         back_populates='registered_events'
     )
+
     # Enum fields
     format: Mapped[EventFormat] = mapped_column(
         default=EventFormat.OFFLINE,
@@ -95,18 +118,22 @@ class Event(Base):
     currency: Mapped[Currency] = mapped_column(
         default=Currency.USD,
     )
-    # Boolean fields.
+
+    # Boolean fields
     is_published: Mapped[BoolFalse]
     is_online: Mapped[BoolFalse]
     is_verify: Mapped[BoolFalse]
-    # Date fields.
+
+    # Date fields
     pub_date: Mapped[DateTime]
     event_start_date: Mapped[DateTime]
     event_end_date: Mapped[DateTime]
     registration_deadline: Mapped[DateTime] = mapped_column(nullable=True)
-    # String fields.
+
+    # String fields
     meeting_link: Mapped[BasicNullString]
     timezone: Mapped[BasicString] = mapped_column(default='UTC')
+
     # Numeric fields
     max_participants: Mapped[BasicNullInteger]
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=True)
