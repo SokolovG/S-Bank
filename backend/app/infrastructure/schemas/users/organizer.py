@@ -9,6 +9,15 @@ from backend.app.infrastructure.schemas.base import BaseModel
 
 
 class OrganizerBase(BaseModel):
+    """Base Pydantic schema for Organizer model.
+
+    This class serves as a foundation for all organizer-related schemas.
+    All derived schemas inherit these base fields:
+    Used as a parent class for:
+    - OrganizerRead: For retrieving organizer data
+    - OrganizerCreate: For creating new organizer
+    - OrganizerUpdate: For updating existing organizers
+    """
     website: Optional[HttpUrl] = None
     contact: Optional[BasicString] = None
     name: BasicString
@@ -17,6 +26,7 @@ class OrganizerBase(BaseModel):
 
 
 class OrganizerRead(OrganizerBase):
+    """Schema for reading organizer data."""
     id: int
     user_id: int
     verified: bool
@@ -31,10 +41,17 @@ class OrganizerRead(OrganizerBase):
 
 
 class OrganizerCreate(OrganizerBase):
-    pass
+    """Schema for creating new organizer."""
 
 
 class OrganizerUpdate(OrganizerBase):
+    """Schema for updating existing organizer.
+
+    Notes:
+    - All fields are optional to allow partial updates
+    - Only changed fields need to be included in request
+    - Validation from base class still applies to provided fields
+    """
     website: Optional[HttpUrl] = None
     contact: Optional[BasicString] = None
     name: Optional[BasicString] = None

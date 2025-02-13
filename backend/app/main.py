@@ -4,7 +4,7 @@ from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.contrib.sqlalchemy.plugins import (
     SQLAlchemyPlugin,
-    SQLAlchemyAsyncConfig
+    SQLAlchemyAsyncConfig,
 )
 
 from backend.app.infrastructure.database.base import Base

@@ -1,12 +1,11 @@
-import os
-
-from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
 
-
 class Settings(BaseSettings):
-    SECRET_KEY: str
+    """DataBase settings.
+
+    All settings for Posters
+    """
     DATABASE_URL: str
     POSTGRES_HOST: str
     POSTGRES_PORT: int
@@ -20,6 +19,7 @@ class Settings(BaseSettings):
         return f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
 
     class Config:
+        """Load env files"""
         env_file = '.env'
         env_file_encoding = 'utf-8'
 

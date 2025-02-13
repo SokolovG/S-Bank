@@ -1,12 +1,11 @@
-import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
-from dotenv import load_dotenv
 
 from backend.app.infrastructure.database.base import Base
+from backend.app.core.config.settings import settings
 from backend.app.infrastructure.models import ( # noqa: 401
     Event,
     Category,
@@ -17,16 +16,13 @@ from backend.app.infrastructure.models import ( # noqa: 401
 )
 
 config = context.config
-load_dotenv()
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-
-DATABASE_URL = os.getenv('DATABASE_URL')
 config.set_main_option(
     'sqlalchemy.url',
-    DATABASE_URL + "?async_fallback=True"
+    settings.database_url + "?async_fallback=True"
 )
 
 target_metadata = Base.metadata
