@@ -2,7 +2,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import HttpUrl
+from pydantic import HttpUrl, field_validator, ValidationInfo
 
 from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
 from backend.app.infrastructure.schemas.base import BaseModel
@@ -23,6 +23,39 @@ class EventBase(BaseModel):
     currency: BasicString
     current_participants: Optional[int] = 0
 
+    @field_validator('event_end_date')
+    def event_start_date(cls, end_date: datetime, info: ValidationInfo) -> datetime:
+        data = info.data
+        start_date = data.get('event_start_date')
+        if start_date and end_date <= start_date:
+            raise ValueError('End date must be after start date.')
+        return end_date
+
+    @field_validator('registration_deadline')
+    def deadline_before_start(cls, deadline: datetime, info: ValidationInfo) -> datetime:
+        data = info.data
+        start_date = data.get('event_start_date')
+        if start_date and deadline >= start_date:
+            raise ValueError('Registration deadline must be before event start.')
+        return deadline
+
+    @field_validator('current_participants')
+    def validate_number_of_participants(cls, current: int, info: ValidationInfo) -> int:
+        data = info.data
+        max_number = data.get('max_participants')
+        if max_number and current > max_number:
+            raise ValueError('Current participants cannot exceed maximum.')
+        return current
+
+    @field_validator('price')
+    def validate_price_currency(cls, price: Decimal, info: ValidationInfo) -> Decimal:
+        data = info.data
+        if price and price > 0 and 'currency' not in data:
+            raise ValueError('Currency must be specified when price is set.')
+        elif not data['currency']:
+            raise ValueError('Currency cannot be empty when price is set.')
+
+        return price
 
 class EventRead(EventBase):
     id: int
@@ -69,4 +102,3 @@ class EventUpdate(EventBase):
     max_participants: Optional[int] = None
     price: Optional[Decimal] = None
     current_participants: Optional[int] = None
-

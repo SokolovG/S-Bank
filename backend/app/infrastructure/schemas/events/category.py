@@ -20,17 +20,15 @@ class CategoryRead(CategoryBase):
 
 class CategoryCreate(CategoryBase):
     @field_validator('slug')
-    @classmethod
-    def validate_slug(cls, v):
-        v = v.lower()
-        return v
+    def validate_slug(cls, value: str) -> str:
+        value = value.lower()
+        return value
 
     @model_validator(mode='after')
-    @classmethod
-    def validate_name_and_slug_different(cls, data):
-        if data.name.lower() == data.slug:
+    def validate_name_and_slug_different(self) -> "CategoryCreate":
+        if self.name.lower() == self.slug:
             raise ValueError('Slug should not be identical to the name.')
-        return data
+        return self
 
 
 class CategoryUpdate(CategoryBase):

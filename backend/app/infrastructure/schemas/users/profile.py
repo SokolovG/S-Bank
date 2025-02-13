@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import Optional
 
-from pydantic import AnyUrl
+from pydantic import AnyUrl, field_validator
 
 from backend.app.infrastructure.schemas.types import BasicString
 from backend.app.infrastructure.schemas.base import BaseModel
@@ -17,7 +17,11 @@ class ProfileBase(BaseModel):
     birth_date: date
     gender: Optional[BasicString]
 
-
+    @field_validator('birth_date')
+    def validate_birth_date(cls, value: str) -> str:
+        if value > date.today():
+            raise ValueError('Birth date cannot be in the future.')
+        return value
 class ProfileRead(ProfileBase):
     user_id: int
     id: int
