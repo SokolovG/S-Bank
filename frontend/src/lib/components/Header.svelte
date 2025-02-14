@@ -1,26 +1,16 @@
-<script>
-</script>
-
-<header class="flex justify-between bg-gray-700 px-6 py-6 shadow">
-  <a href="/" class="block">
-    <div class="text-2xl font-bold text-[#FFFFFF] hover:text-red-900">
-      DevEvents
-    </div>
-  </a>
-  
-  
-  <div class="flex space-x-6 text-[#FFFFFF] text-xl font-bold">
-    <a href="/events" class="block">
-      <div class="hover:text-red-900 cursor-pointer">
-        Events
-      </div>
+<header class="bg-white items-center flex p-4 border-4 border-b-yellow-600">
+    <a href="/" class="font-bold text-3xl p-2">
+        DevEvents
     </a>
-    
-    <div class="hover:text-red-900 cursor-pointer">Organizers</div>
-    <div class="hover:text-red-900 cursor-pointer">About</div>
-  </div>
-  
-  <div class="text-[#FFFFFF] text-xl font-bold hover:text-red-900 cursor-pointer">
-    Log In
-  </div>
+    <nav class="flex-grow flex justify-end uppercase font-semibold text-gray-900 px-10">
+       <ul class="flex space-x-6 text-xl">
+        <li>
+            <a class="" href="/">Notifications</a>
+        </li>
+        <li><a href="/">Messages</a></li>
+        <li><a href="/">Connections</a></li>
+        <li><a href="/">Try for free</a></li>
+        <li><a href="/">Profile</a></li>
+       </ul>
+    </nav>
 </header>
