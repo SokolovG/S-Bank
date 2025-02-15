@@ -1,7 +1,8 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, ForeignKey, Numeric
+from sqlalchemy import ForeignKey, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.app.infrastructure.database.base import (
@@ -87,10 +88,10 @@ class Event(Base):
     is_verify: Mapped[BoolFalse]
 
     # Date fields
-    pub_date: Mapped[DateTime]
-    event_start_date: Mapped[DateTime]
-    event_end_date: Mapped[DateTime]
-    registration_deadline: Mapped[DateTime] = mapped_column(nullable=True)
+    pub_date: Mapped[datetime]
+    event_start_date: Mapped[datetime]
+    event_end_date: Mapped[datetime]
+    registration_deadline: Mapped[datetime] = mapped_column(nullable=True)
 
     # String fields
     meeting_link: Mapped[BasicNullString]
