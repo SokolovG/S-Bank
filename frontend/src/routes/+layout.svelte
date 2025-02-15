@@ -1,8 +1,8 @@
 <script>
     import "../app.css"
     import { Header, Footer } from "$lib"
-    import EventCard from "$lib/components/EventCard.svelte";
 </script>
+
 <!DOCTYPE html>
 <html lang="ru" class="h-full">
 <head>
@@ -17,12 +17,9 @@
     <!-- Main Content -->
     <main class="flex-grow">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- Здесь будет размещаться основной контент страницы -->
-                <slot/>
+            <slot />
             </div>
-
     </main>
-
     <!-- Footer -->
     <Footer />
 </body>
