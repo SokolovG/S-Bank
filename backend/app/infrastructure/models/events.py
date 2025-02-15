@@ -41,7 +41,7 @@ class Event(Base):
 
     # Foreign Keys
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizers.py.id', use_alter=True))
+        ForeignKey('organizers.id', use_alter=True))
     location_id: Mapped[int] = mapped_column(
         ForeignKey('locations.id', use_alter=True),
         nullable=True

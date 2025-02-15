@@ -1,3 +1,5 @@
+import os
+
 from pydantic_settings import BaseSettings
 
 
@@ -6,7 +8,7 @@ class Settings(BaseSettings):
 
     All settings for Posters
     """
-
+    is_docker: bool = False
     DATABASE_URL: str
     POSTGRES_HOST: str
     POSTGRES_PORT: int
@@ -17,7 +19,8 @@ class Settings(BaseSettings):
     @property
     def database_url(self) -> str:
         """Return database url."""
-        return f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
+        host = 'db' if self.is_docker else 'localhost'
+        return f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{host}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
 
     class Config:
         """Load env files."""

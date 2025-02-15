@@ -46,7 +46,7 @@ class EventOrganizers(Base):
     __tablename__ = 'event_organizers'
 
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizers.py.id', use_alter=True, ondelete='CASCADE'),
+        ForeignKey('organizers.id', use_alter=True, ondelete='CASCADE'),
         primary_key=True
     )
     event_id: Mapped[int] = mapped_column(
