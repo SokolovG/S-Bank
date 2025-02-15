@@ -16,7 +16,7 @@ class OrganizerBase(BaseModel):
     Used as a parent class for:
     - OrganizerRead: For retrieving organizer data
     - OrganizerCreate: For creating new organizer
-    - OrganizerUpdate: For updating existing organizers
+    - OrganizerUpdate: For updating existing organizers.py
     """
 
     website: Optional[HttpUrl] = None

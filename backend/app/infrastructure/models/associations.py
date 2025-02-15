@@ -1,4 +1,4 @@
-"""Models for managing event registrations and organizers relationships."""
+"""Models for managing event registrations and organizers.py relationships."""
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -34,9 +34,9 @@ class EventRegistration(Base):
 
 
 class EventOrganizers(Base):
-    """Model representing relationship between events and their organizers.
+    """Model representing relationship between events and their organizers.py.
 
-    This is a many-to-many relationship table between events and organizers.
+    This is a many-to-many relationship table between events and organizers.py.
 
     Attributes:
         organizer_id: ID of the organizer
@@ -46,7 +46,7 @@ class EventOrganizers(Base):
     __tablename__ = 'event_organizers'
 
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizers.id', use_alter=True, ondelete='CASCADE'),
+        ForeignKey('organizers.py.id', use_alter=True, ondelete='CASCADE'),
         primary_key=True
     )
     event_id: Mapped[int] = mapped_column(

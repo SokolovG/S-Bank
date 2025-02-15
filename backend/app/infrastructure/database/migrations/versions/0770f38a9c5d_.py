@@ -61,7 +61,7 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['author_id'], ['users.id'], use_alter=True),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], use_alter=True),
     sa.ForeignKeyConstraint(['location_id'], ['locations.id'], use_alter=True),
-    sa.ForeignKeyConstraint(['organizer_id'], ['organizers.id'], use_alter=True),
+    sa.ForeignKeyConstraint(['organizer_id'], ['organizers.py.id'], use_alter=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_events_name'), 'events', ['name'], unique=False)
@@ -76,7 +76,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_locations_city'), 'locations', ['city'], unique=False)
     op.create_index(op.f('ix_locations_country'), 'locations', ['country'], unique=False)
-    op.create_table('organizers',
+    op.create_table('organizers.py',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('verified', sa.Boolean(), nullable=True),
@@ -128,7 +128,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_table('users')
     op.drop_table('profiles')
-    op.drop_table('organizers')
+    op.drop_table('organizers.py')
     op.drop_index(op.f('ix_locations_country'), table_name='locations')
     op.drop_index(op.f('ix_locations_city'), table_name='locations')
     op.drop_table('locations')

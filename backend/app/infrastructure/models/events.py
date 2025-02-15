@@ -1,4 +1,3 @@
-"""Models for events, locations, and categories management."""
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
@@ -13,7 +12,6 @@ from backend.app.infrastructure.database.base import (
     BoolFalse,
     DescriptionString,
     IndexedString,
-    IndexedUniqueString,
 )
 from backend.app.infrastructure.models.enums import (
     Currency,
@@ -22,46 +20,10 @@ from backend.app.infrastructure.models.enums import (
 )
 
 if TYPE_CHECKING:
-    from .users import Organizer, Profile
-
-
-class Location(Base):
-    """Model for event locations.
-
-    Represents physical locations where events can take place.
-    """
-
-    __tablename__ = 'locations'
-
-    # String fields
-    name: Mapped[BasicString]
-    address: Mapped[BasicString]
-    city: Mapped[IndexedString]
-    country: Mapped[IndexedString]
-
-    # Relationships
-    events: Mapped["Event"] = relationship(
-        'Event',
-        back_populates='location',
-        cascade='all, delete-orphan'
-    )
-
-
-class Category(Base):
-    """Model for event categories.
-
-    Represents different types/categories of events.
-    """
-
-    __tablename__ = 'categories'
-
-    # String fields
-    name: Mapped[BasicString]
-    slug: Mapped[IndexedUniqueString]
-    description: Mapped[DescriptionString]
-
-    # Relationships
-    events = relationship('Event', back_populates='category')
+    from .profiles import Profile
+    from .organizers import Organizer
+    from .locations import Location
+    from .categories import Category
 
 
 class Event(Base):
@@ -78,7 +40,7 @@ class Event(Base):
 
     # Foreign Keys
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizers.id', use_alter=True))
+        ForeignKey('organizers.py.id', use_alter=True))
     location_id: Mapped[int] = mapped_column(
         ForeignKey('locations.id', use_alter=True),
         nullable=True
