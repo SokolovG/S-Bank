@@ -1,16 +1,18 @@
-<header class="bg-white items-center flex p-4 border-4 border-b-yellow-600">
-    <a href="/" class="font-bold text-3xl p-2">
-        DevEvents
-    </a>
-    <nav class="flex-grow flex justify-end uppercase font-semibold text-gray-900 px-10">
-       <ul class="flex space-x-6 text-xl">
-        <li>
-            <a class="" href="/">Notifications</a>
-        </li>
-        <li><a href="/">Messages</a></li>
-        <li><a href="/">Connections</a></li>
-        <li><a href="/">Try for free</a></li>
-        <li><a href="/">Profile</a></li>
-       </ul>
-    </nav>
+<header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex justify-between items-center">
+            <!-- Logo and site name -->
+            <div class="flex items-center">
+                <span class="text-2xl font-semibold text-blue-600">IT Events</span>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Homepage</a>
+                <a href="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Events</a>
+                <a href="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">To the organizers</a>
+                <a href="/" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">About</a>
+            </nav>
+        </div>
+    </div>
 </header>
