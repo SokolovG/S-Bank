@@ -8,7 +8,7 @@ from sqlalchemy.orm import (
     mapped_column,
 )
 
-from backend.app.constants import (
+from backend.app.core.constants import (
     MAX_BASIC_LENGTH,
     MAX_DESCRIPTION_LENGTH,
 )
