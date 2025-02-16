@@ -4,6 +4,7 @@ from typing import Optional
 
 from pydantic import HttpUrl, ValidationInfo, field_validator
 
+from backend.app.infrastructure.models.enums import Currency, EventFormat, EventStatus
 from backend.app.infrastructure.schemas.base import BaseModel
 from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
 
@@ -31,8 +32,8 @@ class EventBase(BaseModel):
     timezone: BasicString
 
     # Event configuration
-    format: BasicString
-    status: BasicString
+    format: EventFormat
+    status: EventStatus
     meeting_link: Optional[HttpUrl] = None
 
     # Participation details
@@ -41,7 +42,7 @@ class EventBase(BaseModel):
 
     # Financial information
     price: Optional[Decimal] = None
-    currency: BasicString
+    currency: Currency = Currency.USD
 
     @field_validator('event_end_date')
     def validate_end_date(cls, end_date: datetime, info: ValidationInfo) -> datetime:
@@ -104,7 +105,7 @@ class EventBase(BaseModel):
         return current
 
     @field_validator('price')
-    def validate_price_currency(cls, price: Decimal, info: ValidationInfo) -> Decimal:
+    def validate_price_currency(cls, price: Optional[Decimal], info: ValidationInfo) -> Optional[Decimal]:
         """Validate price and currency relationship.
 
         Args:
@@ -112,18 +113,20 @@ class EventBase(BaseModel):
             info: Validation context containing all fields
 
         Returns:
-            Decimal: Validated price
+            Optional[Decimal]: Validated price or None
 
         Raises:
             ValueError: If currency is missing when price is set
         """
-        data = info.data
-        if price and price > 0 and 'currency' not in data:
-            raise ValueError('Currency must be specified when price is set.')
-        elif not data['currency']:
-            raise ValueError('Currency cannot be empty when price is set.')
-        return price
+        if price is None:
+            return None
 
+        currency = info.data.get('currency', Currency.USD)
+
+        if not currency:
+            raise ValueError('Currency must be specified when price is set')
+
+        return price
 
 class EventRead(EventBase):
     """Schema for reading event data.
@@ -177,9 +180,9 @@ class EventUpdate(EventBase):
     category_id: Optional[int] = None
 
     # Classification
-    format: Optional[BasicString] = None
-    status: Optional[BasicString] = None
-    currency: Optional[BasicString] = None
+    format: Optional[EventFormat] = EventFormat.OFFLINE
+    status: Optional[EventStatus] = EventStatus.PLANNED
+    currency: Optional[Currency] = Currency.USD
 
     # Status flags
     is_published: Optional[bool] = None

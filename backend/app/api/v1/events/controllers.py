@@ -24,7 +24,7 @@ class EventController(Controller):
         """
         event_repo = repositories.get('event_repo')  # Get repo.
         events = await event_repo.list()
-        return events
+        return [EventRead.model_validate(event) for event in events]
 
     @get('/{event_id:int}')
     async def get_event_by_pk(self,
@@ -36,4 +36,4 @@ class EventController(Controller):
         """
         event_repo = repositories.get('event_repo')  # Get repo.
         event = await event_repo.get_one_or_none(id=event_id)
-        return event
+        return EventRead.model_validate(event)

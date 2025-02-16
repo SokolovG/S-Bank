@@ -25,6 +25,12 @@ class EventSeeder(BaseSeeder):
                                                               end_date=event_start + timedelta(days=7))
                 registration_deadline = self.faker.date_time_between(start_date=pub_date, end_date=event_start)
                 current_participants = self.faker.random_int(min=1, max=250)
+                price = self.faker.pydecimal(
+                    left_digits=4,
+                    right_digits=2,
+                    positive=True
+                ) if self.faker.boolean() else None
+
                 event = Event(
                     name=event_name,
                     description=self.faker.paragraph(nb_sentences=4),
@@ -37,7 +43,7 @@ class EventSeeder(BaseSeeder):
                     # Enum fields
                     format=self.faker.random_element(EventFormat),
                     status=self.faker.random_element(EventStatus),
-                    currency=self.faker.random_element(Currency),
+                    currency=self.faker.random_element(Currency) if price is not None else Currency.USD,
 
                     # Boolean fields
                     is_published=self.faker.boolean(),
@@ -57,12 +63,9 @@ class EventSeeder(BaseSeeder):
                     # Numeric fields
                     current_participants=current_participants,
                     max_participants=self.faker.random_int(min=current_participants, max=500),
-                    price=self.faker.pydecimal(
-                        left_digits=4,
-                        right_digits=2,
-                        positive=True
+                    price=price
                     )
-                )
+
                 self.session.add(event)
                 self.log(f'Created event - {event_name}')
 
