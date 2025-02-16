@@ -18,7 +18,7 @@ class UserSeeder(BaseSeeder):
             for _ in range(NUM_TEST_DATA):
                 username = self.faker.user_name()
                 password = self.faker.password()
-                hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
                 user = User(
                     username=username,
                     email=self.faker.email(),

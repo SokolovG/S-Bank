@@ -4,7 +4,7 @@ from sqlalchemy import delete
 
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.database.seeders.constants import locations
-from backend.app.infrastructure.models.locations import Location
+from backend.app.infrastructure.models import Location
 
 
 class LocationSeeder(BaseSeeder):
