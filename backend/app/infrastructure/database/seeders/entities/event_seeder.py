@@ -17,13 +17,13 @@ class EventSeeder(BaseSeeder):
 
             for _ in range(NUM_TEST_DATA):
                 event_name = f'{self.faker.bs().title()} {self.faker.company_suffix()} Conference'
-                is_online = self.faker.boolean(),
-                pub_date = self.faker.date_between(date_start='-30d', end_date='now')
+                is_online = self.faker.boolean()
+                pub_date = self.faker.date_between(start_date='-30d', end_date='now')
                 event_start = self.faker.date_time_between(start_date=pub_date,
                                                                 end_date=pub_date + timedelta(days=90))
                 event_end_date = self.faker.date_time_between(start_date=event_start,
-                                                              end_date=event_start + timedelta(days=7)),
-                registration_deadline = self.faker.date_time_between(start_date=pub_date, end_date=event_start),
+                                                              end_date=event_start + timedelta(days=7))
+                registration_deadline = self.faker.date_time_between(start_date=pub_date, end_date=event_start)
                 current_participants = self.faker.random_int(min=1, max=250)
                 event = Event(
                     name=event_name,

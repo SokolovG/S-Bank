@@ -5,7 +5,7 @@ from colorama import init, Fore, Style
 from faker import Faker
 from sqlalchemy.ext.asyncio import AsyncSession
 
-# Инициализируем colorama для кроссплатформенной поддержки цветов
+
 init()
 
 

@@ -14,10 +14,10 @@ class OrganizerSeeder(BaseSeeder):
             await self.session.execute(delete(Organizer))
             self.log('Cleared existing organizers')
 
-            for _ in range(NUM_TEST_DATA):
+            for index in range(NUM_TEST_DATA):
                 name = self.faker.company()
                 organizer = Organizer(
-                    user_id=self.faker.random_int(min=1, max=10),
+                    user_id=index,
                     verified=self.faker.boolean(),
                     website=self.faker.url(),
                     contact=self.faker.email(),
