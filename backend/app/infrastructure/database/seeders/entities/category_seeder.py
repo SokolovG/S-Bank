@@ -31,4 +31,3 @@ class CategorySeeder(BaseSeeder):
         except Exception as e:
             self.log(f'Error creating categories: {str(e)}', level='error')
             await self.session.rollback()
-            return f'Error seeding categories: {e}'
