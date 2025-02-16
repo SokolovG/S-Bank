@@ -1,5 +1,3 @@
-import os
-
 from pydantic_settings import BaseSettings
 
 
@@ -8,6 +6,7 @@ class Settings(BaseSettings):
 
     All settings for Posters
     """
+
     is_docker: bool = False
     DATABASE_URL: str
     POSTGRES_HOST: str

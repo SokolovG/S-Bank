@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from .events import Event
 
 
-
 class Location(Base):
     """Model for event locations.
 

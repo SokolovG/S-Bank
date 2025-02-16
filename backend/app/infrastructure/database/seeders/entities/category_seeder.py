@@ -7,9 +7,9 @@ from backend.app.infrastructure.database.seeders.constants import categories
 from backend.app.infrastructure.models.categories import Category
 
 
-
 class CategorySeeder(BaseSeeder):
     async def run(self) -> Any:
+        """Category seeder run."""
         try:
             self.log('Starting category seeding...')
 
@@ -32,4 +32,3 @@ class CategorySeeder(BaseSeeder):
             self.log(f'Error creating categories: {str(e)}', level='error')
             await self.session.rollback()
             return f'Error seeding categories: {e}'
-

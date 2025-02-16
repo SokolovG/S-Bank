@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from .users import User
     from .events import Event
 
+
 class Profile(Base):
     """Regular user profile model.
 
