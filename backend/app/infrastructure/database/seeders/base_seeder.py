@@ -13,6 +13,7 @@ class BaseSeeder:
 
     def _setup_logger(self) -> logging.Logger:
         logger = logging.getLogger(self.__class__.__name__)
+        return logger
 
     def log(self, message: str, level: Optional[str] = 'info') -> None:
         if level == 'info':
