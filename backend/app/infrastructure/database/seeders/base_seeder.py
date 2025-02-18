@@ -2,8 +2,10 @@ import logging
 import sys
 from typing import Optional, Any
 from colorama import init, Fore, Style
+
 from faker import Faker
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import delete
 
 
 init()
@@ -17,6 +19,11 @@ class BaseSeeder:
         self.session = session
         self.faker = Faker('en-US')
         self.logger = self._setup_logger()
+
+    async def clear_table(self, model: str):
+        await self.session.execute(delete(model))
+        await self.session.commit()
+        self.log(f'Cleared {model.__tablename__}')
 
     def _setup_logger(self) -> logging.Logger:
         """Create and configure logger instance for the seeder class."""

@@ -11,8 +11,7 @@ class RelationshipSeeder(BaseSeeder):
     async def run(self) -> Any:
         try:
             self.log('Starting relationships seeding...')
-            await self.session.execute(delete(EventRegistration))
-            self.log('Cleared existing relationships')
+            await self.clear_table(EventRegistration)
 
             profiles = (await self.session.execute(
                 select(Profile)

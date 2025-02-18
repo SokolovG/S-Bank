@@ -11,9 +11,8 @@ class LocationSeeder(BaseSeeder):
     async def run(self) -> Any:
         try:
             self.log('Starting locations seeding...')
-            await self.session.execute(delete(Location))
-            self.log('Cleared existing locations')
-
+            await self.clear_table(Location)
+            
             for location_name in locations:
                 location = Location(
                     name=location_name,

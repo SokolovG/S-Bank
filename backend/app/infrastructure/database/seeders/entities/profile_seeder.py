@@ -13,8 +13,7 @@ class ProfileSeeder(BaseSeeder):
     async def run(self) -> Any:
         try:
             self.log('Starting profiles seeding...')
-            await self.session.execute(delete(Profile))
-            self.log('Cleared existing profiles')
+            await self.clear_table(Profile)
 
             query = select(Category)
             res = await self.session.execute(query)

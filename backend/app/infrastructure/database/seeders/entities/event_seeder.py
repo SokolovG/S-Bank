@@ -13,7 +13,7 @@ class EventSeeder(BaseSeeder):
     async def run(self) -> Any:
         try:
             self.log('Starting events seeding...')
-            await self.session.execute(delete(Event))
+            await self.clear_table(Event)
 
             for _ in range(NUM_TEST_DATA):
                 event_name = f'{self.faker.bs().title()} {self.faker.company_suffix()} Conference'

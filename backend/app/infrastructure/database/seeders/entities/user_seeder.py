@@ -12,8 +12,7 @@ class UserSeeder(BaseSeeder):
     async def run(self) -> Any:
         try:
             self.log('Starting users seeding...')
-            await self.session.execute(delete(User))
-            self.log('Cleared existing users')
+            await self.clear_table(User)
 
             for _ in range(NUM_TEST_DATA):
                 username = self.faker.user_name()

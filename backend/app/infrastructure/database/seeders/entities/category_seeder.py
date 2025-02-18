@@ -12,9 +12,7 @@ class CategorySeeder(BaseSeeder):
         """Category seeder run."""
         try:
             self.log('Starting category seeding...')
-
-            await self.session.execute(delete(Category))
-            self.log('Cleared existing categories')
+            await self.clear_table(Category)
 
             for category_name in categories:
                 category = Category(

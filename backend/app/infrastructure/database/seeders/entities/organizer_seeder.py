@@ -1,7 +1,5 @@
 from typing import Any
 
-from sqlalchemy import delete
-
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.database.seeders.constants import NUM_TEST_DATA
 from backend.app.infrastructure.models import Organizer
@@ -11,10 +9,9 @@ class OrganizerSeeder(BaseSeeder):
     async def run(self) -> Any:
         try:
             self.log('Starting organizers seeding...')
-            await self.session.execute(delete(Organizer))
-            self.log('Cleared existing organizers')
-
-            for index in range(NUM_TEST_DATA):
+            await self.clear_table(Organizer)
+            
+            for index in range(1, NUM_TEST_DATA + 1):
                 name = self.faker.company()
                 organizer = Organizer(
                     user_id=index,
