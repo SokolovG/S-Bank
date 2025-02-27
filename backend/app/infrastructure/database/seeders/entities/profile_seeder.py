@@ -1,7 +1,6 @@
 import random
-from typing import Any
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.database.seeders.constants import NUM_TEST_DATA
@@ -10,9 +9,9 @@ from backend.app.infrastructure.models.enums import Gender
 
 
 class ProfileSeeder(BaseSeeder):
-    async def run(self) -> Any:
+    async def run(self) -> None:
         try:
-            self.log('Starting profiles seeding...')
+            self.log("Starting profiles seeding...")
             await self.clear_table(Profile)
 
             query = select(Category)
@@ -31,17 +30,15 @@ class ProfileSeeder(BaseSeeder):
                     interested_technologies=random_category,
                     location=self.faker.country(),
                     birth_date=self.faker.date_of_birth(),
-                    gender=random.choice(list(Gender))
+                    gender=random.choice(list(Gender)),
                 )
 
-                self.log(f'Created profile - {first_name}')
+                self.log(f"Created profile - {first_name}")
                 self.session.add(profile)
 
             await self.session.commit()
-            self.log('Profiles created successfully!', level='success')
-
-
+            self.log("Profiles created successfully!", level="success")
 
         except Exception as e:
-            self.log(f'Error creating profiles: {str(e)}', level='error')
+            self.log(f"Error creating profiles: {str(e)}", level="error")
             await self.session.rollback()

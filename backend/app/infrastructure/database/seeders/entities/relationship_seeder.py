@@ -1,25 +1,20 @@
 import random
-from typing import Any
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.models import Event, Profile, EventRegistration
 
 
 class RelationshipSeeder(BaseSeeder):
-    async def run(self) -> Any:
+    async def run(self) -> None:
         try:
-            self.log('Starting relationships seeding...')
+            self.log("Starting relationships seeding...")
             await self.clear_table(EventRegistration)
 
-            profiles = (await self.session.execute(
-                select(Profile)
-            )).scalars().all()
+            profiles = (await self.session.execute(select(Profile))).scalars().all()
 
-            events = (await self.session.execute(
-                select(Event)
-            )).scalars().all()
+            events = (await self.session.execute(select(Event))).scalars().all()
 
             for profile in profiles:
                 num_events = random.randint(1, 3)
@@ -27,10 +22,8 @@ class RelationshipSeeder(BaseSeeder):
                 profile.registered_events.extend(selected_events)
 
             await self.session.commit()
-            self.log('Relationships created successfully!', level='success')
-
-
+            self.log("Relationships created successfully!", level="success")
 
         except Exception as e:
-            self.log(f'Error creating relationships: {str(e)}', level='error')
+            self.log(f"Error creating relationships: {str(e)}", level="error")
             await self.session.rollback()
