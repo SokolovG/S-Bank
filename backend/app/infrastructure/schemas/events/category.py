@@ -1,13 +1,10 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Self
 
 from pydantic import field_validator, model_validator
 
 from backend.app.infrastructure.schemas.base import BaseModel
-from backend.app.infrastructure.schemas.types import (
-    BasicString,
-    DescriptionField
-)
+from backend.app.infrastructure.schemas.types import BasicString, DescriptionField
 
 
 class CategoryBase(BaseModel):
@@ -45,7 +42,7 @@ class CategoryCreate(CategoryBase):
     2. Slug cannot be identical to name (case-insensitive)
     """
 
-    @field_validator('slug')
+    @field_validator("slug")
     def validate_slug(cls, value: str) -> str:
         """Validate and transform slug to lowercase.
 
@@ -57,8 +54,8 @@ class CategoryCreate(CategoryBase):
         value = value.lower()
         return value
 
-    @model_validator(mode='after')
-    def validate_name_and_slug_different(self) -> "CategoryCreate":
+    @model_validator(mode="after")
+    def validate_name_and_slug_different(self) -> Self:
         """Validate that name and slug are not identical.
 
         Returns:
@@ -67,7 +64,7 @@ class CategoryCreate(CategoryBase):
             ValueError: If slug matches name (case-insensitive)
         """
         if self.name.lower() == self.slug:
-            raise ValueError('Slug should not be identical to the name.')
+            raise ValueError("Slug should not be identical to the name.")
         return self
 
 
