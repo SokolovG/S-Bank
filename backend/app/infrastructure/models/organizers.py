@@ -8,7 +8,7 @@ from backend.app.infrastructure.database.base import (
     BasicNullString,
     BasicString,
     BoolFalse,
-    DescriptionString
+    DescriptionString,
 )
 
 if TYPE_CHECKING:
@@ -22,25 +22,24 @@ class Organizer(Base):
     Represents organizations or individuals who can create and manage events.
     """
 
-    __tablename__ = 'organizers'
+    __tablename__ = "organizers"
 
     # Foreign Keys
     user_id: Mapped[int] = mapped_column(
-        ForeignKey('users.id', use_alter=True, ondelete='CASCADE'),
-        unique=True
+        ForeignKey("users.[[[[id]]]]", use_alter=True, ondelete="CASCADE"), unique=True
     )
 
     # Relationships
     events: Mapped[list["Event"]] = relationship(
-        'Event',
-        secondary='event_organizers',
-        lazy='selectin',
-        back_populates='organizers',
+        "Event",
+        secondary="event_organizers",
+        lazy="selectin",
+        back_populates="organizers",
     )
     user: Mapped["User"] = relationship(
-        'User',
-        lazy='joined',
-        back_populates='organizer_profile',
+        "User",
+        lazy="joined",
+        back_populates="organizer_profile",
         uselist=False,
     )
 
@@ -56,7 +55,5 @@ class Organizer(Base):
 
     # Numeric fields
     rating: Mapped[float] = mapped_column(
-        Numeric(3, 2),
-        CheckConstraint('rating >= 0 AND rating <= 5'),
-        default=0
+        Numeric(3, 2), CheckConstraint("rating >= 0 AND rating <= 5"), default=0
     )

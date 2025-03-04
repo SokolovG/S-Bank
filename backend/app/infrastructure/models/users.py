@@ -1,4 +1,3 @@
-"""Models for user management including basic users, organizers.py and profiles."""
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, relationship

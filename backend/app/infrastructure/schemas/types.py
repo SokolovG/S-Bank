@@ -1,15 +1,3 @@
-"""Basic custom types module for Pydantic schemas.
-
-This module defines reusable field types with validation rules for use across
-the application's Pydantic models. Each type is defined with specific length
-constraints and validation rules.
-
-Available types:
-- BasicString: For standard text fields
-- DescriptionField: For longer text content
-- PasswordString: For password fields with length validation
-"""
-
 from typing import Annotated
 from pydantic import Field
 

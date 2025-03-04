@@ -33,7 +33,7 @@ class Event(Base):
     Main event model containing all event-related information.
     """
 
-    __tablename__ = 'events'
+    __tablename__ = "events"
 
     # Basic fields
     name: Mapped[IndexedString]
@@ -41,43 +41,33 @@ class Event(Base):
 
     # Foreign Keys
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizers.id', use_alter=True))
+        ForeignKey("organizers.[[[[id]]]]", use_alter=True)
+    )
     location_id: Mapped[int] = mapped_column(
-        ForeignKey('locations.id', use_alter=True),
-        nullable=True
+        ForeignKey("locations.[[[[id]]]]", use_alter=True), nullable=True
     )
     category_id: Mapped[int] = mapped_column(
-        ForeignKey('categories.id', use_alter=True),
+        ForeignKey("categories.[[[[id]]]]", use_alter=True),
     )
 
     # Relationships
     organizers: Mapped[list["Organizer"]] = relationship(
-        'Organizer',
-        secondary='event_organizers',
-        back_populates='events',
-        lazy='select'
+        "Organizer",
+        secondary="event_organizers",
+        back_populates="events",
+        lazy="select",
     )
-    location: Mapped["Location"] = relationship(
-        'Location',
-        back_populates='events'
-    )
-    category: Mapped["Category"] = relationship(
-        'Category',
-        back_populates='events'
-    )
+    location: Mapped["Location"] = relationship("Location", back_populates="events")
+    category: Mapped["Category"] = relationship("Category", back_populates="events")
     registered_profiles: Mapped[list["Profile"]] = relationship(
-        "Profile",
-        secondary='event_registrations',
-        back_populates='registered_events'
+        "Profile", secondary="event_registrations", back_populates="registered_events"
     )
 
     # Enum fields
     format: Mapped[EventFormat] = mapped_column(
         default=EventFormat.OFFLINE,
     )
-    status: Mapped[EventStatus] = mapped_column(
-        default=EventStatus.PLANNED
-    )
+    status: Mapped[EventStatus] = mapped_column(default=EventStatus.PLANNED)
     currency: Mapped[Currency] = mapped_column(
         default=Currency.USD,
     )
@@ -95,7 +85,7 @@ class Event(Base):
 
     # String fields
     meeting_link: Mapped[BasicNullString]
-    timezone: Mapped[BasicString] = mapped_column(default='UTC')
+    timezone: Mapped[BasicString] = mapped_column(default="UTC")
 
     # Numeric fields
     max_participants: Mapped[BasicNullInteger]

@@ -11,10 +11,6 @@ class RepositoryDependencies(TypedDict):
 
 
 async def provide_repositories(db_session: AsyncSession) -> RepositoryDependencies:
-    """Return dict of dependencies.
-
-    event_repo - model Event
-    """
     dependencies: RepositoryDependencies = {
         "event_repo": EventRepository(session=db_session)
     }
