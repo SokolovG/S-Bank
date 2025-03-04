@@ -41,13 +41,13 @@ class Event(Base):
 
     # Foreign Keys
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey("organizers.[[[[id]]]]", use_alter=True)
+        ForeignKey("organizers.id", use_alter=True)
     )
     location_id: Mapped[int] = mapped_column(
-        ForeignKey("locations.[[[[id]]]]", use_alter=True), nullable=True
+        ForeignKey("locations.id", use_alter=True), nullable=True
     )
     category_id: Mapped[int] = mapped_column(
-        ForeignKey("categories.[[[[id]]]]", use_alter=True),
+        ForeignKey("categories.id", use_alter=True),
     )
 
     # Relationships

@@ -26,7 +26,7 @@ class Organizer(Base):
 
     # Foreign Keys
     user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.[[[[id]]]]", use_alter=True, ondelete="CASCADE"), unique=True
+        ForeignKey("users.id", use_alter=True, ondelete="CASCADE"), unique=True
     )
 
     # Relationships

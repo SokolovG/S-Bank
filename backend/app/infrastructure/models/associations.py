@@ -20,11 +20,11 @@ class EventRegistration(Base):
     __tablename__ = "event_registrations"
 
     profile_id: Mapped[int] = mapped_column(
-        ForeignKey("profiles.[[[[id]]]]", use_alter=True, ondelete="CASCADE"),
+        ForeignKey("profiles.id", use_alter=True, ondelete="CASCADE"),
         primary_key=True,
     )
     event_id: Mapped[int] = mapped_column(
-        ForeignKey("events.[[[[id]]]]", use_alter=True, ondelete="CASCADE"),
+        ForeignKey("events.id", use_alter=True, ondelete="CASCADE"),
         primary_key=True,
     )
     status: Mapped[ParticipantStatus] = mapped_column(
@@ -45,10 +45,10 @@ class EventOrganizers(Base):
     __tablename__ = "event_organizers"
 
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey("organizers.[[[[id]]]]", use_alter=True, ondelete="CASCADE"),
+        ForeignKey("organizers.id", use_alter=True, ondelete="CASCADE"),
         primary_key=True,
     )
     event_id: Mapped[int] = mapped_column(
-        ForeignKey("events.[[[[id]]]]", use_alter=True, ondelete="CASCADE"),
+        ForeignKey("events.id", use_alter=True, ondelete="CASCADE"),
         primary_key=True,
     )
