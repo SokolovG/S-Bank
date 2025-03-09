@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Type
 
 from litestar.plugins.sqlalchemy import repository
 
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class EventRepository(repository.SQLAlchemyAsyncRepository[Event]):
     """Repository for Event model."""
 
-    model_type = Event
+    model_type: Type[Event] = Event
 
 
 async def provide_event_repo(db_session: AsyncSession) -> EventRepository:

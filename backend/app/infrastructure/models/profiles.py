@@ -7,7 +7,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.infrastructure.database.base import (
     Base,
     BasicNullString,
-    BasicString, BoolTrue,
+    BasicString,
+    BoolTrue,
 )
 from backend.app.infrastructure.models.enums import Gender
 
@@ -22,26 +23,25 @@ class Profile(Base):
     Contains additional information about regular users.
     """
 
-    __tablename__ = 'profiles'
+    __tablename__ = "profiles"
 
     # Foreign Keys
     user_id: Mapped[int] = mapped_column(
-        ForeignKey('users.id', use_alter=True, ondelete='CASCADE'),
-        unique=True
+        ForeignKey("users.id", use_alter=True, ondelete="CASCADE"), unique=True
     )
 
     # Relationships
     user: Mapped["User"] = relationship(
         "User",
         back_populates="profile",
-        lazy='joined',
+        lazy="joined",
         uselist=False,
     )
     registered_events: Mapped[list["Event"]] = relationship(
         "Event",
-        secondary='event_registrations',
-        back_populates='registered_profiles',
-        lazy='selectin'
+        secondary="event_registrations",
+        back_populates="registered_profiles",
+        lazy="selectin",
     )
 
     # Boolean fields

@@ -1,4 +1,3 @@
-"""Models for managing event registrations and organizers.py relationships."""
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
@@ -18,15 +17,15 @@ class EventRegistration(Base):
         status: Current status of the registration
     """
 
-    __tablename__ = 'event_registrations'
+    __tablename__ = "event_registrations"
 
     profile_id: Mapped[int] = mapped_column(
-        ForeignKey('profiles.id', use_alter=True, ondelete='CASCADE'),
-        primary_key=True
+        ForeignKey("profiles.id", use_alter=True, ondelete="CASCADE"),
+        primary_key=True,
     )
     event_id: Mapped[int] = mapped_column(
-        ForeignKey('events.id', use_alter=True, ondelete='CASCADE'),
-        primary_key=True
+        ForeignKey("events.id", use_alter=True, ondelete="CASCADE"),
+        primary_key=True,
     )
     status: Mapped[ParticipantStatus] = mapped_column(
         default=ParticipantStatus.REGISTERED
@@ -43,13 +42,13 @@ class EventOrganizers(Base):
         event_id: ID of the event
     """
 
-    __tablename__ = 'event_organizers'
+    __tablename__ = "event_organizers"
 
     organizer_id: Mapped[int] = mapped_column(
-        ForeignKey('organizers.id', use_alter=True, ondelete='CASCADE'),
-        primary_key=True
+        ForeignKey("organizers.id", use_alter=True, ondelete="CASCADE"),
+        primary_key=True,
     )
     event_id: Mapped[int] = mapped_column(
-        ForeignKey('events.id', use_alter=True, ondelete='CASCADE'),
-        primary_key=True
+        ForeignKey("events.id", use_alter=True, ondelete="CASCADE"),
+        primary_key=True,
     )

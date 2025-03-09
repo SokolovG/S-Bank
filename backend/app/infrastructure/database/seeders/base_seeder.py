@@ -1,22 +1,35 @@
 import logging
 import sys
-from typing import Optional, Any
+from abc import ABC, abstractmethod
+from typing import Optional
+
 from colorama import init, Fore, Style
 from faker import Faker
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import DeclarativeBase
 
-
+# Init for colorama
 init()
 
 
-class BaseSeeder:
+class BaseSeeder(ABC):
     """Base class seeder, defines logging and faker."""
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         """Initialize seeder with database session, faker instance and logger."""
         self.session = session
-        self.faker = Faker('en-US')
+        self.faker = Faker("en-US")
         self.logger = self._setup_logger()
+
+    @abstractmethod
+    async def run(self) -> None:
+        """Execute seeding process.Must be implemented by derived classes."""
+
+    async def clear_table(self, model: type[DeclarativeBase]) -> None:
+        await self.session.execute(delete(model))
+        await self.session.commit()
+        self.log(f"Cleared {model.__tablename__}")
 
     def _setup_logger(self) -> logging.Logger:
         """Create and configure logger instance for the seeder class."""
@@ -31,8 +44,7 @@ class BaseSeeder:
         console_handler.setLevel(logging.INFO)
 
         formatter = logging.Formatter(
-            f'{Fore.GREEN}%(name)s{Style.RESET_ALL} - '
-            f'%(message)s',
+            f"{Fore.GREEN}%(name)s{Style.RESET_ALL} - " f"%(message)s",
         )
 
         console_handler.setFormatter(formatter)
@@ -41,21 +53,17 @@ class BaseSeeder:
 
         return logger
 
-    def log(self, message: str, level: Optional[str] = 'info') -> None:
+    def log(self, message: str, level: Optional[str] = "info") -> None:
         """Log messages with specified level and colors."""
-        if level == 'info':
+        if level == "info":
             message = f"{Fore.WHITE}{message}{Style.RESET_ALL}"
             self.logger.info(message)
-        elif level == 'error':
+        elif level == "error":
             message = f"{Fore.RED}{message}{Style.RESET_ALL}"
             self.logger.error(message)
-        elif level == 'warning':
+        elif level == "warning":
             message = f"{Fore.YELLOW}{message}{Style.RESET_ALL}"
             self.logger.warning(message)
-        elif level == 'success':
+        elif level == "success":
             message = f"{Fore.GREEN}{message}{Style.RESET_ALL}"
             self.logger.info(message)
-
-    def run(self) -> Any:
-        """Execute seeding process. Must be implemented by derived classes."""
-        raise NotImplementedError('Implement this method in derived class')

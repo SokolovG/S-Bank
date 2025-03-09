@@ -18,14 +18,14 @@ class Settings(BaseSettings):
     @property
     def database_url(self) -> str:
         """Return database url."""
-        host = 'db' if self.is_docker else 'localhost'
-        return f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{host}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
+        host = "db" if self.is_docker else "localhost"
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{host}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
     class Config:
         """Load env files."""
 
-        env_file = '.env'
-        env_file_encoding = 'utf-8'
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()

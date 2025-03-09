@@ -1,4 +1,3 @@
-"""Enums for various statuses and formats in the application."""
 from enum import Enum
 
 
