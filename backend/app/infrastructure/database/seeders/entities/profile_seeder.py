@@ -1,4 +1,5 @@
 import random
+from typing import override
 
 from sqlalchemy import select
 
@@ -9,6 +10,7 @@ from backend.app.infrastructure.models.enums import Gender
 
 
 class ProfileSeeder(BaseSeeder):
+    @override
     async def run(self) -> None:
         try:
             self.log("Starting profiles seeding...")

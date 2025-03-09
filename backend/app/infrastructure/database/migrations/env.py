@@ -1,12 +1,12 @@
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from alembic import context
 
-from backend.app.infrastructure.database.base import Base
 from backend.app.core.config.settings import settings
-from backend.app.infrastructure.models import ( # noqa: 401
+from backend.app.infrastructure.database.base import Base
+from backend.app.infrastructure.models import (  # noqa: F401
     Event,
     Category,
     Location,

@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import override
 
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.database.seeders.constants import NUM_TEST_DATA
@@ -7,6 +8,7 @@ from backend.app.infrastructure.models.enums import EventFormat, EventStatus, Cu
 
 
 class EventSeeder(BaseSeeder):
+    @override
     async def run(self) -> None:
         try:
             self.log("Starting events seeding...")

@@ -1,9 +1,12 @@
+from typing import override
+
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.database.seeders.constants import NUM_TEST_DATA
 from backend.app.infrastructure.models import Organizer
 
 
 class OrganizerSeeder(BaseSeeder):
+    @override
     async def run(self) -> None:
         try:
             self.log("Starting organizers seeding...")

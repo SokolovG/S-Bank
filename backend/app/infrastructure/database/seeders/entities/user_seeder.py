@@ -1,3 +1,5 @@
+from typing import override
+
 import bcrypt
 
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
@@ -6,6 +8,7 @@ from backend.app.infrastructure.models import User
 
 
 class UserSeeder(BaseSeeder):
+    @override
     async def run(self) -> None:
         try:
             self.log("Starting users seeding...")

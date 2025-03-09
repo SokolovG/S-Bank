@@ -1,9 +1,12 @@
+from typing import override
+
 from backend.app.infrastructure.database.seeders.base_seeder import BaseSeeder
 from backend.app.infrastructure.database.seeders.constants import categories
 from backend.app.infrastructure.models import Category
 
 
 class CategorySeeder(BaseSeeder):
+    @override
     async def run(self) -> None:
         """Category seeder run."""
         try:

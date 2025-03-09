@@ -1,4 +1,5 @@
 import random
+from typing import override
 
 from sqlalchemy import select
 
@@ -7,6 +8,7 @@ from backend.app.infrastructure.models import Event, Profile, EventRegistration
 
 
 class RelationshipSeeder(BaseSeeder):
+    @override
     async def run(self) -> None:
         try:
             self.log("Starting relationships seeding...")

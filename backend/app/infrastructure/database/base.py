@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Protocol, ClassVar, Final
+from typing import Annotated
 
 from sqlalchemy import Boolean, Integer, String, func, MetaData
 from sqlalchemy.orm import (
@@ -38,33 +38,28 @@ class Base(BaseModel):
     created_at: Mapped[datetime] = mapped_column(default=func.now())
 
 
-class SQLAlchemyModel(Protocol):
-    __tablename__ = ClassVar[str]
-
-
 # Basic string with max_length limit.
-BasicString = Final[Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH))]]
+BasicString = Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH))]
 # Basic string with max_length limit and nullable=True.
-BasicNullString = Final[
-    Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH), nullable=True)]
+BasicNullString = Annotated[
+    str, mapped_column(String(length=MAX_BASIC_LENGTH), nullable=True)
 ]
+
 # Indexed string with max_length limit.
-IndexedString = Final[
-    Annotated[str, mapped_column(String(length=MAX_BASIC_LENGTH), index=True)]
+IndexedString = Annotated[
+    str, mapped_column(String(length=MAX_BASIC_LENGTH), index=True)
 ]
+
 # Indexed string with max_length limit und unique=True.
-IndexedUniqueString = Final[
-    Annotated[
-        str, mapped_column(String(length=MAX_BASIC_LENGTH), index=True, unique=True)
-    ]
+IndexedUniqueString = Annotated[
+    str, mapped_column(String(length=MAX_BASIC_LENGTH), index=True, unique=True)
 ]
+
 # Basic string for description with max_length limit.
-DescriptionString = Final[
-    Annotated[str, mapped_column(String(length=MAX_DESCRIPTION_LENGTH))]
-]
+DescriptionString = Annotated[str, mapped_column(String(length=MAX_DESCRIPTION_LENGTH))]
 # Basic bool var, default=False.
-BoolFalse = Final[Annotated[bool, mapped_column(Boolean, default=False)]]
+BoolFalse = Annotated[bool, mapped_column(Boolean, default=False)]
 # Basic bool var, default=True.
-BoolTrue = Final[Annotated[bool, mapped_column(Boolean, default=True)]]
+BoolTrue = Annotated[bool, mapped_column(Boolean, default=True)]
 # Basic integer var with nullable=True.
-BasicNullInteger = Final[Annotated[int, mapped_column(Integer, nullable=True)]]
+BasicNullInteger = Annotated[int, mapped_column(Integer, nullable=True)]
