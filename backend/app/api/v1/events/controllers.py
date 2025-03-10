@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from logging import Logger
+
 from litestar import get, Controller
 
-from backend.app.api.v1.events.dependencies import (
-    RepositoryDependencies,
-    LoggerDependencies,
-)
+from backend.app.api.v1.events.dependencies import event_dependencies
+from backend.app.infrastructure.repositories.event import EventRepository
 from backend.app.infrastructure.schemas.events.event import EventRead
 
 
@@ -13,24 +13,18 @@ class EventController(Controller):
     """Basic event controller."""
 
     path = "/events"
+    dependencies = event_dependencies
 
     @get()
-    async def get_all_events(
-        self,
-        repositories: RepositoryDependencies,
-        logger: LoggerDependencies
-    ) -> list[EventRead]:
+    async def get_all_events(self, repo: EventRepository, logger: Logger) -> list[EventRead]:
         """Get all events."""
-        logger['event_logger'].info('Get all events')
-        event_repo = repositories.get("event_repo")  # Get repo.
-        events = await event_repo.list()
+        logger.info('Get all events')
+        events = await repo.list()
         return [EventRead.model_validate(event) for event in events]
 
     @get("/{event_id:int}")
-    async def get_event_by_pk(
-        self, repositories: RepositoryDependencies, event_id: int
-    ) -> EventRead:
+    async def get_event_by_pk(self, event_id: int, repo: EventRepository, logger: Logger) -> EventRead:
         """Get event by_pk."""
-        event_repo = repositories.get("event_repo")  # Get repo.
-        event = await event_repo.get_one_or_none(id=event_id)
+        logger.info(f"Getting event with id {event_id}")
+        event = await repo.get_one_or_none(id=event_id)
         return EventRead.model_validate(event)

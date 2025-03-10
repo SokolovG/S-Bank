@@ -7,7 +7,6 @@ from litestar.contrib.sqlalchemy.plugins import (
 )
 from litestar.logging import LoggingConfig
 
-from backend.app.api.v1.events.dependencies import dependencies
 from backend.app.api.v1.events.routes import event_router
 from backend.app.core.config.settings import settings
 from backend.app.infrastructure.database.base import Base
@@ -41,7 +40,6 @@ app = Litestar(
     route_handlers=[event_router],
     plugins=[sqlalchemy_plugin],
     debug=True,
-    dependencies=dependencies,
     cors_config=cors_config,
     logging_config=logging_config
 )
