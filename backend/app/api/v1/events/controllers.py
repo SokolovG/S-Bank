@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from litestar import get, Controller
 
-from backend.app.api.v1.events.dependencies import RepositoryDependencies
+from backend.app.api.v1.events.dependencies import (
+    RepositoryDependencies,
+    LoggerDependencies,
+)
 from backend.app.infrastructure.schemas.events.event import EventRead
 
 
@@ -13,9 +16,12 @@ class EventController(Controller):
 
     @get()
     async def get_all_events(
-        self, repositories: RepositoryDependencies
+        self,
+        repositories: RepositoryDependencies,
+        logger: LoggerDependencies
     ) -> list[EventRead]:
         """Get all events."""
+        logger['event_logger'].info('Get all events')
         event_repo = repositories.get("event_repo")  # Get repo.
         events = await event_repo.list()
         return [EventRead.model_validate(event) for event in events]
