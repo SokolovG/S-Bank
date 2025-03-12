@@ -1,9 +1,7 @@
+from backend.app.api.v1.events.controllers import EventController
 from litestar import Router
 
-from backend.app.api.v1.events.controllers import EventController
-
-
 event_router = Router(
-    path="/api/v1",
+    path="/interfaces/api",
     route_handlers=[EventController]
 )
