@@ -1,87 +1,231 @@
-**[English](#english) | [Русский](#russian)**
+# DevEvents
 
-## English
+![Python](https://img.shields.io/badge/python-3.12-blue.svg)
+![Litestar](https://img.shields.io/badge/litestar-2.14.0-blue.svg)
+![Svelte](https://img.shields.io/badge/svelte-latest-orange.svg)
 
-### About DevEvents
-DevEvents is a platform that aggregates and manages tech conferences and developer meetups. The service helps developers stay updated about upcoming tech events and allows organizers to promote their meetups.
+DevEvents is a comprehensive platform that aggregates and manages tech conferences and developer meetups. Our mission is
+to help developers stay updated about upcoming tech events and provide organizers with tools to promote their meetups
+effectively.
 
-### Key Features
-- Browse upcoming tech events and conferences
-- Track interesting events and set reminders
-- Event organizers can create and manage their own events
-- User profiles and event registration system
-- Comments and discussions for each event
+## 📋 Features
 
-### Tech Stack
-- Backend: Litestar
-- Frontend: Svelte
-- Database: PostgreSQL
-- Containerization: Docker
+- **Browse Events**: Discover upcoming tech events and conferences
+- **Track Events**: Follow interesting events and set reminders
+- **Organize Events**: Create and manage your own tech events
+- **User Profiles**: Personalized profiles with event history
+- **Event Registration**: Simple registration process for attendees
+- **Comments & Discussions**: Engage with speakers and other attendees
 
-### Installation and Setup
+## 🛠️ Technology Stack
+
+### Backend
+
+- **Framework**: [Litestar](https://litestar.dev/) - Modern, high-performance API framework
+- **Database**: PostgreSQL with AsyncPG
+- **ORM**: SQLAlchemy 2.0 (async)
+- **Validation**: Pydantic v2
+- **Migration**: Alembic
+- **Admin Panel**: SQLAdmin
+- **Packet manager**: Uv
+
+### Frontend
+
+- **Framework**: Svelte
+- **Styling**: To be determined (TailwindCSS planned)
+
+### DevOps
+
+- **Containerization**: Docker & Docker Compose
+- **CI/CD**: To be implemented
+
+## 🚀 Installation and Setup
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Python 3.12+ (for local development)
+- PostgreSQL (for local development without Docker)
+
+### Using Docker (Recommended)
+
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/DevEvents.git
 cd DevEvents
 ```
 
-2. Start the containers:
+2. Create a `.env` file with the following content:
+
+```
+# Database
+POSTGRES_DB=dev_events
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/dev_events
+```
+
+3. Build and start the containers:
+
 ```bash
 docker-compose up --build
 ```
 
-3. The application will be available at:
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:8000
+4. Access the applications:
+    - Backend API: http://localhost:8000
+    - API Documentation: http://localhost:8000/schema/swagger
+    - Admin Panel: http://localhost:8000/admin
+    - Frontend (when implemented): http://localhost:5173
 
-### Project Structure
-```
-DevEvents/
-├── backend/         # Litestar application
-├── frontend/        # Svelte application
-└── docker-compose.yaml
-```
+### Local Development Setup
 
----
+1. Clone the repository:
 
-## Russian
-
-### О проекте DevEvents
-DevEvents - это платформа-агрегатор технологических конференций и встреч разработчиков. Сервис помогает разработчикам быть в курсе предстоящих технологических мероприятий и позволяет организаторам продвигать свои мероприятия.
-
-### Основные возможности
-- Просмотр предстоящих технологических мероприятий и конференций
-- Отслеживание интересных событий и установка напоминаний
-- Организаторы могут создавать и управлять своими мероприятиями
-- Система профилей пользователей и регистрации на мероприятия
-- Комментарии и обсуждения для каждого события
-
-### Технологический стек
-- Бэкенд: Litestar
-- Фронтенд: Svelte
-- База данных: PostgreSQL
-- Контейнеризация: Docker
-
-### Установка и запуск
-1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/yourusername/DevEvents.git
 cd DevEvents
 ```
 
-2. Запустите контейнеры:
+2. Create a virtual environment and install dependencies:
+
 ```bash
-docker-compose up --build
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
 ```
 
-3. Приложение будет доступно по адресам:
-- Фронтенд: http://localhost:5173
-- API бэкенда: http://localhost:8000
+3. Create a `.env` file with the following content:
 
-### Структура проекта
 ```
-DevEvents/
-├── backend/         # Litestar приложение
-├── frontend/        # Svelte приложение
-└── docker-compose.yaml
+# Database
+POSTGRES_DB=dev_events
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/dev_events
 ```
+
+4. Create the database in your local PostgreSQL instance.
+
+5. Run migrations:
+
+```bash
+alembic upgrade head
+```
+
+6. Seed the database with test data:
+
+```bash
+python -m backend.src.main run-seeders
+```
+
+7. Start the development server:
+
+```bash
+uvicorn backend.src.main:app --reload
+```
+
+## 🧪 Database Seeding
+
+To populate the database with test data:
+
+```bash
+# Using Docker
+docker-compose exec backend python -m backend.src.infrastructure.database.seeders.run_seeder
+
+# Local development
+python -m backend.src.main run-seeders
+```
+
+## 📝 API Documentation
+
+The API documentation is automatically generated and available at:
+
+- Swagger UI: http://localhost:8000/schema/swagger
+- ReDoc: http://localhost:8000/schema/redoc
+
+Key endpoints:
+
+- `GET /api/v1/events` - List all events
+- `GET /api/v1/events/{event_id}` - Get event details
+- More endpoints coming soon...
+
+## 🛠️ Development
+
+### Creating Migrations
+
+When you make changes to database models, you need to create a migration:
+
+```bash
+# Using Docker
+docker-compose exec backend alembic revision --autogenerate -m "description"
+
+# Local development
+alembic revision --autogenerate -m "description"
+```
+
+### Running Tests
+
+Tests to be implemented. The command will be:
+
+```bash
+pytest
+```
+
+### Code Style
+
+This project uses:
+
+- Mypy for type checking
+- Ruff for format and linter
+
+To check your code:
+
+```bash
+# Format and linting code 
+ruff backend/
+
+# Type checking
+mypy backend/
+
+```
+
+## 🧠 Architecture Overview
+
+DevEvents follows Clean Architecture principles:
+
+1. **Domain Layer** - Contains business entities and rules
+2. **Application Layer** - Contains use cases and interfaces for external services
+3. **Infrastructure Layer** - Contains implementations of interfaces defined in the application layer
+4. **Interface Layer** - Contains API controllers, CLI commands, and other user interfaces
+
+This architecture ensures:
+
+- Independence from frameworks
+- Testability
+- Independence from the UI
+- Independence from the database
+- Independence from external agencies
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📜 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👥 Acknowledgments
+
+- Litestar team for the amazing framework
+- All contributors to the project
