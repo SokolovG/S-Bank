@@ -1,8 +1,9 @@
 import asyncio
 
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
+from backend.app.core.config.settings import settings
 from backend.app.infrastructure.database.seeders.entities import (
     CategorySeeder,
     LocationSeeder,
@@ -12,7 +13,6 @@ from backend.app.infrastructure.database.seeders.entities import (
     RelationshipSeeder,
     OrganizerSeeder,
 )
-from backend.app.core.config.settings import settings
 
 
 async def create_session() -> AsyncSession:
@@ -32,9 +32,9 @@ async def run() -> None:
             LocationSeeder(session=session),
             UserSeeder(session=session),
             ProfileSeeder(session=session),
+            OrganizerSeeder(session=session),
             EventSeeder(session=session),
             RelationshipSeeder(session=session),
-            OrganizerSeeder(session=session),
         ]
         for seeder in seeders:
             await seeder.run()

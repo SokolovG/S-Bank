@@ -6,10 +6,13 @@ from litestar.contrib.sqlalchemy.plugins import (
     SQLAlchemyAsyncConfig,
 )
 from litestar.logging import LoggingConfig
+from sqladmin import ModelView
+from sqladmin_litestar_plugin import SQLAdminPlugin
 
 from backend.app.api.v1.events.routes import event_router
 from backend.app.core.config.settings import settings
 from backend.app.infrastructure.database.base import Base
+from backend.app.infrastructure.models import Event
 
 cors_config = CORSConfig(
     allow_origins=["http://localhost:5173"],
@@ -35,10 +38,14 @@ logging_config = LoggingConfig(
     log_exceptions="always",
 )
 
+class EventAdmin(ModelView, model=Event):
+    column_list = [Event.name, Event.price, Event.description]
+
 sqlalchemy_plugin = SQLAlchemyPlugin(config=config)
+admin = SQLAdminPlugin(engine=config.get_engine(), base_url="/admin", views=[EventAdmin])
 app = Litestar(
     route_handlers=[event_router],
-    plugins=[sqlalchemy_plugin],
+    plugins=[sqlalchemy_plugin, admin],
     debug=True,
     cors_config=cors_config,
     logging_config=logging_config
