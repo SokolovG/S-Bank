@@ -1,9 +1,6 @@
 import asyncio
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
-
-from backend.app.core.config.settings import settings
+from backend.app.infrastructure.database.config import get_sqlalchemy_config
 from backend.app.infrastructure.database.seeders.entities import (
     CategorySeeder,
     LocationSeeder,
@@ -14,19 +11,12 @@ from backend.app.infrastructure.database.seeders.entities import (
     OrganizerSeeder,
 )
 
-
-async def create_session() -> AsyncSession:
-    """Create session for test data db."""
-    engine = create_async_engine(settings.database_url, echo=False)
-
-    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-
-    return async_session()
-
+sqlalchemy_config = get_sqlalchemy_config()
 
 async def run() -> None:
     """Run all seeders."""
-    async with await create_session() as session:
+    session_maker = sqlalchemy_config.create_session_maker()
+    async with session_maker() as session:
         seeders = [
             CategorySeeder(session=session),
             LocationSeeder(session=session),

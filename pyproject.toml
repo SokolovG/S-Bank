@@ -51,3 +51,5 @@ dependencies = [
     "bcrypt>=4.3.0",
 ]
 
+[tool.pylyzer]
+strict = true
