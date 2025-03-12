@@ -3,11 +3,11 @@ from typing import Optional, Self
 
 from pydantic import field_validator, model_validator
 
-from backend.src.interfaces.api.schemas.base import BaseModel
+from backend.src.interfaces.api.schemas.base import BasePydanticModel
 from backend.src.interfaces.api.schemas.types import BasicString, DescriptionField
 
 
-class CategoryBase(BaseModel):
+class CategoryBase(BasePydanticModel):
     """Base Pydantic schema for Category model.
 
     This class serves as a foundation for all Category-related schemas.

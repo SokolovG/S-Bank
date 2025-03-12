@@ -9,11 +9,11 @@ from backend.src.infrastructure.database.models.enums import (
     EventFormat,
     EventStatus,
 )
-from backend.src.interfaces.api.schemas.base import BaseModel
+from backend.src.interfaces.api.schemas.base import BasePydanticModel
 from backend.src.interfaces.api.schemas.types import DescriptionField, BasicString
 
 
-class EventBase(BaseModel):
+class EventBase(BasePydanticModel):
     """Base Pydantic schema for Event model.
 
     This class serves as a foundation for all Event-related schemas.

@@ -6,7 +6,7 @@ from litestar import get, Controller
 
 from backend.src.infrastructure.dependencies.dependencies import event_dependencies
 from backend.src.infrastructure.repositories.event import EventRepository
-from backend.src.interfaces.api.schemas.events.event import EventRead
+from backend.src.interfaces.api.schemas.events.event_schema import EventRead
 
 
 class EventController(Controller):

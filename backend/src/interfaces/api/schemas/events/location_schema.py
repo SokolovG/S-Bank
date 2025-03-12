@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import Optional
 
-from backend.src.interfaces.api.schemas.base import BaseModel
+from backend.src.interfaces.api.schemas.base import BasePydanticModel
 from backend.src.interfaces.api.schemas.types import BasicString
 
 
-class LocationBase(BaseModel):
+class LocationBase(BasePydanticModel):
     """Base Pydantic schema for Location model.
 
     This class serves as a foundation for all Location-related schemas.

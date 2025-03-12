@@ -7,7 +7,7 @@ from sqladmin_litestar_plugin import SQLAdminPlugin
 
 from backend.src.infrastructure.database.config import get_sqlalchemy_plugin, get_sqlalchemy_config
 from backend.src.infrastructure.database.models.event_model import Event
-from backend.src.interfaces.api.routes.routes import event_router
+from backend.src.interfaces.api.routes.base_routes import event_router
 from backend.src.interfaces.cli.commands import CLIPlugin
 
 cors_config = CORSConfig(

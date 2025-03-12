@@ -1,7 +1,7 @@
 from pydantic import BaseModel as _BaseModel, ConfigDict
 
 
-class BaseModel(_BaseModel):
+class BasePydanticModel(_BaseModel):
     """Base abstract model.
 
     Contains model config for all children models:

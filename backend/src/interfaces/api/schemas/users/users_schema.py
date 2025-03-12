@@ -4,11 +4,11 @@ from typing import Optional
 from pydantic import EmailStr
 from pydantic import field_validator, ValidationInfo
 
-from backend.src.interfaces.api.schemas.base import BaseModel
+from backend.src.interfaces.api.schemas.base import BasePydanticModel
 from backend.src.interfaces.api.schemas.types import PasswordString, BasicString
 
 
-class UserBase(BaseModel):
+class UserBase(BasePydanticModel):
     """Base Pydantic schema for User model.
 
     This class serves as a foundation for all User-related schemas.

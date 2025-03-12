@@ -3,11 +3,11 @@ from typing import Optional
 
 from pydantic import AnyUrl, field_validator
 
-from backend.src.interfaces.api.schemas.base import BaseModel
+from backend.src.interfaces.api.schemas.base import BasePydanticModel
 from backend.src.interfaces.api.schemas.types import BasicString
 
 
-class ProfileBase(BaseModel):
+class ProfileBase(BasePydanticModel):
     """Base Pydantic schema for Profile model.
 
     This class serves as a foundation for all User-related schemas.
@@ -34,7 +34,7 @@ class ProfileBase(BaseModel):
     gender: Optional[BasicString]
 
     @field_validator('birth_date')
-    def validate_birth_date(cls, value: str) -> str:
+    def validate_birth_date(cls, value: date) -> date:
         """Validate that password and password_confirm match.
 
         Args:

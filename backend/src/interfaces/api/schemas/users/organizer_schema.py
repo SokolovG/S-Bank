@@ -4,11 +4,11 @@ from typing import Optional
 
 from pydantic import Field, HttpUrl, AnyUrl
 
-from backend.src.interfaces.api.schemas.base import BaseModel
+from backend.src.interfaces.api.schemas.base import BasePydanticModel
 from backend.src.interfaces.api.schemas.types import BasicString, DescriptionField
 
 
-class OrganizerBase(BaseModel):
+class OrganizerBase(BasePydanticModel):
     """Base Pydantic schema for Organizer model.
 
     This class serves as a foundation for all organizer-related schemas.
