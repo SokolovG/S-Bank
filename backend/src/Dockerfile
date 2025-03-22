@@ -5,4 +5,4 @@ RUN pip install --no-cache-dir uv
 RUN uv sync
 COPY . .
 ENV PYTHONPATH="/src"
-CMD ["litestar", "--app", "backend.src.main:app", "run", "-r"]
+CMD ["uv", "run", "litestar", "--app", "backend.src.main:app", "run", "-r"]

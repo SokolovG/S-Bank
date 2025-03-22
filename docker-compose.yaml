@@ -33,12 +33,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command:
-      - litestar
-      - --app
-      - backend.src.main:app
-      - run
-      - r
 
   frontend:
     build:
@@ -64,6 +58,8 @@ services:
     env_file:
       - .env
     command:
+      - uv
+      - run
       - alembic
       - revision
       - --autogenerate

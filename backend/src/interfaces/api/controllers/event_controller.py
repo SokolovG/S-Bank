@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from logging import Logger
 
 from litestar import Controller, get

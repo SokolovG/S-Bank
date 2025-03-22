@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "advanced-alchemy (==0.30.3)",
-    "alembic (==1.14.1)",
+    "alembic==1.14.1",
     "annotated-types (==0.7.0)",
     "anyio (==4.8.0)",
     "asgiref (==3.8.1)",
@@ -49,6 +49,7 @@ dependencies = [
     "sqladmin-litestar-plugin>=0.2.0",
     "colorama>=0.4.6",
     "bcrypt>=4.3.0",
+    "email-validator==2.2.0",
 ]
 
 [tool.ruff]
