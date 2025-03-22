@@ -1,14 +1,13 @@
-from litestar.plugins.pydantic.dto import PydanticDTO
-
+from backend.src.interfaces.api.dto.base_dto import BasePydanticDTO
 from backend.src.interfaces.api.schemas import ProfileCreate, ProfileRead, ProfileUpdate
 
 
-class ProfileCreateDTO(PydanticDTO[ProfileCreate]):
+class ProfileCreateDTO(BasePydanticDTO[ProfileCreate]):
     pass
 
-class ProfileUpdateDTO(PydanticDTO[ProfileUpdate]):
+class ProfileUpdateDTO(BasePydanticDTO[ProfileUpdate]):
     pass
 
-class ProfileReadDTO(PydanticDTO[ProfileRead]):
+class ProfileReadDTO(BasePydanticDTO[ProfileRead]):
     pass
 

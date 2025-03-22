@@ -1,14 +1,13 @@
-from litestar.plugins.pydantic.dto import PydanticDTO
-
+from backend.src.interfaces.api.dto.base_dto import BasePydanticDTO
 from backend.src.interfaces.api.schemas import EventCreate, EventRead, EventUpdate
 
 
-class EventCreateDTO(PydanticDTO[EventCreate]):
+class EventCreateDTO(BasePydanticDTO[EventCreate]):
     pass
 
 
-class EventUpdateDTO(PydanticDTO[EventUpdate]):
+class EventUpdateDTO(BasePydanticDTO[EventUpdate]):
     pass
 
-class EventReadDTO(PydanticDTO[EventRead]):
+class EventReadDTO(BasePydanticDTO[EventRead]):
     pass

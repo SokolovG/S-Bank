@@ -1,14 +1,13 @@
-from litestar.plugins.pydantic.dto import PydanticDTO
-
+from backend.src.interfaces.api.dto.base_dto import BasePydanticDTO
 from backend.src.interfaces.api.schemas import LocationCreate, LocationRead, LocationUpdate
 
 
-class LocationCreateDTO(PydanticDTO[LocationCreate]):
+class LocationCreateDTO(BasePydanticDTO[LocationCreate]):
     pass
 
 
-class LocationUpdateDTO(PydanticDTO[LocationUpdate]):
+class LocationUpdateDTO(BasePydanticDTO[LocationUpdate]):
     pass
 
-class LocationReadDTO(PydanticDTO[LocationRead]):
+class LocationReadDTO(BasePydanticDTO[LocationRead]):
     pass
