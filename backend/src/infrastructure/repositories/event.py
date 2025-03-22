@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class EventRepository(repository.SQLAlchemyAsyncRepository[Event]):
-    """Repository for Event model."""
+    """Repository for the Event model."""
 
     model_type: Type[Event] = Event
 

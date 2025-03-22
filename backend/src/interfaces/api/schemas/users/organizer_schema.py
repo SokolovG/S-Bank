@@ -1,15 +1,14 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 
-from pydantic import Field, HttpUrl, AnyUrl
+from pydantic import AnyUrl, Field, HttpUrl
 
-from backend.src.interfaces.api.schemas.base import BasePydanticModel
-from backend.src.interfaces.api.schemas.types import BasicString, DescriptionField
+from backend.src.interfaces.api.schemas.base_dto import BasePydanticModel
+from backend.src.interfaces.api.schemas.custom_types import BasicString, DescriptionField
 
 
 class OrganizerBase(BasePydanticModel):
-    """Base Pydantic schema for Organizer model.
+    """Base Pydantic schema for the Organizer model.
 
     This class serves as a foundation for all organizer-related schemas.
     All derived schemas inherit these base fields:
@@ -19,11 +18,11 @@ class OrganizerBase(BasePydanticModel):
     - OrganizerUpdate: For updating existing organizer_model.py
     """
 
-    website: Optional[HttpUrl] = None
-    contact: Optional[BasicString] = None
+    website: HttpUrl | None = None
+    contact: BasicString | None = None
     name: BasicString
     description: DescriptionField
-    logo_url: Optional[AnyUrl] = None
+    logo_url: AnyUrl | None = None
 
 
 class OrganizerRead(OrganizerBase):
@@ -53,10 +52,11 @@ class OrganizerUpdate(OrganizerBase):
     - All fields are optional to allow partial updates
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
+
     """
 
-    website: Optional[HttpUrl] = None
-    contact: Optional[BasicString] = None
-    name: Optional[BasicString] = None
-    description: Optional[DescriptionField] = None
-    logo_url: Optional[AnyUrl] = None
+    website: HttpUrl | None = None
+    contact: BasicString | None = None
+    name: BasicString | None = None
+    description: DescriptionField | None = None
+    logo_url: AnyUrl | None = None

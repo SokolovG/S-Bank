@@ -1,8 +1,7 @@
 from datetime import datetime
-from typing import Optional
 
-from backend.src.interfaces.api.schemas.base import BasePydanticModel
-from backend.src.interfaces.api.schemas.types import BasicString
+from backend.src.interfaces.api.schemas.base_dto import BasePydanticModel
+from backend.src.interfaces.api.schemas.custom_types import BasicString
 
 
 class LocationBase(BasePydanticModel):
@@ -48,9 +47,10 @@ class LocationUpdate(LocationBase):
     - All fields are optional to allow partial updates
     - Only changed fields need to be included in request
     - Inheritance ensures consistent validation rules
+
     """
 
-    name: Optional[BasicString] = None
-    address: Optional[BasicString] = None
-    city: Optional[BasicString] = None
-    country: Optional[BasicString] = None
+    name: BasicString | None = None
+    address: BasicString | None = None
+    city: BasicString | None = None
+    country: BasicString | None = None

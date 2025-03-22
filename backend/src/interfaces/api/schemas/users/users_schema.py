@@ -1,11 +1,9 @@
 from datetime import datetime
-from typing import Optional
 
-from pydantic import EmailStr
-from pydantic import field_validator, ValidationInfo
+from pydantic import EmailStr, ValidationInfo, field_validator
 
-from backend.src.interfaces.api.schemas.base import BasePydanticModel
-from backend.src.interfaces.api.schemas.types import PasswordString, BasicString
+from backend.src.interfaces.api.schemas.base_dto import BasePydanticModel
+from backend.src.interfaces.api.schemas.custom_types import BasicString, PasswordString
 
 
 class UserBase(BasePydanticModel):
@@ -53,6 +51,7 @@ class UserCreate(UserBase):
             value: password_confirm
         Returns:
             password_confirm if validated
+
         """
         data = info.data
         if 'password' in data and value != data['password']:
@@ -67,9 +66,10 @@ class UserUpdate(UserBase):
     - All fields are optional to allow partial updates
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
+
     """
 
-    username: Optional[BasicString] = None
-    email: Optional[BasicString] = None
-    password: Optional[PasswordString] = None
-    password_confirm: Optional[PasswordString] = None
+    username: BasicString | None = None
+    email: BasicString | None = None
+    password: PasswordString | None = None
+    password_confirm: PasswordString | None = None

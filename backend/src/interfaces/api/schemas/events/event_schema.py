@@ -1,6 +1,5 @@
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 
 from pydantic import HttpUrl, ValidationInfo, field_validator
 
@@ -9,12 +8,12 @@ from backend.src.infrastructure.database.models.enums import (
     EventFormat,
     EventStatus,
 )
-from backend.src.interfaces.api.schemas.base import BasePydanticModel
-from backend.src.interfaces.api.schemas.types import DescriptionField, BasicString
+from backend.src.interfaces.api.schemas.base_dto import BasePydanticModel
+from backend.src.interfaces.api.schemas.custom_types import BasicString, DescriptionField
 
 
 class EventBase(BasePydanticModel):
-    """Base Pydantic schema for Event model.
+    """Base Pydantic schema for the Event model.
 
     This class serves as a foundation for all Event-related schemas.
     All derived schemas inherit these base fields.
@@ -38,14 +37,14 @@ class EventBase(BasePydanticModel):
     # Event configuration
     format: EventFormat
     status: EventStatus
-    meeting_link: Optional[HttpUrl] = None
+    meeting_link: HttpUrl | None = None
 
     # Participation details
-    max_participants: Optional[int] = None
-    current_participants: Optional[int] = 0
+    max_participants: int | None = None
+    current_participants: int | None = 0
 
     # Financial information
-    price: Optional[Decimal] = None
+    price: Decimal | None = None
     currency: Currency = Currency.USD
 
     @field_validator('event_end_date')
@@ -61,6 +60,7 @@ class EventBase(BasePydanticModel):
 
         Raises:
             ValueError: If end date is not after start date
+
         """
         data = info.data
         start_date = data.get('event_start_date')
@@ -81,6 +81,7 @@ class EventBase(BasePydanticModel):
 
         Raises:
             ValueError: If deadline is not before event start
+
         """
         data = info.data
         start_date = data.get('event_start_date')
@@ -101,6 +102,7 @@ class EventBase(BasePydanticModel):
 
         Raises:
             ValueError: If current participants exceed maximum
+
         """
         data = info.data
         max_number = data.get('max_participants')
@@ -109,7 +111,7 @@ class EventBase(BasePydanticModel):
         return current
 
     @field_validator('price')
-    def validate_price_currency(cls, price: Optional[Decimal], info: ValidationInfo) -> Optional[Decimal]:
+    def validate_price_currency(cls, price: Decimal | None, info: ValidationInfo) -> Decimal | None:
         """Validate price and currency relationship.
 
         Args:
@@ -121,6 +123,7 @@ class EventBase(BasePydanticModel):
 
         Raises:
             ValueError: If currency is missing when price is set
+
         """
         if price is None:
             return None
@@ -140,7 +143,7 @@ class EventRead(EventBase):
 
     # Identification fields
     id: int
-    location_id: Optional[int]
+    location_id: int | None
     category_id: int
     organizer_id: int
 
@@ -160,9 +163,9 @@ class EventCreate(EventBase):
     """
 
     # Relationship fields
-    location_id: Optional[int] = None
-    category_id: Optional[int] = None
-    organizer_id: Optional[int] = None
+    location_id: int | None = None
+    category_id: int | None = None
+    organizer_id: int | None = None
 
 
 class EventUpdate(EventBase):
@@ -172,36 +175,37 @@ class EventUpdate(EventBase):
         - All fields are optional to allow partial updates
         - Only changed fields need to be included in request
         - Validation from base class still applies to provided fields
+
     """
 
     # Basic information
-    name: Optional[BasicString] = None
-    description: Optional[DescriptionField] = None
+    name: BasicString | None = None
+    description: DescriptionField | None = None
 
     # Relationships
-    organizer_id: Optional[int] = None
-    location_id: Optional[int] = None
-    category_id: Optional[int] = None
+    organizer_id: int | None = None
+    location_id: int | None = None
+    category_id: int | None = None
 
     # Classification
-    format: Optional[EventFormat] = EventFormat.OFFLINE
-    status: Optional[EventStatus] = EventStatus.PLANNED
-    currency: Optional[Currency] = Currency.USD
+    format: EventFormat | None = EventFormat.OFFLINE
+    status: EventStatus | None = EventStatus.PLANNED
+    currency: Currency | None = Currency.USD
 
     # Status flags
-    is_published: Optional[bool] = None
-    is_online: Optional[bool] = None
-    is_verify: Optional[bool] = None
+    is_published: bool | None = None
+    is_online: bool | None = None
+    is_verify: bool | None = None
 
     # Dates
-    pub_date: Optional[datetime] = None
-    event_start_date: Optional[datetime] = None
-    event_end_date: Optional[datetime] = None
-    registration_deadline: Optional[datetime] = None
+    pub_date: datetime | None = None
+    event_start_date: datetime | None = None
+    event_end_date: datetime | None = None
+    registration_deadline: datetime | None = None
 
     # Additional details
-    meeting_link: Optional[HttpUrl] = None
-    timezone: Optional[BasicString] = None
-    max_participants: Optional[int] = None
-    price: Optional[Decimal] = None
-    current_participants: Optional[int] = None
+    meeting_link: HttpUrl | None = None
+    timezone: BasicString | None = None
+    max_participants: int | None = None
+    price: Decimal | None = None
+    current_participants: int | None = None

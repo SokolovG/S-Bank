@@ -1,10 +1,9 @@
 from datetime import date, datetime
-from typing import Optional
 
 from pydantic import AnyUrl, field_validator
 
-from backend.src.interfaces.api.schemas.base import BasePydanticModel
-from backend.src.interfaces.api.schemas.types import BasicString
+from backend.src.interfaces.api.schemas.base_dto import BasePydanticModel
+from backend.src.interfaces.api.schemas.custom_types import BasicString
 
 
 class ProfileBase(BasePydanticModel):
@@ -25,13 +24,13 @@ class ProfileBase(BasePydanticModel):
     """
 
     notifications_enabled: bool
-    interested_technologies: Optional[BasicString] = None
-    location: Optional[BasicString] = None
+    interested_technologies: BasicString | None = None
+    location: BasicString | None = None
     first_name: BasicString
     last_name: BasicString
-    avatar_url: Optional[AnyUrl] = None
+    avatar_url: AnyUrl | None = None
     birth_date: date
-    gender: Optional[BasicString]
+    gender: BasicString | None
 
     @field_validator('birth_date')
     def validate_birth_date(cls, value: date) -> date:
@@ -41,6 +40,7 @@ class ProfileBase(BasePydanticModel):
             value: birth_date
         Returns:
             birth_date if validated
+
         """
         if value > date.today():
             raise ValueError('Birth date cannot be in the future.')
@@ -66,13 +66,14 @@ class ProfileUpdate(ProfileBase):
     - All fields are optional to allow partial updates
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
+
     """
 
-    notifications_enabled: Optional[bool] = None
-    interested_technologies: Optional[BasicString] = None
-    location: Optional[BasicString] = None
-    first_name: Optional[BasicString] = None
-    last_name: Optional[BasicString] = None
-    avatar_url: Optional[AnyUrl] = None
-    birth_date: Optional[date] = None
-    gender: Optional[BasicString] = None
+    notifications_enabled: bool | None = None
+    interested_technologies: BasicString | None = None
+    location: BasicString | None = None
+    first_name: BasicString | None = None
+    last_name: BasicString | None = None
+    avatar_url: AnyUrl | None = None
+    birth_date: date | None = None
+    gender: BasicString | None = None

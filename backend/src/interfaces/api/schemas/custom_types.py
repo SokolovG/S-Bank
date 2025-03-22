@@ -4,8 +4,9 @@ from pydantic import Field
 
 from backend.src.infrastructure.database.constants import (
     MAX_BASIC_LENGTH,
-    MAX_DESCRIPTION_LENGTH, PASSWORD_MIN_LENGTH,
-    MIN_BASIC_LENGTH
+    MAX_DESCRIPTION_LENGTH,
+    MIN_BASIC_LENGTH,
+    PASSWORD_MIN_LENGTH,
 )
 
 BasicString = Annotated[

@@ -1,14 +1,14 @@
 from datetime import datetime
-from typing import Optional, Self
+from typing import Self
 
 from pydantic import field_validator, model_validator
 
-from backend.src.interfaces.api.schemas.base import BasePydanticModel
-from backend.src.interfaces.api.schemas.types import BasicString, DescriptionField
+from backend.src.interfaces.api.schemas.base_dto import BasePydanticModel
+from backend.src.interfaces.api.schemas.custom_types import BasicString, DescriptionField
 
 
 class CategoryBase(BasePydanticModel):
-    """Base Pydantic schema for Category model.
+    """Base Pydantic schema for the Category model.
 
     This class serves as a foundation for all Category-related schemas.
     All derived schemas inherit these base fields:
@@ -50,6 +50,7 @@ class CategoryCreate(CategoryBase):
             value: Original slug string
         Returns:
             Lowercase slug string
+
         """
         value = value.lower()
         return value
@@ -62,6 +63,7 @@ class CategoryCreate(CategoryBase):
             Self instance if validation passes
         Raises:
             ValueError: If slug matches name (case-insensitive)
+
         """
         if self.name.lower() == self.slug:
             raise ValueError("Slug should not be identical to the name.")
@@ -80,8 +82,9 @@ class CategoryUpdate(CategoryBase):
     - All fields are optional to allow partial updates
     - Only changed fields need to be included in request
     - Validation from base class still applies to provided fields
+
     """
 
-    name: Optional[BasicString] = None
-    slug: Optional[BasicString] = None
-    description: Optional[DescriptionField] = None
+    name: BasicString | None = None
+    slug: BasicString | None = None
+    description: DescriptionField | None = None

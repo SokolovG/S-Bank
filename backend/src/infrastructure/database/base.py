@@ -29,7 +29,7 @@ class Base(BaseModel):
     """Base class for models.
 
     Contains for all models
-    - [[[[id]]]]
+    - id
     - created_at
     """
 

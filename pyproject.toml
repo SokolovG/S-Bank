@@ -25,7 +25,7 @@ dependencies = [
     "markdown-it-py (==3.0.0)",
     "markupsafe (==3.0.2)",
     "mdurl (==0.1.2)",
-    "msgspec (==0.19.0)",
+    "msgspec==0.19.0",
     "multidict (==6.1.0)",
     "multipart (==1.2.1)",
     "pillow (==11.1.0)",
@@ -51,5 +51,26 @@ dependencies = [
     "bcrypt>=4.3.0",
 ]
 
-[tool.pylyzer]
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I", "N", "UP", "YTT", "ANN", "S", "A", "D"]
+ignore = ["ANN102", "D100", "D101", "D104"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
 strict = true
