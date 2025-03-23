@@ -46,6 +46,24 @@ services:
     depends_on:
       - backend
 
+  init_migrations:
+    build:
+      context: .
+      dockerfile: backend/src/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/src
+    env_file:
+      - .env
+    command:
+      - uv
+      - run
+      - alembic
+      - stamp
+      - base
+
   migrations:
     build:
       context: .
@@ -63,6 +81,24 @@ services:
       - alembic
       - revision
       - --autogenerate
+
+  run_migrations:
+    build:
+      context: .
+      dockerfile: backend/src/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/src
+    env_file:
+      - .env
+    command:
+      - uv
+      - run
+      - alembic
+      - upgrade
+      - head
 
 volumes:
   postgres_data:
