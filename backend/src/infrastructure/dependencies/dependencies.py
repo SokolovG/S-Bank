@@ -1,11 +1,17 @@
-from logging import getLogger
+from logging import Logger, getLogger
 
 from litestar.di import Provide
 
 from backend.src.infrastructure.repositories.event import provide_event_repo
 
 
-async def provide_event_logger():
+async def provide_event_logger() -> Logger:
+    """Provide a logger instance for the events module.
+
+    Returns:
+        Logger: Configured logger instance for the events module.
+
+    """
     return getLogger("src.events")
 
 
