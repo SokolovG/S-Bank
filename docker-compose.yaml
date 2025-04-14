@@ -19,11 +19,11 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/src/Dockerfile
+      dockerfile: src/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/src/backend
+      - ./src
     environment:
       - PYTHONPATH=/src
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
@@ -33,31 +33,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command:
-      - uvicorn
-      - backend.src.main:src
-      - --host
-      - 0.0.0.0
-      - --port
-      - "8000"
-      - --reload
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/src
-      - /src/node_modules
-    depends_on:
-      - backend
-
-  migrations:
+  init_migrations:
     build:
       context: .
-      dockerfile: backend/src/Dockerfile
+      dockerfile: src/Dockerfile
     depends_on:
       db:
         condition: service_healthy
@@ -66,9 +46,47 @@ services:
     env_file:
       - .env
     command:
+      - uv
+      - run
+      - alembic
+      - stamp
+      - base
+
+  migrations:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/src
+    env_file:
+      - .env
+    command:
+      - uv
+      - run
       - alembic
       - revision
       - --autogenerate
+
+  run_migrations:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/src
+    env_file:
+      - .env
+    command:
+      - uv
+      - run
+      - alembic
+      - upgrade
+      - head
 
 volumes:
   postgres_data:
