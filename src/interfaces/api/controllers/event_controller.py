@@ -27,3 +27,5 @@ class EventController(Controller):
         logger.info(f"Getting event with id {event_id}")
         event = await repo.get_one_or_none(id=event_id)
         return event
+
+    # register_for_event, search_events
