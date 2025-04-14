@@ -53,7 +53,8 @@ dependencies = [
 ]
 
 [tool.ruff]
-line-length = 120
+line-length = 100
+target-version = "py312"
 indent-width = 4
 
 [tool.ruff.lint]
@@ -75,3 +76,7 @@ check_untyped_defs = true
 disallow_untyped_decorators = true
 no_implicit_optional = true
 strict = true
+
+[tool.isort]
+profile = "black"
+line-length = 100
