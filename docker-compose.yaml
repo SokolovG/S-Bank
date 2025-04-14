@@ -19,11 +19,11 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/src/Dockerfile
+      dockerfile: src/Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/src/backend
+      - ./src
     environment:
       - PYTHONPATH=/src
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
@@ -34,22 +34,10 @@ services:
       db:
         condition: service_healthy
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/src
-      - /src/node_modules
-    depends_on:
-      - backend
-
   init_migrations:
     build:
       context: .
-      dockerfile: backend/src/Dockerfile
+      dockerfile: src/Dockerfile
     depends_on:
       db:
         condition: service_healthy
@@ -67,7 +55,7 @@ services:
   migrations:
     build:
       context: .
-      dockerfile: backend/src/Dockerfile
+      dockerfile: src/Dockerfile
     depends_on:
       db:
         condition: service_healthy
@@ -85,7 +73,7 @@ services:
   run_migrations:
     build:
       context: .
-      dockerfile: backend/src/Dockerfile
+      dockerfile: src/Dockerfile
     depends_on:
       db:
         condition: service_healthy
