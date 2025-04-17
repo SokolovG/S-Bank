@@ -1,4 +1,4 @@
-name: Tests
+name: Code Quality
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, master, dev ]
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,6 +19,5 @@ jobs:
         run: |
           pip install --upgrade uv
           uv sync
-      - name: Run tests
-        run: |
-          pytest
+      - name: Run pre-commit
+        run: pre-commit run --all-files

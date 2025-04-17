@@ -180,7 +180,7 @@ This project uses:
 To check your code:
 
 ```bash
-# Format and linting code 
+# Format and linting code
 ruff backend/
 
 # Type checking

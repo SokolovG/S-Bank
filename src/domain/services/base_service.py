@@ -1,25 +1,26 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class BaseService(Generic[T], ABC):
     @abstractmethod
-    async def get_by_id(self, id: int) -> T | None:
-        pass
+    async def get_by_id(self, inst_id: int) -> T | None:
+        """Докстринг."""
 
     @abstractmethod
     async def get_all(self) -> list[T]:
-        pass
+        """Докстринг."""
 
     @abstractmethod
     async def create(self, data: dict) -> T:
-        pass
+        """Докстринг."""
 
     @abstractmethod
-    async def update(self, id: int, data: dict) -> T | None:
-        pass
+    async def update(self, inst_id: int, data: dict) -> T | None:
+        """Докстринг."""
 
     @abstractmethod
-    async def delete(self, id: int) -> bool:
-        pass
+    async def delete(self, inst_id: int) -> bool:
+        """Докстринг."""

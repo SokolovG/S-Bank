@@ -2,4 +2,4 @@ from litestar import Controller
 
 
 class AuthController(Controller):
-    pass
+    """Basic auth controller."""

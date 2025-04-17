@@ -1,2 +1,2 @@
 class UserService:
-    pass
+    """Some docs."""
