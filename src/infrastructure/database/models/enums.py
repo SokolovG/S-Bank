@@ -1,36 +1,10 @@
 from enum import Enum
 
 
-class EventFormat(str, Enum):
-    """Enum for event format types.
-
-    Attributes:
-        ONLINE: Online event format
-        OFFLINE: Offline event format
-        HYBRID: Hybrid event format
-
-    """
-
-    ONLINE = "online"
-    OFFLINE = "offline"
-    HYBRID = "hybrid"
-
-
-class EventStatus(str, Enum):
-    """Enum for event statuses.
-
-    Attributes:
-        PLANNED: Event is planned
-        ONGOING: Event is currently ongoing
-        COMPLETED: Event has been completed
-        CANCELLED: Event was cancelled
-
-    """
-
-    PLANNED = "planned"
-    ONGOING = "ongoing"
-    COMPLETED = "completed"
-    CANCELLED = "cancelled"
+class AccountType(str, Enum):
+    CURRENT = "current"
+    SAVINGS = "savings"
+    BUSINESS = "business"
 
 
 class Currency(str, Enum):
@@ -47,36 +21,28 @@ class Currency(str, Enum):
     EUR = "EUR"
     RUB = "RUB"
 
+class TransactionType(str, Enum):
+    DEPOSIT = "deposit"
+    WITHDRAWAL = "withdrawal"
+    TRANSFER = "transfer"
+    PAYMENT = "payment"
+    INTERNATIONAL_TRANSFER = "international_transfer"
+    FEE = "fee"
+    INTEREST = "interest"
+    REFUND = "refund"
 
-class ParticipantStatus(str, Enum):
-    """Enum for participant statuses.
 
-    Attributes:
-        REGISTERED: Participant is registered
-        CONFIRMED: Registration is confirmed
-        WAITLISTED: Participant is in waiting list
-        CANCELLED: Registration was cancelled
-        ATTENDED: Participant attended the event
-        NO_SHOW: Participant didn't show up
-
-    """
-
-    REGISTERED = "registered"
-    CONFIRMED = "confirmed"
-    WAITLISTED = "waitlisted"
+class TransactionStatus(str, Enum):
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    REJECTED = "rejected"
     CANCELLED = "cancelled"
-    ATTENDED = "attended"
-    NO_SHOW = "no_show"
+    PROCESSING = "processing"
 
 
-class Gender(str, Enum):
-    """Enum for gender types.
-
-    Attributes:
-        MALE: Male gender
-        FEMALE: Female gender
-
-    """
-
-    MALE = "male"
-    FEMALE = "female"
+class CardType(str, Enum):
+    VIRTUAL = "virtual"
+    PHYSICAL = "physical"
+    DEBIT = "debit"
+    CREDIT = "credit"

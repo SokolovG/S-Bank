@@ -15,7 +15,7 @@ class OrganizerSchema(BasePydanticModel):
     Used as a parent class for:
     - OrganizerRead: For retrieving organizer data
     - OrganizerCreate: For creating new organizer
-    - OrganizerUpdate: For updating existing organizer_model.py
+    - OrganizerUpdate: For updating existing account_model.py
     """
 
     website: HttpUrl | None = None

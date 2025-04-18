@@ -1,15 +1,10 @@
 import asyncio
 
 from src.infrastructure.database.config import get_sqlalchemy_config
-from src.infrastructure.database.seeders.entities import (
-    CategorySeeder,
-    EventSeeder,
-    LocationSeeder,
-    OrganizerSeeder,
-    ProfileSeeder,
-    RelationshipSeeder,
-    UserSeeder,
-)
+from src.infrastructure.database.seeders.user_context import UserSeeder
+from src.infrastructure.database.seeders.account_context import AccountSeeder
+from src.infrastructure.database.seeders.payment_context import CardSeeder, BalanceSeeder
+from src.infrastructure.database.seeders.transaction_context import TransactionSeeder
 
 sqlalchemy_config = get_sqlalchemy_config()
 
@@ -19,13 +14,11 @@ async def run() -> None:
     session_maker = sqlalchemy_config.create_session_maker()
     async with session_maker() as session:
         seeders = [
-            CategorySeeder(session=session),
-            LocationSeeder(session=session),
             UserSeeder(session=session),
-            ProfileSeeder(session=session),
-            OrganizerSeeder(session=session),
-            EventSeeder(session=session),
-            RelationshipSeeder(session=session),
+            AccountSeeder(session=session),
+            BalanceSeeder(session=session),
+            CardSeeder(session=session),
+            TransactionSeeder(session=session),
         ]
         for seeder in seeders:
             await seeder.run()

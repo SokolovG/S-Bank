@@ -1,6 +1,7 @@
 import logging
 import sys
 from abc import ABC, abstractmethod
+from typing import Final
 
 from colorama import Fore, Style, init
 from faker import Faker
@@ -10,6 +11,8 @@ from sqlalchemy.orm import DeclarativeBase
 
 # Init for colorama
 init()
+
+NUM_TEST_DATA: Final[int] = 10
 
 
 class BaseSeeder(ABC):

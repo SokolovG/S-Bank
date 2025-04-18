@@ -1,0 +1,34 @@
+from datetime import date
+from decimal import Decimal
+from typing import TYPE_CHECKING
+
+from sqlalchemy import ForeignKey, Numeric, String, Boolean
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from src.infrastructure.database.base import Base
+from src.infrastructure.database.constants import MAX_BASIC_LENGTH
+from src.infrastructure.database.models.enums import CardType
+
+if TYPE_CHECKING:
+    from src.infrastructure.database.models.account_context.account_model import Account
+    from src.infrastructure.database.models.user_context.user_model import User
+
+
+class Card(Base):
+    """Модель банковской карты."""
+
+    __tablename__ = "cards"
+
+    card_number: Mapped[str] = mapped_column(String(MAX_BASIC_LENGTH), index=True, unique=True)
+    card_type: Mapped[CardType]  # DEBIT, CREDIT, VIRTUAL
+    exp_date: Mapped[date]
+    cvv_hash: Mapped[str] = mapped_column(String(MAX_BASIC_LENGTH))
+    is_activated: Mapped[bool] = mapped_column(Boolean, default=False)
+    is_blocked: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    daily_limit: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    account_id: Mapped[int] = mapped_column(ForeignKey("accounts.id"))
+    user: Mapped["User"] = relationship("User", back_populates="cards")
+    account: Mapped["Account"] = relationship("Account", back_populates="cards")
