@@ -6,12 +6,12 @@ from sqlalchemy import Boolean, ForeignKey, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.infrastructure.database.base import Base
-from src.infrastructure.database.constants import MAX_BASIC_LENGTH
+from src.infrastructure.database.config import MAX_BASIC_LENGTH
 from src.infrastructure.database.models.enums import CardType
 
 if TYPE_CHECKING:
     from src.infrastructure.database.models.account_context.account_model import Account
-    from src.infrastructure.database.models.user_context.user_model import User
+    from src.infrastructure.database.models.user_context.user_model import UserModel
 
 
 class Card(Base):
@@ -30,5 +30,5 @@ class Card(Base):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     account_id: Mapped[int] = mapped_column(ForeignKey("accounts.id"))
-    user: Mapped["User"] = relationship("User", back_populates="cards")
+    user: Mapped["UserModel"] = relationship("User", back_populates="cards")
     account: Mapped["Account"] = relationship("Account", back_populates="cards")

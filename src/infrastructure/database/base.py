@@ -1,6 +1,8 @@
+import uuid
 from datetime import datetime
 
-from sqlalchemy import Integer, MetaData, func
+from sqlalchemy import MetaData, func
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -24,7 +26,5 @@ class Base(BaseModel):
     """
 
     __abstract__ = True
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: uuid.UUID = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
     created_at: Mapped[datetime] = mapped_column(default=func.now())
-
-

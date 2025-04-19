@@ -17,7 +17,7 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: |
-          pip install --upgrade uv
+          pip install -r requirements.txt
           uv sync
       - name: Run pre-commit
         run: pre-commit run --all-files

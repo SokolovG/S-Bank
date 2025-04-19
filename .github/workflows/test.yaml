@@ -17,8 +17,7 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: |
-          pip install --upgrade uv
-          uv sync
+          pip install -r requirements.txt
       - name: Run tests
         run: |
           pytest

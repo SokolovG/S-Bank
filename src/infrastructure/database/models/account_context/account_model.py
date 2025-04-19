@@ -5,14 +5,14 @@ from sqlalchemy import Boolean, ForeignKey, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.infrastructure.database.base import Base
-from src.infrastructure.database.constants import MAX_BASIC_LENGTH
+from src.infrastructure.database.config import MAX_BASIC_LENGTH
 from src.infrastructure.database.models.enums import AccountType, Currency
 
 if TYPE_CHECKING:
+    from src.infrastructure.database.models.payment_context.balance_model import Balance
     from src.infrastructure.database.models.payment_context.card_model import Card
     from src.infrastructure.database.models.transaction_context.transaction_model import Transaction
-    from src.infrastructure.database.models.user_context.user_model import User
-    from src.infrastructure.database.models.payment_context.balance_model import Balance
+    from src.infrastructure.database.models.user_context.user_model import UserModel
 
 
 class Account(Base):
@@ -28,16 +28,12 @@ class Account(Base):
     is_blocked: Mapped[bool] = mapped_column(Boolean, default=False)
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["User"] = relationship("User", back_populates="accounts")
+    user: Mapped["UserModel"] = relationship("User", back_populates="accounts")
     transactions: Mapped[list["Transaction"]] = relationship(
-        "Transaction", 
-        foreign_keys="[Transaction.source_account_id]", 
-        back_populates="source_account"
+        "Transaction", foreign_keys="[Transaction.source_account_id]", back_populates="source_account"
     )
     incoming_transactions: Mapped[list["Transaction"]] = relationship(
-        "Transaction", 
-        foreign_keys="[Transaction.destination_account_id]", 
-        back_populates="destination_account"
+        "Transaction", foreign_keys="[Transaction.destination_account_id]", back_populates="destination_account"
     )
     cards: Mapped[list["Card"]] = relationship("Card", back_populates="account")
     balances: Mapped[list["Balance"]] = relationship("Balance", back_populates="account")

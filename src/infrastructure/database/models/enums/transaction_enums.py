@@ -1,22 +1,6 @@
 from enum import Enum
 
 
-class AccountType(str, Enum):
-    """Enum for account types."""
-
-    CURRENT = "current"
-    SAVINGS = "savings"
-    BUSINESS = "business"
-
-
-class Currency(Enum):
-    """Enum for currency types."""
-
-    USD = "USD"
-    EUR = "EUR"
-    RUB = "RUB"
-
-
 class TransactionType(Enum):
     """Enum for transaction types."""
 
@@ -39,12 +23,3 @@ class TransactionStatus(Enum):
     REJECTED = "rejected"
     CANCELLED = "cancelled"
     PROCESSING = "processing"
-
-
-class CardType(Enum):
-    """Enum for card type."""
-
-    VIRTUAL = "virtual"
-    PHYSICAL = "physical"
-    DEBIT = "debit"
-    CREDIT = "credit"
