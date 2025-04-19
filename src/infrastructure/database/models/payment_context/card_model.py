@@ -2,7 +2,7 @@ from datetime import date
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Numeric, String, Boolean
+from sqlalchemy import Boolean, ForeignKey, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.infrastructure.database.base import Base
@@ -15,12 +15,12 @@ if TYPE_CHECKING:
 
 
 class Card(Base):
-    """Модель банковской карты."""
+    """Model of bank card."""
 
     __tablename__ = "cards"
 
     card_number: Mapped[str] = mapped_column(String(MAX_BASIC_LENGTH), index=True, unique=True)
-    card_type: Mapped[CardType]  # DEBIT, CREDIT, VIRTUAL
+    card_type: Mapped[CardType]
     exp_date: Mapped[date]
     cvv_hash: Mapped[str] = mapped_column(String(MAX_BASIC_LENGTH))
     is_activated: Mapped[bool] = mapped_column(Boolean, default=False)
