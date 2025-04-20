@@ -1,6 +1,5 @@
 import uvicorn
 from litestar import Litestar
-from litestar.config.cors import CORSConfig
 from litestar.logging import LoggingConfig
 from sqladmin import ModelView
 from sqladmin_litestar_plugin import SQLAdminPlugin
@@ -9,9 +8,6 @@ from src.infrastructure.database.config import get_sqlalchemy_config, get_sqlalc
 from src.infrastructure.database.models import Transaction
 from src.interfaces.api.user_context.routes import auth_router, user_router
 from src.interfaces.cli.commands import CLIPlugin
-
-cors_config = CORSConfig(allow_origins=["http://localhost:5173"], allow_methods=["*"], allow_headers=["*"])
-
 
 logging_config = LoggingConfig(
     root={"level": "INFO", "handlers": ["queue_listener"]},
@@ -38,7 +34,6 @@ app = Litestar(
     route_handlers=[user_router, auth_router],
     plugins=[sqlalchemy_plugin, admin, CLIPlugin()],
     debug=True,
-    cors_config=cors_config,
     logging_config=logging_config,
 )
 

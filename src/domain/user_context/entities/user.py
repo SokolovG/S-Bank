@@ -8,7 +8,7 @@ class UserEntity:
     Attributes:
         user_id: Unique id for the user.
         email: User's email.
-        password_hash: Hashed user password.
+        hashed_password: Hashed user password.
         is_active: Indicates if account is active. Defaults to True.
 
     """
@@ -17,39 +17,39 @@ class UserEntity:
 
     user_id: UserId
     email: str
-    password_hash: str
+    hashed_password: str
     is_active: bool = True
 
-    def __init__(self, user_id: UserId, email: str, password_hash: str, is_active: bool = True) -> None:
+    def __init__(self, user_id: UserId, email: str, hashed_password: str, is_active: bool = True) -> None:
         """Initialize a new UserEntity.
 
         Args:
             user_id: The unique id for the user.
             email: The user's email address.
-            password_hash: The hashed password for the user.
+            hashed_password: The hashed password for the user.
             is_active: Indicates if account is active. Defaults to True.
 
         """
         self._events = []
         self.user_id = user_id
         self.email = email
-        self.password_hash = password_hash
+        self.hashed_password = hashed_password
         self.is_active = is_active
 
     @classmethod
-    def create(cls, email: str, password_hash: str) -> "UserEntity":
+    def create(cls, email: str, hashed_password: str) -> "UserEntity":
         """Create a new user with a generated UserId and active status.
 
         Args:
             email: The user's email address.
-            password_hash: The hashed password.
+            hashed_password: The hashed password.
 
         Returns:
             UserEntity: A new instance of UserEntity.
 
         """
         user_id = UserId.create_new()
-        user = cls(user_id=user_id, email=email, password_hash=password_hash, is_active=True)
+        user = cls(user_id=user_id, email=email, hashed_password=hashed_password, is_active=True)
 
         event = UserRegisteredEvent(user_id=user_id, email=email)
         user._events.append(event)
@@ -66,7 +66,7 @@ class UserEntity:
             bool: True if the password matches, False otherwise.
 
         """
-        return self.password_hash == hashed_password
+        return self.hashed_password == hashed_password
 
     def deactivate(self) -> None:
         """Deactivate the user account.

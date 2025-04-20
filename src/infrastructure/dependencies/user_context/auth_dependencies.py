@@ -19,7 +19,7 @@ async def provide_user_repo(db_session: AsyncSession) -> UserRepository:
        UserRepository instance
 
     """
-    return UserRepository(db_session=AsyncSession)
+    return UserRepository(session=db_session)
 
 
 async def provide_event_bus() -> EventBus:

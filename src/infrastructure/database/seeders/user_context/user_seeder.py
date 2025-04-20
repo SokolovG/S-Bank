@@ -2,9 +2,8 @@ from typing import override
 
 import bcrypt
 
-from src.infrastructure.database.models import User
-from src.infrastructure.database.seeders.base_seeder import BaseSeeder
-from src.infrastructure.database.seeders.base_seeder import NUM_TEST_DATA
+from src.infrastructure.database.models import UserModel
+from src.infrastructure.database.seeders.base_seeder import NUM_TEST_DATA, BaseSeeder
 
 
 class UserSeeder(BaseSeeder):
@@ -12,17 +11,14 @@ class UserSeeder(BaseSeeder):
     async def run(self) -> None:
         try:
             self.log("Starting users seeding...")
-            await self.clear_table(User)
+            await self.clear_table(UserModel)
 
             for _ in range(NUM_TEST_DATA):
                 username = self.faker.user_name()
                 email = self.faker.email()
                 password = self.faker.password()
-                hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(
-                    "utf-8"
-                )
-                user = User(
-                    username=username,
+                hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+                user = UserModel(
                     email=email,
                     hashed_password=hashed_password,
                 )

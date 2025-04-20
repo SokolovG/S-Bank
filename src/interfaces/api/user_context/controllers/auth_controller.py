@@ -1,7 +1,7 @@
 from litestar import Controller, post
+from pydantic import BaseModel
 
 from src.application.user_context.services.auth_service import AuthService
-from src.infrastructure.database.base import BaseModel
 from src.infrastructure.dependencies.user_context.auth_dependencies import user_dependencies
 
 

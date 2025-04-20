@@ -64,12 +64,12 @@ class AuthService:
 
         return user
 
-    async def register_user(self, email: str, password_hash: str) -> UserEntity:
+    async def register_user(self, email: str, hashed_password: str) -> UserEntity:
         """Register a new user with the provided email and password hash.
 
         Args:
             email: The user's email address.
-            password_hash: The hashed password for the user.
+            hashed_password: The hashed password for the user.
 
         Returns:
             UserEntity: The newly created and saved user entity.
@@ -83,7 +83,7 @@ class AuthService:
         if existing_user:
             raise UserExistError(email)
 
-        user_entity = UserEntity.create(email=email, password_hash=password_hash)
+        user_entity = UserEntity.create(email=email, hashed_password=hashed_password)
         saved_user = await self.user_repository.save(user_entity)
 
         events = user_entity.get_events()

@@ -3,10 +3,9 @@ from typing import override
 
 from sqlalchemy import select
 
-from src.infrastructure.database.models import User
-from src.infrastructure.database.models import Account
+from src.infrastructure.database.models import Account, UserModel
 from src.infrastructure.database.models.enums import AccountType, Currency
-from src.infrastructure.database.seeders.base_seeder import BaseSeeder, NUM_TEST_DATA
+from src.infrastructure.database.seeders.base_seeder import NUM_TEST_DATA, BaseSeeder
 
 
 class AccountSeeder(BaseSeeder):
@@ -16,7 +15,7 @@ class AccountSeeder(BaseSeeder):
             self.log("Starting accounts seeding...")
             await self.clear_table(Account)
 
-            user_query = select(User.id)
+            user_query = select(UserModel.id)
             user_ids = (await self.session.execute(user_query)).scalars().all()
 
             if not user_ids:
@@ -26,10 +25,10 @@ class AccountSeeder(BaseSeeder):
             for _ in range(NUM_TEST_DATA):
                 account_number = f"ACC{self.faker.random_number(digits=10, fix_len=True)}"
                 iban = f"GB{self.faker.random_number(digits=20, fix_len=True)}"
-                account_type = random.choice(list(AccountType))
-                currency = random.choice(list(Currency))
+                account_type = random.choice(list(AccountType))  # noqa: S311
+                currency = random.choice(list(Currency))  # noqa: S311
                 balance = self.faker.pydecimal(min_value=0, max_value=10000, right_digits=2)
-                user_id = random.choice(user_ids)
+                user_id = random.choice(user_ids)  # noqa: S311
 
                 account = Account(
                     account_number=account_number,

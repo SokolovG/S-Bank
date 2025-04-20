@@ -18,24 +18,6 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
 
     model_type: type[UserModel] = UserModel
 
-    async def get_by_username(self, username: str) -> UserEntity | None:
-        """Get a user by username.
-
-        Args:
-            username: The username of the user.
-
-        Returns:
-            UserEntity | None: The user entity if found, otherwise None.
-
-        """
-        statement = select(UserModel).where(UserModel.username == username)
-        user_model: UserModel = await self.session.scalar(statement)
-
-        if not user_model:
-            return None
-
-        return self._to_entity(user_model)
-
     async def get_by_email(self, email: str) -> UserEntity | None:
         """Get a user by email address.
 
@@ -48,24 +30,6 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
         """
         statement = select(UserModel).where(UserModel.email == email)
         user_model: UserModel = await self.session.scalar(statement)
-
-        if not user_model:
-            return None
-
-        return self._to_entity(user_model)
-
-    async def get_by_phone(self, phone: str) -> UserEntity | None:
-        """Get a user by phone number.
-
-        Args:
-            phone: The phone number of the user.
-
-        Returns:
-            UserEntity | None: The user entity if found, otherwise None.
-
-        """
-        statement = select(UserModel).where(UserModel.phone == phone)
-        user_model = await self.session.scalar(statement)
 
         if not user_model:
             return None
@@ -87,13 +51,13 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
 
         if existing_user:
             existing_user.email = user_entity.email
-            existing_user.password_hash = user_entity.password_hash
+            existing_user.hashed_password = user_entity.hashed_password
             existing_user.is_active = user_entity.is_active
         else:
             new_user = self.model_type(
-                id=user_entity.user_id,
+                id=user_entity.user_id.value,
                 email=user_entity.email,
-                password_hash=user_entity.password_hash,
+                hashed_password=user_entity.hashed_password,
                 is_active=user_entity.is_active,
             )
             self.session.add(new_user)
@@ -112,7 +76,10 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
 
         """
         return UserEntity(
-            user_id=UserId(model.id), email=model.email, password_hash=model.hashed_password, is_active=model.is_active
+            user_id=UserId(model.id),
+            email=model.email,
+            hashed_password=model.hashed_password,
+            is_active=model.is_active,
         )
 
     def _to_model(self, entity: UserEntity) -> UserModel:
@@ -128,6 +95,6 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
         return UserModel(
             id=entity.user_id.value,
             email=entity.email,
-            hashed_password=entity.password_hash,
+            hashed_password=entity.hashed_password,
             is_active=entity.is_active,
         )

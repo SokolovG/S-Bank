@@ -9,10 +9,10 @@ from src.infrastructure.database.config import MAX_BASIC_LENGTH
 from src.infrastructure.database.models.enums import AccountType, Currency
 
 if TYPE_CHECKING:
+    from src.infrastructure.database.models import CustomerModel
     from src.infrastructure.database.models.payment_context.balance_model import Balance
     from src.infrastructure.database.models.payment_context.card_model import Card
     from src.infrastructure.database.models.transaction_context.transaction_model import Transaction
-    from src.infrastructure.database.models.user_context.user_model import UserModel
 
 
 class Account(Base):
@@ -27,8 +27,8 @@ class Account(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_blocked: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    user: Mapped["UserModel"] = relationship("User", back_populates="accounts")
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
+    customer: Mapped["CustomerModel"] = relationship("CustomerModel", back_populates="accounts")
     transactions: Mapped[list["Transaction"]] = relationship(
         "Transaction", foreign_keys="[Transaction.source_account_id]", back_populates="source_account"
     )

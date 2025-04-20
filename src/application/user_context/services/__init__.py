@@ -1,4 +1,4 @@
-from src.domain.user_context.services.auth_service import AuthService
-from src.domain.user_context.services.user_service import UserService
+from src.application.user_context.services.auth_service import AuthService
+from src.application.user_context.services.customer_service import CustomerService
 
-__all__ = ["UserService", "AuthService"]
+__all__ = ["CustomerService", "AuthService"]
