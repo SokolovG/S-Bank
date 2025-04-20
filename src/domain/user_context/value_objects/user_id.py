@@ -4,10 +4,10 @@ from dataclasses import dataclass
 
 @dataclass
 class UserId:
-    """A value object representing a unique user identifier.
+    """A value object representing a unique user id.
 
     Attributes:
-        value: The UUID value of the user identifier.
+        value: The UUID value of the user id.
 
     """
 

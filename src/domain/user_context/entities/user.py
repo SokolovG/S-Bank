@@ -1,16 +1,19 @@
+from src.domain.user_context.events.user_events import UserRegisteredEvent
 from src.domain.user_context.value_objects import UserId
 
 
 class UserEntity:
-    """Represents a user in the system.
+    """User domain model.
 
     Attributes:
-        user_id: Unique identifier for the user.
-        email: User's email address.
-        password_hash: Hashed password for the user.
-        is_active: Indicates if the user account is active. Defaults to True.
+        user_id: Unique id for the user.
+        email: User's email.
+        password_hash: Hashed user password.
+        is_active: Indicates if account is active. Defaults to True.
 
     """
+
+    _events: list[object]
 
     user_id: UserId
     email: str
@@ -21,12 +24,13 @@ class UserEntity:
         """Initialize a new UserEntity.
 
         Args:
-            user_id: The unique identifier for the user.
+            user_id: The unique id for the user.
             email: The user's email address.
             password_hash: The hashed password for the user.
-            is_active: Whether the user is active. Defaults to True.
+            is_active: Indicates if account is active. Defaults to True.
 
         """
+        self._events = []
         self.user_id = user_id
         self.email = email
         self.password_hash = password_hash
@@ -38,13 +42,19 @@ class UserEntity:
 
         Args:
             email: The user's email address.
-            password_hash: The hashed password for the user.
+            password_hash: The hashed password.
 
         Returns:
             UserEntity: A new instance of UserEntity.
 
         """
-        return cls(user_id=UserId.create_new(), email=email, password_hash=password_hash, is_active=True)
+        user_id = UserId.create_new()
+        user = cls(user_id=user_id, email=email, password_hash=password_hash, is_active=True)
+
+        event = UserRegisteredEvent(user_id=user_id, email=email)
+        user._events.append(event)
+
+        return user
 
     def verify_password(self, hashed_password: str) -> bool:
         """Check if the provided hashed password matches the user's password.
@@ -74,3 +84,16 @@ class UserEntity:
 
         """
         self.email = new_email
+
+    def get_events(self) -> list[object]:
+        """Get all accumulated events.
+
+        Returns:
+            list of events.
+
+        """
+        return self._events.copy()
+
+    def clear_events(self) -> None:
+        """Clear the list of events."""
+        self._events.clear()

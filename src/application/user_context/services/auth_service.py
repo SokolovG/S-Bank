@@ -1,3 +1,4 @@
+from src.common.event_bus import EventBus
 from src.common.exceptions.user_exceptions import (
     UserExistError,
     UserIsNotActiveError,
@@ -5,7 +6,9 @@ from src.common.exceptions.user_exceptions import (
     UserNoVerifyPasswordError,
 )
 from src.domain.user_context.entities.user import UserEntity
-from src.infrastructure.repositories.user_context.user_repository import UserRepository
+from src.domain.user_context.repositories_interfaces.user_repository_interface import (
+    UserRepositoryInterface,
+)
 
 
 class AuthService:
@@ -19,16 +22,18 @@ class AuthService:
 
     """
 
-    def __init__(self, user_repository: UserRepository, secret_key: str) -> None:
+    def __init__(self, user_repository: UserRepositoryInterface, secret_key: str, event_bus: EventBus) -> None:
         """Initialize the AuthService.
 
         Args:
             user_repository: The repository to handle user data.
             secret_key: The secret key for authentication.
+            event_bus: The Event bus for user events.
 
         """
         self.user_repository = user_repository
         self.secret_key = secret_key
+        self._event_bus = event_bus
 
     async def authenticate_user(self, email: str, password: str) -> UserEntity:
         """Authenticate a user by email and password.
@@ -79,5 +84,12 @@ class AuthService:
             raise UserExistError(email)
 
         user_entity = UserEntity.create(email=email, password_hash=password_hash)
+        saved_user = await self.user_repository.save(user_entity)
 
-        return await self.user_repository.save(user_entity)
+        events = user_entity.get_events()
+        for event in events:
+            self._event_bus.publish(event)
+
+        user_entity.clear_events()
+
+        return saved_user

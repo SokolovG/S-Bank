@@ -1,28 +1,28 @@
+from advanced_alchemy import repository
 from sqlalchemy import select
 
 from src.domain.user_context.entities.user import UserEntity
 from src.domain.user_context.value_objects import UserId
 from src.infrastructure.database.models import UserModel
-from src.infrastructure.repositories.base import BasicRepository
 
 
-class UserRepository(BasicRepository[UserModel]):
-    """Repository for handling User model operations.
+class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
+    """Repository for User model operations.
 
     Provides methods to query and persist user data, converting between domain entities and database models.
 
     Attributes:
-        model_type: The type of the database model, set to UserModel.
+        model_type: The type of the database model.
 
     """
 
     model_type: type[UserModel] = UserModel
 
     async def get_by_username(self, username: str) -> UserEntity | None:
-        """Retrieve a user by their username.
+        """Get a user by username.
 
         Args:
-            username: The username of the user to find.
+            username: The username of the user.
 
         Returns:
             UserEntity | None: The user entity if found, otherwise None.
@@ -37,10 +37,10 @@ class UserRepository(BasicRepository[UserModel]):
         return self._to_entity(user_model)
 
     async def get_by_email(self, email: str) -> UserEntity | None:
-        """Retrieve a user by their email address.
+        """Get a user by email address.
 
         Args:
-            email: The email address of the user to find.
+            email: The email address of the user.
 
         Returns:
             UserEntity | None: The user entity if found, otherwise None.
@@ -55,10 +55,10 @@ class UserRepository(BasicRepository[UserModel]):
         return self._to_entity(user_model)
 
     async def get_by_phone(self, phone: str) -> UserEntity | None:
-        """Retrieve a user by their phone number.
+        """Get a user by phone number.
 
         Args:
-            phone: The phone number of the user to find.
+            phone: The phone number of the user.
 
         Returns:
             UserEntity | None: The user entity if found, otherwise None.
