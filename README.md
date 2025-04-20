@@ -1,225 +1,176 @@
-# DevEvents
+# S-Bank
 
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Litestar](https://img.shields.io/badge/litestar-2.14.0-blue.svg)
+![SQLAlchemy](https://img.shields.io/badge/sqlalchemy-2.0.37-blue.svg)
+![Pydantic](https://img.shields.io/badge/pydantic-2.10.6-blue.svg)
 
-DevEvents is a comprehensive platform that aggregates and manages tech conferences and developer meetups. Our mission is
-to help developers stay updated about upcoming tech events and provide organizers with tools to promote their meetups
-effectively.
+S-Bank — это современное банковское приложение с архитектурой на основе Domain-Driven Design (DDD). Проект реализует основные функции банковской системы с акцентом на чистую архитектуру и четкое разделение бизнес-логики.
 
-## 📋 Features
+## 📋 Функциональность
 
-- **Browse Events**: Discover upcoming tech events and conferences
-- **Track Events**: Follow interesting events and set reminders
-- **Organize Events**: Create and manage your own tech events
-- **User Profiles**: Personalized profiles with event history
-- **Event Registration**: Simple registration process for attendees
-- **Comments & Discussions**: Engage with speakers and other attendees
+- **Управление пользователями**: Регистрация, аутентификация и управление профилями
+- **Банковские счета**: Создание и управление различными типами счетов
+- **Платежные операции**: Управление картами и балансами
+- **Транзакции**: Переводы между счетами, пополнения, снятия
+- **Аналитика**: Базовый анализ движения средств
 
-## 🛠️ Technology Stack
+## 🧠 Архитектура
+
+Проект следует принципам Domain-Driven Design (DDD) с четким разделением на слои:
+
+### 1. Domain Layer
+- **Entities**: Доменные сущности с бизнес-логикой
+- **Value Objects**: Неизменяемые объекты без идентичности
+- **Domain Events**: События, возникающие в домене
+- **Repositories (interfaces)**: Интерфейсы для доступа к данным
+- **Domain Services**: Сервисы, содержащие бизнес-логику
+
+### 2. Application Layer
+- **Services**: Координация выполнения бизнес-сценариев
+- **Event Handlers**: Обработчики доменных событий
+
+### 3. Infrastructure Layer
+- **Repositories (implementations)**: Конкретные реализации репозиториев
+- **Database**: Модели БД, настройки, миграции
+- **External Services**: Интеграции с внешними сервисами
+
+### 4. Interfaces Layer
+- **API**: REST API контроллеры, DTO, схемы
+- **CLI**: Интерфейс командной строки
+
+### Bounded Contexts
+Проект разделен на следующие ограниченные контексты:
+- **user_context**: Всё, что связано с пользователями и авторизацией
+- **account_context**: Управление банковскими счетами
+- **payment_context**: Операции с картами и балансом
+- **transaction_context**: Переводы, пополнения, снятия
+
+## 🛠️ Технологический стек
 
 ### Backend
-
-- **Framework**: [Litestar](https://litestar.dev/) - Modern, high-performance API framework
-- **Database**: PostgreSQL with AsyncPG
-- **ORM**: SQLAlchemy 2.0 (async)
-- **Validation**: Pydantic v2
-- **Migration**: Alembic
-- **Admin Panel**: SQLAdmin
-- **Packet manager**: Uv
+- **Python 3.12**
+- **Litestar**: Современный асинхронный API-фреймворк
+- **SQLAlchemy 2.0**: ORM для работы с базой данных
+- **Pydantic 2.x**: Валидация данных и сериализация
+- **PostgreSQL**: Основная база данных
+- **Alembic**: Управление миграциями
+- **JWT**: Токены для аутентификации
 
 ### DevOps
+- **Docker & Docker Compose**: Контейнеризация
+- **GitHub Actions**: CI/CD
 
-- **Containerization**: Docker & Docker Compose
-- **CI/CD**: To be implemented
+## 🚀 Установка и запуск
 
-## 🚀 Installation and Setup
+### Использование Docker (рекомендуется)
 
-### Prerequisites
-
-- Docker and Docker Compose
-- Python 3.12+ (for local development)
-- PostgreSQL (for local development without Docker)
-
-### Using Docker (Recommended)
-
-1. Clone the repository:
-
+1. Клонировать репозиторий:
 ```bash
-git clone https://github.com/yourusername/DevEvents.git
-cd DevEvents
+git clone https://github.com/yourusername/s-bank.git
+cd s-bank
 ```
 
-2. Create a `.env` file with the following content:
-
+2. Создать файл `.env` со следующим содержимым:
 ```
 # Database
-POSTGRES_DB=dev_events
+POSTGRES_DB=s_bank
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/dev_events
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/s_bank
 ```
 
-3. Build and start the containers:
-
+3. Собрать и запустить контейнеры:
 ```bash
 docker-compose up --build
 ```
 
-4. Access the applications:
+4. Доступ к приложению:
     - Backend API: http://localhost:8000
     - API Documentation: http://localhost:8000/schema/swagger
     - Admin Panel: http://localhost:8000/admin
-    - Frontend (when implemented): http://localhost:5173
 
-### Local Development Setup
+### Локальная разработка
 
-1. Clone the repository:
-
+1. Клонировать репозиторий
+2. Создать виртуальное окружение:
 ```bash
-git clone https://github.com/yourusername/DevEvents.git
-cd DevEvents
+python -m venv .venv
+source .venv/bin/activate  # На Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-2. Create a virtual environment and install dependencies:
-
-```bash
-uv venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-uv pip install -r requirements.txt
-```
-
-3. Create a `.env` file with the following content:
-
-```
-# Database
-POSTGRES_DB=dev_events
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/dev_events
-```
-
-4. Create the database in your local PostgreSQL instance.
-
-5. Run migrations:
-
+3. Создать файл `.env` с настройками для локальной разработки
+4. Запустить миграции:
 ```bash
 alembic upgrade head
 ```
 
-6. Seed the database with test data:
-
+5. Запустить сервер разработки:
 ```bash
-python -m backend.src.main run-seeders
+litestar --app src.main:app run --reload
 ```
 
-7. Start the development server:
+## 🧪 Тестовые данные
 
+Для заполнения базы данных тестовыми данными используйте:
 ```bash
-uvicorn backend.src.main:app --reload
+# С Docker
+docker-compose exec backend python -m src.infrastructure.database.seeders.run_seeder
+
+# Локально
+python -m src.infrastructure.database.seeders.run_seeder
 ```
 
-## 🧪 Database Seeding
+## 📝 API Документация
 
-To populate the database with test data:
-
-```bash
-# Using Docker
-docker-compose exec backend python -m backend.src.infrastructure.database.seeders.run_seeder
-
-# Local development
-python -m backend.src.main run-seeders
-```
-
-## 📝 API Documentation
-
-The API documentation is automatically generated and available at:
-
+API-документация доступна по адресам:
 - Swagger UI: http://localhost:8000/schema/swagger
 - ReDoc: http://localhost:8000/schema/redoc
 
-Key endpoints:
+## 💻 Разработка
 
-- `GET /api/v1/events` - List all events
-- `GET /api/v1/events/{event_id}` - Get event details
-- More endpoints coming soon...
+### Создание миграций
 
-## 🛠️ Development
-
-### Creating Migrations
-
-When you make changes to database models, you need to create a migration:
-
+При изменении моделей базы данных:
 ```bash
-# Using Docker
+# С Docker
 docker-compose exec backend alembic revision --autogenerate -m "description"
 
-# Local development
+# Локально
 alembic revision --autogenerate -m "description"
 ```
 
-### Running Tests
-
-Tests to be implemented. The command will be:
-
+### Запуск тестов
 ```bash
 pytest
 ```
 
-### Code Style
-
-This project uses:
-
-- Mypy for type checking
-- Ruff for format and linter
-
-To check your code:
+### Код-стиль
+Проект использует:
+- Mypy для проверки типов
+- Ruff для форматирования и линтинга
 
 ```bash
-# Format and linting code
-ruff backend/
+# Линтинг и форматирование
+ruff src/
 
-# Type checking
-mypy backend/
-
+# Проверка типов
+mypy src/
 ```
 
-## 🧠 Architecture Overview
+## 🤝 Участие в разработке
 
-DevEvents follows Clean Architecture principles:
+Мы приветствуем вклад в развитие проекта! Вот как вы можете помочь:
 
-1. **Domain Layer** - Contains business entities and rules
-2. **Application Layer** - Contains use cases and interfaces for external services
-3. **Infrastructure Layer** - Contains implementations of interfaces defined in the application layer
-4. **Interface Layer** - Contains API controllers, CLI commands, and other user interfaces
+1. Форкните репозиторий
+2. Создайте ветку для своей фичи (`git checkout -b feature/amazing-feature`)
+3. Закоммитьте изменения (`git commit -m 'Add some amazing feature'`)
+4. Отправьте изменения в ветку (`git push origin feature/amazing-feature`)
+5. Откройте Pull Request
 
-This architecture ensures:
+## 📜 Лицензия
 
-- Independence from frameworks
-- Testability
-- Independence from the UI
-- Independence from the database
-- Independence from external agencies
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📜 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👥 Acknowledgments
-
-- Litestar team for the amazing framework
-- All contributors to the project
+Этот проект распространяется под лицензией MIT.
