@@ -97,3 +97,37 @@ class UserExistError(UserError):
             code="user_exist",
             msg=f"User with {identifier} exist",
         )
+
+
+class UserAlreadyBlockedError(UserError):
+    """Error raised when a user already blocked."""
+
+    def __init__(self, identifier: T) -> None:
+        """Initialize the error with the user identifier.
+
+        Args:
+            identifier: The identifier of the user that already blocked.
+
+        """
+        super().__init__(
+            value=identifier,
+            code="user_already_blocked",
+            msg=f"User with {identifier} already blocked.",
+        )
+
+
+class UserNotBlockedError(UserError):
+    """Error raised when a user not blocked."""
+
+    def __init__(self, identifier: T) -> None:
+        """Initialize the error with the user identifier.
+
+        Args:
+            identifier: The identifier of the user that not blocked.
+
+        """
+        super().__init__(
+            value=identifier,
+            code="user_not_blocked",
+            msg=f"User with {identifier} not blocked!",
+        )

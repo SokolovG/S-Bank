@@ -1,5 +1,8 @@
 from src.domain.user_context.repositories_interfaces.user_repository_interface import (
-    UserRepositoryInterface,
+    IUserRepository,
+)
+from src.domain.user_context.repositories_interfaces.user_statistics_repository import (
+    IUserStatisticsRepository,
 )
 
-__all__ = ["UserRepositoryInterface"]
+__all__ = ["IUserRepository", "IUserStatisticsRepository"]

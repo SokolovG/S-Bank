@@ -47,7 +47,7 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
 
         """
         statement = select(UserModel).where(UserModel.id == user_entity.user_id.value)
-        existing_user = await self.session.scalar(statement)
+        existing_user: UserModel = await self.session.scalar(statement)
 
         if existing_user:
             existing_user.email = user_entity.email
@@ -64,6 +64,19 @@ class UserRepository(repository.SQLAlchemyAsyncRepository[UserModel]):
 
         await self.session.commit()
         return user_entity
+
+    async def block_user(self, email: str, reason: str) -> None:
+        """Block a user by email address.
+
+        Args:
+            email: The email address of the user.
+            reason: Reason for blocking
+
+        """
+        statement = select(UserModel).where(UserModel.email == email)
+        user: UserModel = await self.session.scalar(statement)
+        user.blocked = True
+        user.reason_for_blocking = reason
 
     def _to_entity(self, model: UserModel) -> UserEntity:
         """Convert a UserModel to a UserEntity.

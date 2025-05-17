@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     All settings for Posters
     """
 
-    is_docker: bool = False
+    is_docker: bool = True
     DATABASE_URL: str
     POSTGRES_HOST: str
     POSTGRES_PORT: int

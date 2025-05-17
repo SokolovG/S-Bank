@@ -4,8 +4,17 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-# Исправим путь импорта (убираем 'src.')
 from src.infrastructure.database.base import Base
+from src.infrastructure.database.models import (  # noqa
+    Account,
+    Balance,
+    Card,
+    CustomerModel,
+    CustomerStatistics,
+    Transaction,
+    UserModel,
+    UserStatistics,
+)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

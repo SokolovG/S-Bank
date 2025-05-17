@@ -7,7 +7,7 @@ from src.common.exceptions.user_exceptions import (
 )
 from src.domain.user_context.entities.user import UserEntity
 from src.domain.user_context.repositories_interfaces.user_repository_interface import (
-    UserRepositoryInterface,
+    IUserRepository,
 )
 
 
@@ -22,7 +22,7 @@ class AuthService:
 
     """
 
-    def __init__(self, user_repository: UserRepositoryInterface, secret_key: str, event_bus: EventBus) -> None:
+    def __init__(self, user_repository: IUserRepository, secret_key: str, event_bus: EventBus) -> None:
         """Initialize the AuthService.
 
         Args:
@@ -84,6 +84,98 @@ class AuthService:
             raise UserExistError(email)
 
         user_entity = UserEntity.create(email=email, hashed_password=hashed_password)
+        saved_user = await self.user_repository.save(user_entity)
+
+        events = user_entity.get_events()
+        for event in events:
+            self._event_bus.publish(event)
+
+        user_entity.clear_events()
+
+        return saved_user
+
+    async def block_user(self, email: str, reason: str) -> None:
+        """Block a user account.
+
+        Args:
+            email: Email of the user to block.
+            reason: Reason for blocking the user.
+
+        Returns:
+            UserEntity: The blocked user entity.
+
+        Raises:
+            UserNotFoundError: If no user is found with the provided email.
+
+        """
+        user_entity = await self.user_repository.get_by_email(email)
+        if not user_entity:
+            raise UserNotFoundError(f"User with ID {email} not found")
+
+        user_entity.block(reason)
+        await self.user_repository.save(user_entity)
+
+        events = user_entity.get_events()
+        for event in events:
+            self._event_bus.publish(event)
+
+        user_entity.clear_events()
+
+    async def unlock_user(self, email: str) -> UserEntity:
+        """Unblock a user account.
+
+        Args:
+            email: Email of the user to unblock.
+
+        Returns:
+            UserEntity: The unblocked user entity.
+
+        Raises:
+            UserNotFoundError: If no user is found with the provided email.
+
+        """
+        user_entity = await self.user_repository.get_by_email(email)
+        if not user_entity:
+            raise UserNotFoundError(f"User with email {email} not found")
+
+        user_entity.unlock()
+
+        saved_user = await self.user_repository.save(user_entity)
+
+        # Публикация событий
+        events = user_entity.get_events()
+        for event in events:
+            self._event_bus.publish(event)
+
+        user_entity.clear_events()
+
+        return saved_user
+
+    async def change_email(self, old_email: str, new_email: str) -> UserEntity:
+        """Change a user's email address.
+
+        Args:
+            old_email: Current email of the user.
+            new_email: New email for the user.
+
+        Returns:
+            UserEntity: The updated user entity.
+
+        Raises:
+            UserNotFoundError: If no user is found with the provided email.
+            UserExistError: If a user with the new email already exists.
+
+        """
+        user_entity = await self.user_repository.get_by_email(old_email)
+        if not user_entity:
+            raise UserNotFoundError(f"User with email {old_email} not found")
+
+        existing_user = await self.user_repository.get_by_email(new_email)
+        if existing_user:
+            raise UserExistError(f"User with email {new_email} already exists")
+
+        user_entity.change_email(new_email)
+
         saved_user = await self.user_repository.save(user_entity)
 
         events = user_entity.get_events()
