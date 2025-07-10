@@ -5,73 +5,73 @@
 ![SQLAlchemy](https://img.shields.io/badge/sqlalchemy-2.0.37-blue.svg)
 ![Pydantic](https://img.shields.io/badge/pydantic-2.10.6-blue.svg)
 
-S-Bank — это современное банковское приложение с архитектурой на основе Domain-Driven Design (DDD). Проект реализует основные функции банковской системы с акцентом на чистую архитектуру и четкое разделение бизнес-логики.
+S-Bank is a modern banking application built with Domain-Driven Design (DDD) architecture. The project implements core banking system functionality with emphasis on clean architecture and clear separation of business logic.
 
-## 📋 Функциональность
+## 📋 Features
 
-- **Управление пользователями**: Регистрация, аутентификация и управление профилями
-- **Банковские счета**: Создание и управление различными типами счетов
-- **Платежные операции**: Управление картами и балансами
-- **Транзакции**: Переводы между счетами, пополнения, снятия
-- **Аналитика**: Базовый анализ движения средств
+- **User Management**: Registration, authentication and profile management
+- **Banking Accounts**: Creation and management of different account types
+- **Payment Operations**: Card and balance management
+- **Transactions**: Account transfers, deposits, withdrawals
+- **Analytics**: Basic analysis of money flow
 
-## 🧠 Архитектура
+## 🧠 Architecture
 
-Проект следует принципам Domain-Driven Design (DDD) с четким разделением на слои:
+The project follows Domain-Driven Design (DDD) principles with clear layer separation:
 
 ### 1. Domain Layer
-- **Entities**: Доменные сущности с бизнес-логикой
-- **Value Objects**: Неизменяемые объекты без идентичности
-- **Domain Events**: События, возникающие в домене
-- **Repositories (interfaces)**: Интерфейсы для доступа к данным
-- **Domain Services**: Сервисы, содержащие бизнес-логику
+- **Entities**: Domain entities with business logic
+- **Value Objects**: Immutable objects without identity
+- **Domain Events**: Events that occur in the domain
+- **Repositories (interfaces)**: Interfaces for data access
+- **Domain Services**: Services containing business logic
 
 ### 2. Application Layer
-- **Services**: Координация выполнения бизнес-сценариев
-- **Event Handlers**: Обработчики доменных событий
+- **Services**: Coordination of business scenario execution
+- **Event Handlers**: Domain event handlers
 
 ### 3. Infrastructure Layer
-- **Repositories (implementations)**: Конкретные реализации репозиториев
-- **Database**: Модели БД, настройки, миграции
-- **External Services**: Интеграции с внешними сервисами
+- **Repositories (implementations)**: Concrete repository implementations
+- **Database**: DB models, settings, migrations
+- **External Services**: Integrations with external services
 
 ### 4. Interfaces Layer
-- **API**: REST API контроллеры, DTO, схемы
-- **CLI**: Интерфейс командной строки
+- **API**: REST API controllers, DTOs, schemas
+- **CLI**: Command line interface
 
 ### Bounded Contexts
-Проект разделен на следующие ограниченные контексты:
-- **user_context**: Всё, что связано с пользователями и авторизацией
-- **account_context**: Управление банковскими счетами
-- **payment_context**: Операции с картами и балансом
-- **transaction_context**: Переводы, пополнения, снятия
+The project is divided into the following bounded contexts:
+- **user_context**: Everything related to users and authorization
+- **account_context**: Banking account management
+- **payment_context**: Card and balance operations
+- **transaction_context**: Transfers, deposits, withdrawals
 
-## 🛠️ Технологический стек
+## 🛠️ Technology Stack
 
 ### Backend
 - **Python 3.12**
-- **Litestar**: Современный асинхронный API-фреймворк
-- **SQLAlchemy 2.0**: ORM для работы с базой данных
-- **Pydantic 2.x**: Валидация данных и сериализация
-- **PostgreSQL**: Основная база данных
-- **Alembic**: Управление миграциями
-- **JWT**: Токены для аутентификации
+- **Litestar**: Modern asynchronous API framework
+- **SQLAlchemy 2.0**: ORM for database operations
+- **Pydantic 2.x**: Data validation and serialization
+- **PostgreSQL**: Primary database
+- **Alembic**: Migration management
+- **JWT**: Authentication tokens
 
 ### DevOps
-- **Docker & Docker Compose**: Контейнеризация
+- **Docker & Docker Compose**: Containerization
 - **GitHub Actions**: CI/CD
 
-## 🚀 Установка и запуск
+## 🚀 Installation and Setup
 
-### Использование Docker (рекомендуется)
+### Using Docker (recommended)
 
-1. Клонировать репозиторий:
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/s-bank.git
 cd s-bank
 ```
 
-2. Создать файл `.env` со следующим содержимым:
+2. Create `.env` file with the following content:
 ```
 # Database
 POSTGRES_DB=s_bank
@@ -82,95 +82,95 @@ POSTGRES_PORT=5432
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/s_bank
 ```
 
-3. Собрать и запустить контейнеры:
+3. Build and run containers:
 ```bash
 docker-compose up --build
 ```
 
-4. Доступ к приложению:
+4. Access the application:
     - Backend API: http://localhost:8000
     - API Documentation: http://localhost:8000/schema/swagger
     - Admin Panel: http://localhost:8000/admin
 
-### Локальная разработка
+### Local Development
 
-1. Клонировать репозиторий
-2. Создать виртуальное окружение:
+1. Clone the repository
+2. Create virtual environment:
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # На Windows: .venv\Scripts\activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Создать файл `.env` с настройками для локальной разработки
-4. Запустить миграции:
+3. Create `.env` file with local development settings
+4. Run migrations:
 ```bash
 alembic upgrade head
 ```
 
-5. Запустить сервер разработки:
+5. Start development server:
 ```bash
 litestar --app src.main:app run --reload
 ```
 
-## 🧪 Тестовые данные
+## 🧪 Test Data
 
-Для заполнения базы данных тестовыми данными используйте:
+To populate the database with test data:
 ```bash
-# С Docker
+# With Docker
 docker-compose exec backend python -m src.infrastructure.database.seeders.run_seeder
 
-# Локально
+# Locally
 python -m src.infrastructure.database.seeders.run_seeder
 ```
 
-## 📝 API Документация
+## 📝 API Documentation
 
-API-документация доступна по адресам:
+API documentation is available at:
 - Swagger UI: http://localhost:8000/schema/swagger
 - ReDoc: http://localhost:8000/schema/redoc
 
-## 💻 Разработка
+## 💻 Development
 
-### Создание миграций
+### Creating Migrations
 
-При изменении моделей базы данных:
+When changing database models:
 ```bash
-# С Docker
+# With Docker
 docker-compose exec backend alembic revision --autogenerate -m "description"
 
-# Локально
+# Locally
 alembic revision --autogenerate -m "description"
 ```
 
-### Запуск тестов
+### Running Tests
 ```bash
 pytest
 ```
 
-### Код-стиль
-Проект использует:
-- Mypy для проверки типов
-- Ruff для форматирования и линтинга
+### Code Style
+The project uses:
+- Mypy for type checking
+- Ruff for formatting and linting
 
 ```bash
-# Линтинг и форматирование
+# Linting and formatting
 ruff src/
 
-# Проверка типов
+# Type checking
 mypy src/
 ```
 
-## 🤝 Участие в разработке
+## 🤝 Contributing
 
-Мы приветствуем вклад в развитие проекта! Вот как вы можете помочь:
+We welcome contributions to the project! Here's how you can help:
 
-1. Форкните репозиторий
-2. Создайте ветку для своей фичи (`git checkout -b feature/amazing-feature`)
-3. Закоммитьте изменения (`git commit -m 'Add some amazing feature'`)
-4. Отправьте изменения в ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📜 Лицензия
+## 📜 License
 
-Этот проект распространяется под лицензией MIT.
+This project is distributed under the MIT License.
