@@ -67,7 +67,7 @@ The project is divided into the following bounded contexts:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/s-bank.git
+git clone https://github.com/SokolovG/S-Bank
 cd s-bank
 ```
 
